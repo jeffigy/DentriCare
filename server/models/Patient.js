@@ -9,27 +9,27 @@ const patientSchema = new mongoose.Schema(
       ref: "User",
     },
     fname: {
-      type: string,
+      type: String,
       required: true,
     },
     mname: {
-      type: string,
+      type: String,
       required: true,
     },
     lname: {
-      type: string,
+      type: String,
       required: true,
     },
     bday: {
-      type: number,
+      type: Number,
       required: true,
     },
     address: {
-      type: string,
+      type: String,
       required: true,
     },
-    phoneNum: {
-      type: number,
+    phone: {
+      type: Number,
       required: true,
     },
   },
