@@ -1,8 +1,4 @@
-import React from "react";
-
-type LoginPageProps = {};
-
-const LoginPage: React.FC<LoginPageProps> = () => {
+const LoginPage = () => {
   return <div>login page</div>;
 };
 export default LoginPage;

@@ -1,8 +1,4 @@
-import React from "react";
-
-type LandingPageProps = {};
-
-const LandingPage: React.FC<LandingPageProps> = () => {
+const LandingPage = () => {
   return <div>LandingPage</div>;
 };
 export default LandingPage;

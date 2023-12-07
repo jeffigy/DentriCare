@@ -1,9 +1,6 @@
 import PatientsList from "features/patients/PatientsList";
-import React from "react";
 
-type PatientsPageProps = {};
-
-const PatientsPage: React.FC<PatientsPageProps> = () => {
+const PatientsPage = () => {
   return (
     <div>
       patients page

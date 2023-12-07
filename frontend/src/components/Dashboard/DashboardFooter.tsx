@@ -1,4 +1,4 @@
-import { Button, Flex, HStack, IconButton, Text } from "@chakra-ui/react";
+import { Flex, HStack, IconButton, Text } from "@chakra-ui/react";
 import { FiTwitter, FiFacebook, FiInstagram } from "react-icons/fi";
 const DashboardFooter = () => {
   return (

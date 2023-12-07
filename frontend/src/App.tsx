@@ -6,13 +6,9 @@ import LandingPage from "pages/LandingPage";
 import LoginPage from "pages/LoginPage";
 import PatientsPage from "pages/Patients/PatientsPage";
 import UsersPage from "pages/Users/UsersPage";
-
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 
-type AppProps = {};
-
-const App: React.FC<AppProps> = () => {
+const App = () => {
   return (
     <Routes>
       <Route path="/" element={<RootLayout />}>

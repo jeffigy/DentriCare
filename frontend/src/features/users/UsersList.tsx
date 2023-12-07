@@ -1,8 +1,6 @@
 import React from "react";
 
-type UsersListProps = {};
-
-const UsersList: React.FC<UsersListProps> = () => {
+const UsersList = () => {
   return <div>users list</div>;
 };
 export default UsersList;
