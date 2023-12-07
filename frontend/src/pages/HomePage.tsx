@@ -8,6 +8,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import bg from "assets/hompage-bg.jpg";
+import { Link } from "react-router-dom";
 const HomePage = () => {
   return (
     <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
@@ -30,7 +31,7 @@ const HomePage = () => {
               Welcome to
             </Text>
             <br />{" "}
-            <Text color={"blue.400"} as={"span"}>
+            <Text color={"blue.500"} as={"span"}>
               DentriCare
             </Text>{" "}
           </Heading>
@@ -38,11 +39,17 @@ const HomePage = () => {
             Elevating Dental Care, One Click at a Time
           </Text>
           <Stack direction={{ base: "column", md: "row" }} spacing={4}>
-            <Button rounded={"full"} colorScheme="blue">
+            <Button as={Link} to={"/login"} rounded={"full"} colorScheme="blue">
               {" "}
               Log in
             </Button>
-            <Button rounded={"full"} variant={"ghost"} colorScheme="blue">
+            <Button
+              as={Link}
+              to={"/signup"}
+              rounded={"full"}
+              variant={"ghost"}
+              colorScheme="blue"
+            >
               Sign up
             </Button>
           </Stack>
