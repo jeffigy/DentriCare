@@ -1,12 +1,11 @@
+import { Flex } from "@chakra-ui/react";
 import PatientsList from "features/patients/PatientsList";
 
 const PatientsPage = () => {
   return (
-    <div>
-      patients page
-      <br />
+    <Flex justify={"center"} align={"center"} w={"full"}>
       <PatientsList />
-    </div>
+    </Flex>
   );
 };
 export default PatientsPage;
