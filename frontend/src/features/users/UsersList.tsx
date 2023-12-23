@@ -10,7 +10,11 @@ const UsersList: React.FC<UsersListProps> = () => {
     isSuccess,
     isError,
     error,
-  } = useGetUsersQuery(undefined); //! observe if the 'undefined' is a problem
+  } = useGetUsersQuery(undefined, {
+    pollingInterval: 6000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+  }); //! observe if the 'undefined' is a problem
   let content;
 
   if (isLoading) content = <p>Loading...</p>;
@@ -21,7 +25,6 @@ const UsersList: React.FC<UsersListProps> = () => {
 
   if (isSuccess) {
     const { ids } = users;
-    console.log("ids", ids);
 
     const tableContent = ids?.length
       ? ids.map((userId) => <UserRow key={userId} userId={String(userId)} />)

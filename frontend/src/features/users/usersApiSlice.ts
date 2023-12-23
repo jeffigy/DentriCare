@@ -1,18 +1,7 @@
 import { createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 import { RootState } from "app/store";
 import { apiSlice } from "app/api/apiSlice";
-
-export type User = {
-  [x: string]: string | boolean | string[];
-  id: string;
-  fname: string;
-  lname: string;
-  email: string;
-  password: string;
-  roles: string[];
-  isActive: boolean;
-};
-
+import { User } from "types/User";
 const usersAdapter = createEntityAdapter({});
 
 const initialState = usersAdapter.getInitialState();
@@ -26,7 +15,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
           return response.status === 200 && !result.isError;
         },
       }),
-      keepUnusedDataFor: 5,
       transformResponse: (responseData: User[]) => {
         const loadedUsers = responseData.map((user) => {
           user.id = String(user._id);
@@ -40,15 +28,46 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             { type: "User" as const, id: "LIST" as const },
             ...result.ids.map((id) => ({ type: "User" as const, id })),
           ];
-        } else {
-          return [{ type: "User" as const, id: "LIST" as const }];
-        }
+        } else return [{ type: "User" as const, id: "LIST" as const }];
       },
+    }),
+    addNewUser: builder.mutation({
+      query: (initialUserData) => ({
+        url: "/users",
+        method: "POST",
+        body: {
+          ...initialUserData,
+        },
+      }),
+      invalidatesTags: [{ type: "User" as const, id: "LIST" as const }],
+    }),
+    updateUser: builder.mutation({
+      query: (initialUserData) => ({
+        url: "/users",
+        method: "PATCH",
+        body: {
+          ...initialUserData,
+        },
+      }),
+      invalidatesTags: (arg) => [{ type: "User" as const, id: arg.id }],
+    }),
+    deleteUser: builder.mutation({
+      query: ({ id }) => ({
+        url: `/users`,
+        method: "DELETE",
+        body: { id },
+      }),
+      invalidatesTags: (arg) => [{ type: "User" as const, id: arg.id }],
     }),
   }),
 });
 
-export const { useGetUsersQuery } = usersApiSlice;
+export const {
+  useGetUsersQuery,
+  useAddNewUserMutation,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
+} = usersApiSlice;
 
 export const selectusersResult =
   usersApiSlice.endpoints.getUsers.select(undefined);

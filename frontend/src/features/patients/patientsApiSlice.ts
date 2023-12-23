@@ -28,7 +28,6 @@ export const patientsApiSlice = apiSlice.injectEndpoints({
           return response.status === 200 && !result.isError;
         },
       }),
-      keepUnusedDataFor: 5,
       transformResponse: (responseData: Patient[]) => {
         const loadedPatients = responseData.map((patient) => {
           patient.id = String(patient._id);

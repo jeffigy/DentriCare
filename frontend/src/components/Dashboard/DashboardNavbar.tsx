@@ -28,10 +28,10 @@ const DashboardNavbar = () => {
         </svg>
       </Link>
       <HStack spacing={5}>
-        <Button colorScheme="blue" as={Link} to={"/dash/patients"}>
+        <Button variant={"ghost"} as={Link} to={"/dash/patients"}>
           Patients
         </Button>
-        <Button colorScheme="blue" as={Link} to={"/dash/users"}>
+        <Button variant={"ghost"} as={Link} to={"/dash/users"}>
           Users
         </Button>
       </HStack>

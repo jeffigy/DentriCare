@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 import DashboardNavbar from "./DashboardNavbar";
 import DashboardFooter from "./DashboardFooter";
@@ -7,9 +7,9 @@ const DashboardLayout = () => {
   return (
     <Flex direction={"column"} w={"full"}>
       <DashboardNavbar />
-      <Flex minH={"calc(100vh - 112px)"}>
+      <Box flexGrow={1} w={"full"} p={"20px"}>
         <Outlet />
-      </Flex>
+      </Box>
       <DashboardFooter />
     </Flex>
   );

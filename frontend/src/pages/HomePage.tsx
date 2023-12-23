@@ -7,7 +7,7 @@ import {
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import bg from "assets/hompage-bg.jpg";
+import bg from "assets/HomePageBg.jpg";
 import { Link } from "react-router-dom";
 const HomePage = () => {
   return (
