@@ -1,0 +1,11 @@
+.red-border {
+  width: "100%";
+}
+
+.react-datepicker-ignore-onclickoutside {
+  width: 100% !important;
+}
+
+.react-datepicker__input-container input {
+  width: 100%;
+}

@@ -34,12 +34,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ROLES } from "config/roles";
 import React, { useEffect, useState } from "react";
 import { Resolver, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { User } from "types/User";
+import { UserFormValues } from "types/UserFormValues";
 import { editUserValidation } from "validations/userValidation";
 import { useDeleteUserMutation, useUpdateUserMutation } from "./usersApiSlice";
-
-import { useNavigate } from "react-router-dom";
-import { UserFormValues } from "types/UserFormValues";
 
 type EditUserFormProps = {
   user: User;

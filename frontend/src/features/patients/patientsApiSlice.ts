@@ -1,20 +1,8 @@
 import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
 import { apiSlice } from "app/api/apiSlice";
 import { RootState } from "app/store";
+import { Patient } from "types/Patient";
 
-export type Patient = {
-  [x: string]: string | number;
-  id: string;
-  fname: string;
-  mname: string;
-  lname: string;
-  bday: number;
-  address: string;
-  phone: number;
-  createdAt: string;
-  updatedAt: string;
-  patient: string;
-};
 const patientsAdapter = createEntityAdapter({});
 
 const initialState = patientsAdapter.getInitialState();
@@ -46,10 +34,42 @@ export const patientsApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
+    addNewPatient: builder.mutation({
+      query: (initialPatientData) => ({
+        url: "/patients",
+        method: "POST",
+        body: {
+          ...initialPatientData,
+        },
+      }),
+      invalidatesTags: [{ type: "Patient" as const, id: "LIST" as const }],
+    }),
+    updatePatient: builder.mutation({
+      query: (initialPatientData) => ({
+        url: "/patients",
+        method: "PATCH",
+        body: {
+          ...initialPatientData,
+        },
+      }),
+      invalidatesTags: (arg) => [{ type: "Patient" as const, id: arg.id }],
+    }),
+    deletePatient: builder.mutation({
+      query: ({ id }) => ({
+        url: `/patients/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (arg) => [{ type: "Patient" as const, id: arg.id }],
+    }),
   }),
 });
 
-export const { useGetPatientsQuery } = patientsApiSlice;
+export const {
+  useGetPatientsQuery,
+  useAddNewPatientMutation,
+  useUpdatePatientMutation,
+  useDeletePatientMutation,
+} = patientsApiSlice;
 
 export const selectpatientsResult =
   patientsApiSlice.endpoints.getPatients.select(undefined);

@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
-import { User, selectUserById } from "./usersApiSlice";
+import { selectUserById } from "./usersApiSlice";
 import { useAppSelector } from "app/hooks";
+import { User } from "types/User";
 type UserRowProps = {
   userId: string;
 };

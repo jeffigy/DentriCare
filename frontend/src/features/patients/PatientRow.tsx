@@ -1,19 +1,17 @@
 import { useAppSelector } from "app/hooks";
 import React from "react";
-import { selectPatientById, Patient } from "./patientsApiSlice";
+import { selectPatientById } from "./patientsApiSlice";
 import { useNavigate } from "react-router-dom";
+import { Patient } from "types/Patient";
 
 type PatientRowProps = {
   patientId: string;
 };
 
 const PatientRow: React.FC<PatientRowProps> = ({ patientId }) => {
-  console.log("patientId", patientId);
-
   const patient = useAppSelector((state) =>
     selectPatientById(state, patientId)
   ) as Patient;
-  console.log("patient", patient);
 
   const navigate = useNavigate();
 

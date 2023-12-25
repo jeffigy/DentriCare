@@ -8,14 +8,18 @@ const PatientsList = () => {
     isSuccess,
     isError,
     error,
-  } = useGetPatientsQuery(undefined);
+  } = useGetPatientsQuery(undefined, {
+    pollingInterval: 6000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+  });
 
   let content;
   if (isLoading) content = <p>Loading...</p>;
   if (isError) content = <p>{error.toString()}</p>;
   if (isSuccess) {
     const { ids } = users;
-    console.log("ids", ids);
+    // console.log("ids", ids);
 
     const tableContent = ids?.length
       ? ids.map((patientId) => (

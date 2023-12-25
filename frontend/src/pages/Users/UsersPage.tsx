@@ -1,7 +1,7 @@
 import { Flex, Icon, IconButton } from "@chakra-ui/react";
 import UsersList from "features/users/UsersList";
-import { FiUserPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { GrUserAdmin } from "react-icons/gr";
 
 const UsersPage = () => {
   return (
@@ -11,7 +11,7 @@ const UsersPage = () => {
         size={"lg"}
         isRound={true}
         aria-label="new-user"
-        icon={<Icon as={FiUserPlus} />}
+        icon={<Icon as={GrUserAdmin} />}
         sx={{
           position: "fixed",
           right: "16px",

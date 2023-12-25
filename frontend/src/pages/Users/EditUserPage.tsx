@@ -1,8 +1,9 @@
 import { Flex, Spinner } from "@chakra-ui/react";
 import EditUserForm from "features/users/EditUserForm";
 import { useAppSelector } from "app/hooks";
-import { User, selectUserById } from "features/users/usersApiSlice";
+import { selectUserById } from "features/users/usersApiSlice";
 import { useParams } from "react-router-dom";
+import { User } from "types/User";
 
 const EditUserPage = () => {
   const { id } = useParams<{ id: string }>();
