@@ -55,7 +55,6 @@ const NewUserForm = () => {
 
   const onSubmit = async (data: UserFormValues) => {
     const { fname, lname, email, password, roles } = data;
-    // if there are no errors in the form submit
     if (Object.keys(errors).length === 0) {
       await addNewUser({ fname, lname, email, password, roles });
     }
@@ -72,8 +71,6 @@ const NewUserForm = () => {
 
   useEffect(() => {
     if (!isSubmitting && isSuccess) {
-      reset();
-      navigate("/dash/users");
       toast({
         title: "User Created",
         description: "User has been created successfully",
@@ -81,6 +78,8 @@ const NewUserForm = () => {
         duration: 5000,
         isClosable: true,
       });
+      reset();
+      navigate("/dash/users");
     }
   }, [isSubmitting, isSuccess, reset, navigate]);
 
@@ -94,7 +93,7 @@ const NewUserForm = () => {
           }}
         >
           <CardHeader as={Flex} justify={"center"}>
-            <Heading size={"md"}>New User error {errors?.toString()}</Heading>
+            <Heading size={"md"}>New User</Heading>
           </CardHeader>
           <CardBody as={Stack} spacing={"10px"}>
             <FormControl>

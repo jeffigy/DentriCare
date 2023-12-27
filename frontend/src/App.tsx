@@ -3,7 +3,6 @@ import RootLayout from "components/RootLayout";
 import Prefetch from "features/auth/Prefetch";
 import HomePage from "pages/HomePage";
 import LandingPage from "pages/LandingPage";
-
 import LoginPage from "pages/LoginPage";
 import EditPatientPage from "pages/Patients/EditPatientPage";
 import NewPatientPage from "pages/Patients/NewPatientPage";

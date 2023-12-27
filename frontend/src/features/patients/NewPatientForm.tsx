@@ -25,6 +25,13 @@ import { useNavigate } from "react-router-dom";
 import { PatientFormValues } from "types/PatientFormValues";
 import { newPatientValidation } from "validations/patientValidation";
 import { useAddNewPatientMutation } from "./patientsApiSlice";
+import "style.css";
+
+type errorType = {
+  data: {
+    message: string;
+  };
+};
 
 const NewPatientForm = () => {
   const toast = useToast();
@@ -39,7 +46,7 @@ const NewPatientForm = () => {
       lname: "",
       bday: undefined,
       address: "",
-      phone: undefined,
+      phone: "",
       createdBy: "",
     },
     resolver: yupResolver(newPatientValidation) as Resolver<PatientFormValues>,
@@ -47,10 +54,9 @@ const NewPatientForm = () => {
   const { register, control, handleSubmit, formState, reset } = form;
   const { errors, isDirty, isSubmitting } = formState;
 
-  console.log(errors);
   const onSubmit = async (data: PatientFormValues) => {
     const { fname, mname, lname, bday, address, phone, createdBy } = data;
-    if (Object.keys(errors).length === 0) {
+    try {
       await addNewPatient({
         fname,
         mname,
@@ -60,21 +66,29 @@ const NewPatientForm = () => {
         phone,
         createdBy,
       });
-    }
-    if (isError) {
-      //TODO: fix the error message because it showing the whole error object
+    } catch (error) {
+      // Handle errors
       toast({
         title: "Error",
-        description: `${error}`,
+        description: "An error occurred",
         status: "error",
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
       });
     }
   };
 
   useEffect(() => {
-    if (!isSubmitting && isSuccess) {
+    if (isError) {
+      toast({
+        title: "Error",
+        description: "An error occurred",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+    if (isSuccess) {
       reset();
       navigate("/dash/patients");
       toast({
@@ -85,7 +99,7 @@ const NewPatientForm = () => {
         isClosable: true,
       });
     }
-  }, [isSuccess, isSubmitting, reset, navigate, toast]);
+  }, [isSuccess, reset, navigate, toast, isError, error]);
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -119,7 +133,7 @@ const NewPatientForm = () => {
               <FormLabel>Middle Name</FormLabel>
               <Input
                 autoComplete={"false"}
-                id="fname"
+                id="mname"
                 type="text"
                 {...register("mname")}
                 isInvalid={!!errors.mname}
@@ -151,14 +165,19 @@ const NewPatientForm = () => {
                 name="bday"
                 control={control}
                 render={({ field }) => (
-                  <DatePicker
-                    calendarClassName="red-border"
-                    customInput={<Input />}
-                    selected={field.value ? new Date(field.value) : null}
-                    onChange={(date) =>
-                      field.onChange(date ? date.getTime() / 1000 : 0)
-                    }
-                  />
+                  <div className="customDatePickerWidth">
+                    <DatePicker
+                      customInput={<Input isInvalid={!!errors.bday} />}
+                      selected={
+                        field.value
+                          ? new Date(Number(field.value) * 1000)
+                          : null
+                      }
+                      onChange={(date) =>
+                        field.onChange(date ? date.getTime() / 1000 : 0)
+                      }
+                    />
+                  </div>
                 )}
               />
 

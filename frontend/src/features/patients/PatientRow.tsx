@@ -19,9 +19,9 @@ const PatientRow: React.FC<PatientRowProps> = ({ patientId }) => {
     const handleEdit = () => navigate(`/dash/patients/${patientId}`);
     return (
       <tr className="table__row user">
-        <td className={`table__cell`}>{patient.fname}</td>
-        <td className={`table__cell`}>{patient.mname}</td>
-        <td className={`table__cell`}>{patient.lname}</td>
+        <td className={`table__cell`}>
+          {patient.fname} {patient.mname} {patient.lname}
+        </td>
         <td className={`table__cell`}>
           <button className="icon-button table__button" onClick={handleEdit}>
             edit

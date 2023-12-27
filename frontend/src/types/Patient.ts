@@ -8,7 +8,7 @@ export type Patient = {
   lname: string;
   bday: number;
   address: string;
-  phone: number;
+  phone: string;
   createdAt: string;
   updatedAt: string;
   patient: string;

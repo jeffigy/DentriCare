@@ -23,7 +23,7 @@ const createNewPatient = asyncHandler(async (req, res) => {
     !lname ||
     typeof bday !== "number" ||
     !address ||
-    typeof phone !== "number"
+    !phone
   ) {
     return res.status(400).json({ message: "all fields are required" });
   }
@@ -43,7 +43,7 @@ const createNewPatient = asyncHandler(async (req, res) => {
     lname,
     bday,
     address,
-    phone,
+    phone: String(phone),
   };
   const patient = await Patient.create(patientObj);
 
@@ -65,7 +65,7 @@ const updatePatient = asyncHandler(async (req, res) => {
     !lname ||
     typeof bday !== "number" ||
     !address ||
-    typeof phone !== "number"
+    !phone
   ) {
     return res
       .status(400)
@@ -92,6 +92,7 @@ const updatePatient = asyncHandler(async (req, res) => {
   patient.lname = lname;
   patient.bday = bday;
   patient.phone = phone;
+  patient.address = address;
 
   const updatedPatient = await patient.save();
   res.json(

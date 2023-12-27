@@ -5,6 +5,8 @@ import { CardTheme } from "./components/CardTheme";
 import { InputTheme } from "./components/Input";
 import { SpinnerTheme } from "./components/Spinner";
 import { ModalTheme } from "./components/Modal";
+import { TextareaTheme } from "./components/Textarea";
+
 export const theme = extendTheme({
   components: {
     Button: ButtonTheme,
@@ -13,5 +15,6 @@ export const theme = extendTheme({
     Input: InputTheme,
     Spinner: SpinnerTheme,
     Modal: ModalTheme,
+    Textarea: TextareaTheme,
   },
 });

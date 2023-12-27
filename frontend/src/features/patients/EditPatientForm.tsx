@@ -11,55 +11,47 @@ import {
   Heading,
   Input,
   InputGroup,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Stack,
-  Text,
   Textarea,
-  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { DevTool } from "@hookform/devtools";
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Controller, Resolver, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import "style.css";
 import { Patient } from "types/Patient";
 import { PatientFormValues } from "types/PatientFormValues";
 import { newPatientValidation } from "validations/patientValidation";
-import {
-  useDeletePatientMutation,
-  useUpdatePatientMutation,
-} from "./patientsApiSlice";
+import DeletePatient from "./DeletePatient";
+import { useUpdatePatientMutation } from "./patientsApiSlice";
 
 type EditPatientFormProps = {
   patient: Patient;
 };
+
+type errorType = {
+  data: {
+    message: string;
+  };
+};
+
 const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
   const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+
   const [updatePatient, { isSuccess, isError, error }] =
     useUpdatePatientMutation();
-  const [
-    deletePatient,
-    { isSuccess: isDelSuccess, isError: isDelError, error: delError },
-  ] = useDeletePatientMutation();
-  const [delButtonState, setDelButtonState] = useState(false);
 
   const form = useForm<PatientFormValues>({
     defaultValues: {
       fname: patient.fname,
       mname: patient.mname,
       lname: patient.lname,
-      bday: new Date(patient.bday * 1000),
+      bday: patient.bday,
       address: patient.address,
       phone: patient.phone,
       createdBy: patient.createdBy.toString(),
@@ -70,62 +62,55 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
   const { errors, isDirty, isSubmitting } = formState;
 
   const onSubmit = async (data: PatientFormValues) => {
-    console.log(data);
     const { fname, mname, lname, bday, address, phone, createdBy } = data;
-    await updatePatient({
-      id: patient.id,
-      fname,
-      mname,
-      lname,
-      bday,
-      address,
-      phone,
-      createdBy,
-    });
-    if (isError) {
+    try {
+      await updatePatient({
+        id: patient.id,
+        fname,
+        mname,
+        lname,
+        bday,
+        address,
+        phone,
+        createdBy,
+      });
+    } catch (error) {
       toast({
         title: "Error",
-        description: error?.toString(),
+        description: `${
+          (error as errorType)?.data?.message ?? "An error occurred"
+        }`,
         status: "error",
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       });
-    }
-  };
-  console.log(error);
-
-  const onDelete = async () => {
-    setDelButtonState(true);
-    await deletePatient({ id: patient.id });
-    setDelButtonState(false);
-    if (isDelError) {
-      toast({
-        title: "Error",
-        description: delError?.toString(),
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-    }
-    if (isDelSuccess) {
-      toast({
-        title: "Success",
-        description: "Patient deleted successfully",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-      });
-      onClose();
     }
   };
 
   useEffect(() => {
-    console.log("isSuccess?: ", isSuccess);
-    if ((!isSubmitting && isSuccess) || isDelSuccess) {
+    if (isError && !toast.isActive("errorToast")) {
+      toast({
+        id: "errorToast",
+        title: "Error",
+        description: (error as errorType)?.data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+    if (isSuccess && !toast.isActive("successToast")) {
+      toast({
+        id: "successToast",
+        title: "Success",
+        description: "Patient updated successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
       reset();
       navigate("/dash/patients");
     }
-  }, [isSubmitting, isSuccess, navigate, isDelSuccess]);
+  }, [isError, isSuccess]);
 
   return (
     <>
@@ -138,7 +123,7 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
           }}
         >
           <CardHeader as={Flex} justify={"center"}>
-            <Heading size={"md"}>New Patient</Heading>
+            <Heading size={"md"}>Edit Patient</Heading>
           </CardHeader>
           <CardBody as={Stack} spacing={"10px"}>
             <FormControl>
@@ -192,14 +177,19 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
                 name="bday"
                 control={control}
                 render={({ field }) => (
-                  <DatePicker
-                    calendarClassName="red-border"
-                    customInput={<Input />}
-                    selected={field.value ? new Date(field.value) : null}
-                    onChange={(date) =>
-                      field.onChange(date ? date.getTime() / 1000 : 0)
-                    }
-                  />
+                  <div className="customDatePickerWidth">
+                    <DatePicker
+                      customInput={<Input isInvalid={!!errors.bday} />}
+                      selected={
+                        field.value
+                          ? new Date(Number(field.value) * 1000)
+                          : null
+                      }
+                      onChange={(date) =>
+                        field.onChange(date ? date.getTime() / 1000 : 0)
+                      }
+                    />
+                  </div>
                 )}
               />
 
@@ -267,55 +257,14 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
             >
               Save
             </Button>
-            <>
-              <Button
-                variant={"ghost"}
-                w={"full"}
-                colorScheme="red"
-                onClick={onOpen}
-              >
-                Delete User
-              </Button>
-              <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>Delete User</ModalHeader>
-                  <ModalCloseButton />
-                  <ModalBody>
-                    <Text>
-                      {" "}
-                      A you sure on deleting user{" "}
-                      <Text
-                        as={"span"}
-                        color={"red"}
-                        fontWeight={"bold"}
-                        fontSize={"lg"}
-                      >
-                        {patient.fname} {patient.mname} {patient.lname}
-                      </Text>
-                      ? This action cannot be undone.
-                    </Text>
-                  </ModalBody>
-
-                  <ModalFooter>
-                    <Button
-                      variant="ghost"
-                      colorScheme="blackAlpha"
-                      onClick={onClose}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      colorScheme="red"
-                      onClick={onDelete}
-                      isLoading={delButtonState}
-                    >
-                      Delete
-                    </Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
-            </>
+            <DeletePatient
+              patient={{
+                id: patient.id,
+                fname: patient.fname,
+                mname: patient.mname,
+                lname: patient.lname,
+              }}
+            />
           </CardFooter>
         </Card>
       </form>

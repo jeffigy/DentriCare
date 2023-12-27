@@ -1,9 +1,9 @@
-import { useGetPatientsQuery } from "features/patients/patientsApiSlice";
+import { useGetPatientsQuery } from "./patientsApiSlice";
 import PatientRow from "./PatientRow";
 
 const PatientsList = () => {
   const {
-    data: users,
+    data: patients,
     isLoading,
     isSuccess,
     isError,
@@ -18,7 +18,7 @@ const PatientsList = () => {
   if (isLoading) content = <p>Loading...</p>;
   if (isError) content = <p>{error.toString()}</p>;
   if (isSuccess) {
-    const { ids } = users;
+    const { ids } = patients;
     // console.log("ids", ids);
 
     const tableContent = ids?.length
@@ -30,14 +30,8 @@ const PatientsList = () => {
       <table className="table table--users">
         <thead className="table__thead">
           <tr>
-            <th scope="col" className="table__th user__username">
-              fname
-            </th>
-            <th scope="col" className="table__th user__roles">
-              mname
-            </th>
             <th scope="col" className="table__th user__edit">
-              lname
+              Patient Name
             </th>
             <th scope="col" className="table__th user__edit">
               edit

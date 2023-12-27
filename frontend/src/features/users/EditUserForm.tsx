@@ -16,17 +16,8 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Stack,
   Switch,
-  Text,
-  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { DevTool } from "@hookform/devtools";
@@ -38,25 +29,26 @@ import { useNavigate } from "react-router-dom";
 import { User } from "types/User";
 import { UserFormValues } from "types/UserFormValues";
 import { editUserValidation } from "validations/userValidation";
-import { useDeleteUserMutation, useUpdateUserMutation } from "./usersApiSlice";
+import { useUpdateUserMutation } from "./usersApiSlice";
+import DeleteUser from "./DeleteUser";
 
 type EditUserFormProps = {
   user: User;
 };
 
+type errorType = {
+  data: {
+    message: string;
+  };
+};
+
 const EditUserForm: React.FC<EditUserFormProps> = ({ user }) => {
   const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
-  const [updateUser, { isSuccess }] = useUpdateUserMutation();
-  const [
-    deleteUser,
-    { isSuccess: isDelSuccess, isError: isDelError, error: delError },
-  ] = useDeleteUserMutation();
+  const [updateUser, { isSuccess, isError, error }] = useUpdateUserMutation();
   const [viewPassword, setViewPassword] = useState(false);
   const handleClick = () => setViewPassword(!viewPassword);
   const [viewConfirmPassword, setviewConfirmPassword] = useState(false);
-  const [delButtonState, setDelButtonState] = useState(false);
   const handleClickConfirmPassword = () =>
     setviewConfirmPassword(!viewConfirmPassword);
 
@@ -73,60 +65,59 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user }) => {
     resolver: yupResolver(editUserValidation) as Resolver<UserFormValues>,
   });
   const { register, control, handleSubmit, formState, reset } = form;
-  const { errors, isSubmitting, dirtyFields } = formState;
+  const { errors, isSubmitting, dirtyFields, isDirty } = formState;
 
   const onSubmit = async (data: UserFormValues) => {
     const { fname, lname, email, password, roles, active } = data;
-    if (dirtyFields.password === true || !errors) {
-      await updateUser({
-        id: user.id,
-        fname,
-        lname,
-        email,
-        password,
-        roles,
-        active,
-      });
-    } else {
-      await updateUser({ id: user.id, fname, lname, email, roles, active });
-    }
-
-    console.log("active: ", data.active);
-  };
-
-  const onDelete = async () => {
-    setDelButtonState(true);
-    await deleteUser({ id: user.id });
-    setDelButtonState(false);
-    // TODO: Fix this toast
-    if (isDelError) {
+    try {
+      if (dirtyFields.password === true || !errors) {
+        await updateUser({
+          id: user.id,
+          fname,
+          lname,
+          email,
+          password,
+          roles,
+          active,
+        });
+      } else {
+        await updateUser({ id: user.id, fname, lname, email, roles, active });
+      }
+    } catch (error) {
       toast({
         title: "Error",
-        description: delError?.toString(),
+        description: `${
+          (error as errorType)?.data?.message ?? "An error occurred"
+        }`,
         status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-    }
-    if (isDelSuccess) {
-      toast({
-        title: "User Deleted",
-        description: "User deleted successfully",
-        status: "success",
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       });
     }
   };
 
   useEffect(() => {
-    console.log("isSuccess?: ", isSuccess);
-
-    if ((!isSubmitting && isSuccess) || isDelSuccess) {
-      reset();
+    if (isError && !toast.isActive("errorToast")) {
+      toast({
+        id: "errorToast",
+        title: "Error",
+        description: `${(error as errorType)?.data.message}`,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+    if (isSuccess && !toast.isActive("successToast")) {
+      toast({
+        title: "User Updated",
+        description: "User updated successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
       navigate("/dash/users");
     }
-  }, [isSubmitting, isSuccess, navigate, isDelSuccess]);
+  }, [isSuccess, isError]);
 
   return (
     <>
@@ -265,58 +256,21 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user }) => {
           </CardBody>
 
           <CardFooter as={Stack}>
-            <Button w={"full"} isLoading={isSubmitting} type="submit">
+            <Button
+              w={"full"}
+              isLoading={isSubmitting}
+              isDisabled={!isDirty || isSubmitting}
+              type="submit"
+            >
               Save Changes
             </Button>
-            <>
-              <Button
-                variant={"ghost"}
-                w={"full"}
-                colorScheme="red"
-                onClick={onOpen}
-              >
-                Delete User
-              </Button>
-              <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>Delete User</ModalHeader>
-                  <ModalCloseButton />
-                  <ModalBody>
-                    <Text>
-                      {" "}
-                      A you sure on deleting user{" "}
-                      <Text
-                        as={"span"}
-                        color={"red"}
-                        fontWeight={"bold"}
-                        fontSize={"lg"}
-                      >
-                        {user.fname} {user.lname}
-                      </Text>
-                      ? This action cannot be undone.
-                    </Text>
-                  </ModalBody>
-
-                  <ModalFooter>
-                    <Button
-                      variant="ghost"
-                      colorScheme="blackAlpha"
-                      onClick={onClose}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      colorScheme="red"
-                      onClick={onDelete}
-                      isLoading={delButtonState}
-                    >
-                      Delete
-                    </Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
-            </>
+            <DeleteUser
+              user={{
+                id: user.id,
+                fname: user.fname,
+                lname: user.lname,
+              }}
+            />
           </CardFooter>
         </Card>
       </form>

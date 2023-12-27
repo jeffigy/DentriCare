@@ -35,7 +35,13 @@ const UsersList: React.FC<UsersListProps> = () => {
         <thead className="table__thead">
           <tr>
             <th scope="col" className="table__th user__username">
-              Username
+              First Name
+            </th>
+            <th scope="col" className="table__th user__username">
+              Last Name
+            </th>
+            <th scope="col" className="table__th user__username">
+              Email
             </th>
             <th scope="col" className="table__th user__roles">
               Roles

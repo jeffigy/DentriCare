@@ -4,6 +4,6 @@ export type PatientFormValues = {
   lname: string;
   bday: number | Date;
   address: string;
-  phone: number;
+  phone: string;
   createdBy: string;
 };

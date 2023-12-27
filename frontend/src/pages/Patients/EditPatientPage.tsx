@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Spinner } from "@chakra-ui/react";
 import { useAppSelector } from "app/hooks";
 import EditPatientForm from "features/patients/EditPatientForm";
 import { selectPatientById } from "features/patients/patientsApiSlice";
@@ -13,7 +13,7 @@ const EditPatientPage: React.FC<EditPatientPageProps> = () => {
   const patient = useAppSelector((state) => selectPatientById(state, id || ""));
   return (
     <Flex w={"full"} justify={"center"}>
-      <EditPatientForm patient={patient as Patient} />
+      {patient ? <EditPatientForm patient={patient as Patient} /> : <Spinner />}
     </Flex>
   );
 };
