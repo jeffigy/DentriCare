@@ -6,6 +6,8 @@ import { usersApiSlice } from "features/users/usersApiSlice";
 
 const Prefetch = () => {
   useEffect(() => {
+    console.log("subscribing");
+
     const patients = store.dispatch(
       patientsApiSlice.endpoints.getPatients.initiate(undefined)
     );

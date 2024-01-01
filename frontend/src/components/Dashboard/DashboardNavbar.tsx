@@ -1,7 +1,43 @@
-import { Button, Flex, HStack } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Button, Flex, HStack, Icon, useToast } from "@chakra-ui/react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { MdLogout } from "react-icons/md";
+import { useSendLogoutMutation } from "features/auth/authApiSlice";
+import { useEffect } from "react";
+
+type errorType = {
+  status: number;
+  data: {
+    message: string;
+  };
+};
 
 const DashboardNavbar = () => {
+  const navigate = useNavigate();
+  const toast = useToast();
+  const [sendLogout, { isLoading, isSuccess, isError, error }] =
+    useSendLogoutMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast({
+        title: "Success",
+        description: "Logout successful",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate("/");
+    }
+    if (isError) {
+      toast({
+        title: "Error",
+        description: (error as errorType).data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [isSuccess, navigate]);
   return (
     <Flex
       bgColor={"gray.50"}
@@ -33,6 +69,12 @@ const DashboardNavbar = () => {
         </Button>
         <Button variant={"ghost"} as={Link} to={"/dash/users"}>
           Users
+        </Button>
+        <Button
+          onClick={sendLogout}
+          rightIcon={<Icon as={MdLogout} isLoading={isLoading} />}
+        >
+          {isLoading ? "logging Out..." : "Logout"}
         </Button>
       </HStack>
     </Flex>
