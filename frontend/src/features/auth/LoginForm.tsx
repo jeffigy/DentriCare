@@ -4,6 +4,7 @@ import {
   Card,
   CardBody,
   CardFooter,
+  Checkbox,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -11,19 +12,19 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Spinner,
   Stack,
   useToast,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch } from "app/hooks";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Resolver, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { LoginFormValues } from "types/loginFormValues";
 import { loginValidation } from "validations/loginValidation";
 import { useLoginMutation } from "./authApiSlice";
 import { setCredentials } from "./authSlice";
+import usePersist from "hooks/usePersist";
 
 const Login = () => {
   const toast = useToast();
@@ -31,6 +32,7 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const [showPwd, setShowPwd] = useState(false);
   const [errMsg, setErrMsg] = useState("");
+  const [persist, setPersist] = usePersist();
   const [login, { isLoading }] = useLoginMutation();
 
   const form = useForm<LoginFormValues>({
@@ -51,17 +53,18 @@ const Login = () => {
       dispatch(setCredentials({ accessToken }));
       navigate("/dash");
     } catch (error: any) {
+      let errorMessage = "Something went wrong";
       if (!error.status) {
-        setErrMsg("Network Error");
+        errorMessage = "Network Error";
       } else if (error.status === 401) {
-        setErrMsg("Unauthorized");
+        errorMessage = "Unauthorized";
       } else {
-        setErrMsg(error.data.message);
+        errorMessage = error.data.message;
       }
 
       toast({
         title: "Login Failed",
-        description: errMsg || "Something went wrong",
+        description: errorMessage,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -120,6 +123,12 @@ const Login = () => {
                 </FormHelperText>
               )}
             </FormControl>
+            <Checkbox
+              isChecked={persist}
+              onChange={(e) => setPersist(e.target.checked)}
+            >
+              Keep me signed in
+            </Checkbox>
           </Stack>
         </CardBody>
         <CardFooter>

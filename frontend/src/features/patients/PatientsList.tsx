@@ -8,7 +8,7 @@ const PatientsList = () => {
     isSuccess,
     isError,
     error,
-  } = useGetPatientsQuery(undefined, {
+  } = useGetPatientsQuery("patientslist", {
     pollingInterval: 6000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,

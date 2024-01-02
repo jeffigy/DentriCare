@@ -1,5 +1,6 @@
 import DashboardLayout from "components/Dashboard/DashboardLayout";
 import RootLayout from "components/RootLayout";
+import PersistLogin from "features/auth/PersistLogin";
 import Prefetch from "features/auth/Prefetch";
 import HomePage from "pages/HomePage";
 import LandingPage from "pages/LandingPage";
@@ -18,24 +19,26 @@ const App = () => {
       <Route path="/" element={<RootLayout />}>
         <Route index element={<HomePage />} />
         <Route path="login" element={<LoginPage />} />
-        <Route element={<Prefetch />}>
-          {/* start of dashboard route */}
-          <Route path="dash" element={<DashboardLayout />}>
-            <Route index element={<LandingPage />} />
-            {/* users route */}
-            <Route path="users">
-              <Route index element={<UsersPage />} />
-              <Route path="new" element={<NewUserPage />} />
-              <Route path=":id" element={<EditUserPage />} />
+        <Route element={<PersistLogin />}>
+          <Route element={<Prefetch />}>
+            {/* start of dashboard route */}
+            <Route path="dash" element={<DashboardLayout />}>
+              <Route index element={<LandingPage />} />
+              {/* users route */}
+              <Route path="users">
+                <Route index element={<UsersPage />} />
+                <Route path="new" element={<NewUserPage />} />
+                <Route path=":id" element={<EditUserPage />} />
+              </Route>
+              {/* patients route */}
+              <Route path="patients">
+                <Route index element={<PatientsPage />} />
+                <Route path="new" element={<NewPatientPage />} />
+                <Route path=":id" element={<EditPatientPage />} />
+              </Route>
             </Route>
-            {/* patients route */}
-            <Route path="patients">
-              <Route index element={<PatientsPage />} />
-              <Route path="new" element={<NewPatientPage />} />
-              <Route path=":id" element={<EditPatientPage />} />
-            </Route>
+            {/* end of dashboard route */}
           </Route>
-          {/* end of dashboard route */}
         </Route>
       </Route>
     </Routes>

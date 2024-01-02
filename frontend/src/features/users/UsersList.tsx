@@ -10,7 +10,7 @@ const UsersList: React.FC<UsersListProps> = () => {
     isSuccess,
     isError,
     error,
-  } = useGetUsersQuery(undefined, {
+  } = useGetUsersQuery("userslist", {
     pollingInterval: 6000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
