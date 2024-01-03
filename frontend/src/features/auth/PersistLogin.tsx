@@ -5,6 +5,10 @@ import usePersist from "hooks/usePersist";
 import { useAppSelector } from "app/hooks";
 import { selectCurrentToken } from "./authSlice";
 
+type ErrorType = {
+  status: number;
+  data: { message: string };
+};
 const PersistLogin = () => {
   const [persist] = usePersist();
   const token = useAppSelector(selectCurrentToken);
@@ -52,7 +56,7 @@ const PersistLogin = () => {
     console.log("error");
     content = (
       <p className="errmsg">
-        {error?.toString()} //TODO: fix this later on
+        {`${(error as ErrorType)?.data?.message} - `}
         <Link to="/login">Please login again</Link>.
       </p>
     );

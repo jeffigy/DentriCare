@@ -1,8 +1,23 @@
-import { Button, Flex, HStack, Icon, useToast } from "@chakra-ui/react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Avatar,
+  Button,
+  Center,
+  Flex,
+  HStack,
+  Icon,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
+import { Link, useNavigate } from "react-router-dom";
 import { MdLogout } from "react-icons/md";
 import { useSendLogoutMutation } from "features/auth/authApiSlice";
 import { useEffect } from "react";
+import useAuth from "hooks/useAuth";
 
 type errorType = {
   status: number;
@@ -12,6 +27,7 @@ type errorType = {
 };
 
 const DashboardNavbar = () => {
+  const { email, status, isAdmin, isSuperAdmin } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
   const [sendLogout, { isLoading, isSuccess, isError, error }] =
@@ -67,16 +83,33 @@ const DashboardNavbar = () => {
         <Button variant={"ghost"} as={Link} to={"/dash/patients"}>
           Patients
         </Button>
-        <Button variant={"ghost"} as={Link} to={"/dash/users"}>
-          Users
-        </Button>
-        <Button
-          onClick={sendLogout}
-          rightIcon={<Icon as={MdLogout} isLoading={isLoading} />}
-        >
-          {isLoading ? "logging Out..." : "Logout"}
-        </Button>
+        {isAdmin || isSuperAdmin ? (
+          <Button variant={"ghost"} as={Link} to={"/dash/users"}>
+            Users
+          </Button>
+        ) : null}
       </HStack>
+      <Menu>
+        <MenuButton as={Avatar} size={"sm"}></MenuButton>
+        <MenuList alignItems={"center"}>
+          <Center as={Flex} direction={"column"}>
+            <Avatar mb={"10px"} />
+            <Text fontWeight={"bold"} lineHeight={0.9}>
+              {email}
+            </Text>
+            <Text color={"gray.500"}>{status}</Text>
+          </Center>
+
+          <MenuDivider />
+          <MenuItem
+            as={Button}
+            onClick={sendLogout}
+            rightIcon={<Icon as={MdLogout} isLoading={isLoading} />}
+          >
+            {isLoading ? "logging Out..." : "Logout"}
+          </MenuItem>
+        </MenuList>
+      </Menu>
     </Flex>
   );
 };
