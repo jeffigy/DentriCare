@@ -1,10 +1,9 @@
 import { Flex } from "@chakra-ui/react";
 import NewUserForm from "features/users/NewUserForm";
-import React from "react";
+import useTitle from "hooks/useTitle";
 
-type NewUserPageProps = {};
-
-const NewUserPage: React.FC<NewUserPageProps> = () => {
+const NewUserPage = () => {
+  useTitle("New User");
   return (
     <Flex w={"full"} justify={"center"}>
       <NewUserForm />

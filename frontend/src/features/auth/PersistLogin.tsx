@@ -4,11 +4,9 @@ import { useRefreshMutation } from "./authApiSlice";
 import usePersist from "hooks/usePersist";
 import { useAppSelector } from "app/hooks";
 import { selectCurrentToken } from "./authSlice";
+import { ErrorType } from "types/ErrorType";
+import { Spinner } from "@chakra-ui/react";
 
-type ErrorType = {
-  status: number;
-  data: { message: string };
-};
 const PersistLogin = () => {
   const [persist] = usePersist();
   const token = useAppSelector(selectCurrentToken);
@@ -50,7 +48,7 @@ const PersistLogin = () => {
   } else if (isLoading) {
     //persist: yes, token: no
     console.log("loading");
-    content = <p>Loading...</p>;
+    content = <Spinner />;
   } else if (isError) {
     //persist: yes, token: no
     console.log("error");

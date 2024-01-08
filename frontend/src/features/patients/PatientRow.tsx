@@ -1,6 +1,5 @@
-import { useAppSelector } from "app/hooks";
 import React from "react";
-import { selectPatientById } from "./patientsApiSlice";
+import { useGetPatientsQuery } from "./patientsApiSlice";
 import { useNavigate } from "react-router-dom";
 import { Patient } from "types/Patient";
 
@@ -9,9 +8,12 @@ type PatientRowProps = {
 };
 
 const PatientRow: React.FC<PatientRowProps> = ({ patientId }) => {
-  const patient = useAppSelector((state) =>
-    selectPatientById(state, patientId)
-  ) as Patient;
+  console.log("PatientRow", patientId);
+  const { patient } = useGetPatientsQuery("patientsList", {
+    selectFromResult: ({ data }) => ({
+      patient: data?.entities[patientId as string] as Patient,
+    }),
+  });
 
   const navigate = useNavigate();
 
@@ -29,7 +31,7 @@ const PatientRow: React.FC<PatientRowProps> = ({ patientId }) => {
         </td>
       </tr>
     );
-  }
-  return null;
+  } else return null;
 };
-export default PatientRow;
+const PatientRowMemo = React.memo(PatientRow);
+export default PatientRowMemo;

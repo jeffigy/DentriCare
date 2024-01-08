@@ -8,8 +8,11 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import bg from "assets/HomePageBg.jpg";
+import useTitle from "hooks/useTitle";
 import { Link } from "react-router-dom";
+
 const HomePage = () => {
+  useTitle("DentriCare");
   return (
     <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
       <Flex p={8} flex={1} align={"center"} justify={"center"}>
@@ -42,15 +45,6 @@ const HomePage = () => {
             <Button as={Link} to={"/login"} rounded={"full"} colorScheme="blue">
               {" "}
               Log in
-            </Button>
-            <Button
-              as={Link}
-              to={"/signup"}
-              rounded={"full"}
-              variant={"ghost"}
-              colorScheme="blue"
-            >
-              Sign up
             </Button>
           </Stack>
         </Stack>

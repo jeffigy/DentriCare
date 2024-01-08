@@ -2,8 +2,10 @@ import { Flex, Icon, IconButton } from "@chakra-ui/react";
 import UsersList from "features/users/UsersList";
 import { Link } from "react-router-dom";
 import { GrUserAdmin } from "react-icons/gr";
+import useTitle from "hooks/useTitle";
 
 const UsersPage = () => {
+  useTitle("Users");
   return (
     <Flex justify={"center"} align={"center"}>
       <IconButton

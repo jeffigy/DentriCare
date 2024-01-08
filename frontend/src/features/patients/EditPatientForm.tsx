@@ -23,6 +23,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Controller, Resolver, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import "style.css";
+import { ErrorType } from "types/ErrorType";
 import { Patient } from "types/Patient";
 import { PatientFormValues } from "types/PatientFormValues";
 import { newPatientValidation } from "validations/patientValidation";
@@ -31,12 +32,6 @@ import { useUpdatePatientMutation } from "./patientsApiSlice";
 
 type EditPatientFormProps = {
   patient: Patient;
-};
-
-type errorType = {
-  data: {
-    message: string;
-  };
 };
 
 const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
@@ -78,7 +73,7 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
       toast({
         title: "Error",
         description: `${
-          (error as errorType)?.data?.message ?? "An error occurred"
+          (error as ErrorType)?.data?.message ?? "An error occurred"
         }`,
         status: "error",
         duration: 5000,
@@ -92,7 +87,7 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
       toast({
         id: "errorToast",
         title: "Error",
-        description: (error as errorType)?.data.message,
+        description: (error as ErrorType)?.data.message,
         status: "error",
         duration: 5000,
         isClosable: true,

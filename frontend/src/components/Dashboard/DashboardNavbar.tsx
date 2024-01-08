@@ -18,13 +18,7 @@ import { MdLogout } from "react-icons/md";
 import { useSendLogoutMutation } from "features/auth/authApiSlice";
 import { useEffect } from "react";
 import useAuth from "hooks/useAuth";
-
-type errorType = {
-  status: number;
-  data: {
-    message: string;
-  };
-};
+import { ErrorType } from "types/ErrorType";
 
 const DashboardNavbar = () => {
   const { email, status, isAdmin, isSuperAdmin } = useAuth();
@@ -47,7 +41,7 @@ const DashboardNavbar = () => {
     if (isError) {
       toast({
         title: "Error",
-        description: (error as errorType).data.message,
+        description: (error as ErrorType).data.message,
         status: "error",
         duration: 5000,
         isClosable: true,

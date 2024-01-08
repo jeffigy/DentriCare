@@ -31,15 +31,10 @@ import { UserFormValues } from "types/UserFormValues";
 import { editUserValidation } from "validations/userValidation";
 import { useUpdateUserMutation } from "./usersApiSlice";
 import DeleteUser from "./DeleteUser";
+import { ErrorType } from "types/ErrorType";
 
 type EditUserFormProps = {
   user: User;
-};
-
-type errorType = {
-  data: {
-    message: string;
-  };
 };
 
 const EditUserForm: React.FC<EditUserFormProps> = ({ user }) => {
@@ -64,7 +59,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user }) => {
     },
     resolver: yupResolver(editUserValidation) as Resolver<UserFormValues>,
   });
-  const { register, control, handleSubmit, formState, reset } = form;
+  const { register, control, handleSubmit, formState } = form;
   const { errors, isSubmitting, dirtyFields, isDirty } = formState;
 
   const onSubmit = async (data: UserFormValues) => {
@@ -87,7 +82,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user }) => {
       toast({
         title: "Error",
         description: `${
-          (error as errorType)?.data?.message ?? "An error occurred"
+          (error as ErrorType)?.data?.message ?? "An error occurred"
         }`,
         status: "error",
         duration: 5000,
@@ -101,7 +96,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user }) => {
       toast({
         id: "errorToast",
         title: "Error",
-        description: `${(error as errorType)?.data.message}`,
+        description: `${(error as ErrorType)?.data.message}`,
         status: "error",
         duration: 5000,
         isClosable: true,

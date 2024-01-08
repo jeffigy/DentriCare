@@ -27,12 +27,6 @@ import { newPatientValidation } from "validations/patientValidation";
 import { useAddNewPatientMutation } from "./patientsApiSlice";
 import "style.css";
 
-type errorType = {
-  data: {
-    message: string;
-  };
-};
-
 const NewPatientForm = () => {
   const toast = useToast();
   const [addNewPatient, { isSuccess, isError, error }] =

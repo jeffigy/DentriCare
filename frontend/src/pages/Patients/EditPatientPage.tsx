@@ -1,19 +1,45 @@
-import { Flex, Spinner } from "@chakra-ui/react";
-import { useAppSelector } from "app/hooks";
+import { Alert, AlertIcon, Flex, Spinner } from "@chakra-ui/react";
 import EditPatientForm from "features/patients/EditPatientForm";
-import { selectPatientById } from "features/patients/patientsApiSlice";
-import React from "react";
+import { useGetPatientsQuery } from "features/patients/patientsApiSlice";
+import useAuth from "hooks/useAuth";
+import useTitle from "hooks/useTitle";
 import { useParams } from "react-router-dom";
 import { Patient } from "types/Patient";
 
-type EditPatientPageProps = {};
+const EditPatientPage = () => {
+  useTitle("Edit Patient");
 
-const EditPatientPage: React.FC<EditPatientPageProps> = () => {
   const { id } = useParams<{ id: string }>();
-  const patient = useAppSelector((state) => selectPatientById(state, id || ""));
+
+  const { isAdmin, isSuperAdmin } = useAuth();
+
+  const { patient } = useGetPatientsQuery("patientsList", {
+    selectFromResult: ({ data }) => ({
+      patient: data?.entities[id as string] as Patient,
+    }),
+  });
+
+  if (!patient)
+    return (
+      <Flex w={"full"} justify={"center"}>
+        <Spinner />;
+      </Flex>
+    );
+
+  if (!isAdmin && !isSuperAdmin) {
+    <Flex w={"full"} justify={"center"}>
+      <Alert status="error">
+        {" "}
+        <AlertIcon />
+        You are not authorized to view this page.
+      </Alert>
+      ;
+    </Flex>;
+  }
+
   return (
     <Flex w={"full"} justify={"center"}>
-      {patient ? <EditPatientForm patient={patient as Patient} /> : <Spinner />}
+      <EditPatientForm patient={patient as Patient} />
     </Flex>
   );
 };

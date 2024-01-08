@@ -1,6 +1,7 @@
 import React from "react";
 import { useGetUsersQuery } from "./usersApiSlice";
 import UserRow from "./UserRow";
+import { Spinner } from "@chakra-ui/react";
 type UsersListProps = {};
 
 const UsersList: React.FC<UsersListProps> = () => {
@@ -17,7 +18,7 @@ const UsersList: React.FC<UsersListProps> = () => {
   }); //! observe if the 'undefined' is a problem
   let content;
 
-  if (isLoading) content = <p>Loading...</p>;
+  if (isLoading) content = <Spinner />;
 
   if (isError) {
     content = <p>{error.toString()}</p>;

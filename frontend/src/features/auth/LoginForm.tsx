@@ -12,6 +12,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Spinner,
   Stack,
   useToast,
 } from "@chakra-ui/react";
@@ -31,7 +32,6 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [showPwd, setShowPwd] = useState(false);
-  const [errMsg, setErrMsg] = useState("");
   const [persist, setPersist] = usePersist();
   const [login, { isLoading }] = useLoginMutation();
 
@@ -71,6 +71,8 @@ const Login = () => {
       });
     }
   };
+
+  if (isLoading) return <Spinner />;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

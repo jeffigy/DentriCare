@@ -6,10 +6,12 @@ import {
   MenuItem,
   Box,
 } from "@chakra-ui/react";
+import useTitle from "hooks/useTitle";
 import { useState } from "react";
 import { CiSquarePlus } from "react-icons/ci";
 
 const LandingPage = () => {
+  useTitle("Dashboard");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleToggleMenu = () => {

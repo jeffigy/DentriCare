@@ -1,8 +1,7 @@
 const Patient = require("../models/Patient");
-const asyncHandler = require("express-async-handler");
 
 //* get all patients
-const getAllPatients = asyncHandler(async (req, res) => {
+const getAllPatients = async (req, res) => {
   const patients = await Patient.find().lean();
 
   if (!patients?.length) {
@@ -10,10 +9,10 @@ const getAllPatients = asyncHandler(async (req, res) => {
   }
 
   res.json(patients);
-});
+};
 
 //* create new patient
-const createNewPatient = asyncHandler(async (req, res) => {
+const createNewPatient = async (req, res) => {
   const { createdBy, fname, mname, lname, bday, address, phone } = req.body;
 
   if (
@@ -29,6 +28,10 @@ const createNewPatient = asyncHandler(async (req, res) => {
   }
 
   const duplicate = await Patient.findOne({ fname, mname, lname })
+    .collation({
+      locale: "en",
+      strength: 2,
+    })
     .lean()
     .exec();
 
@@ -52,10 +55,10 @@ const createNewPatient = asyncHandler(async (req, res) => {
   } else {
     return res.status(400).json({ message: "Invalid patient data received" });
   }
-});
+};
 
 //* update patient
-const updatePatient = asyncHandler(async (req, res) => {
+const updatePatient = async (req, res) => {
   const { id, createdBy, fname, mname, lname, bday, address, phone } = req.body;
 
   if (
@@ -79,6 +82,10 @@ const updatePatient = asyncHandler(async (req, res) => {
   }
 
   const duplicate = await Patient.findOne({ fname, mname, lname })
+    .collation({
+      locale: "en",
+      strength: 2,
+    })
     .lean()
     .exec();
 
@@ -98,10 +105,10 @@ const updatePatient = asyncHandler(async (req, res) => {
   res.json(
     `Patient ${updatedPatient.fname} ${updatedPatient.mname} ${updatedPatient.lname} was updated`
   );
-});
+};
 
 //* delete patient
-const deletePatient = asyncHandler(async (req, res) => {
+const deletePatient = async (req, res) => {
   const { id } = req.body;
 
   if (!id) {
@@ -117,7 +124,7 @@ const deletePatient = asyncHandler(async (req, res) => {
   const result = await patient.deleteOne();
   const reply = `Patient ${result.fname} ${result.mname} ${result.lname} has been deleted`;
   res.json(reply);
-});
+};
 
 module.exports = {
   getAllPatients,

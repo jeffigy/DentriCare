@@ -1,15 +1,19 @@
 import { useNavigate } from "react-router-dom";
-
-import { selectUserById } from "./usersApiSlice";
-import { useAppSelector } from "app/hooks";
+import { useGetUsersQuery } from "./usersApiSlice";
 import { User } from "types/User";
+import { memo } from "react";
+
 type UserRowProps = {
   userId: string;
 };
 
 const UserRow = ({ userId }: UserRowProps) => {
   console.log("userId", userId);
-  const user = useAppSelector((state) => selectUserById(state, userId)) as User;
+  const { user } = useGetUsersQuery("usersList", {
+    selectFromResult: ({ data }) => ({
+      user: data?.entities[userId as string] as User,
+    }),
+  });
   console.log("user", user);
 
   const navigate = useNavigate();
@@ -36,4 +40,5 @@ const UserRow = ({ userId }: UserRowProps) => {
     );
   } else return null;
 };
-export default UserRow;
+const UserRowMemo = memo(UserRow);
+export default UserRowMemo;

@@ -6,19 +6,14 @@ import { usersApiSlice } from "features/users/usersApiSlice";
 
 const Prefetch = () => {
   useEffect(() => {
-    console.log("subscribing");
-
-    const patients = store.dispatch(
-      patientsApiSlice.endpoints.getPatients.initiate(undefined)
+    store.dispatch(
+      usersApiSlice.util.prefetch("getUsers", "usersList", { force: true })
     );
-    const users = store.dispatch(
-      usersApiSlice.endpoints.getUsers.initiate(undefined)
+    store.dispatch(
+      patientsApiSlice.util.prefetch("getPatients", "patientsList", {
+        force: true,
+      })
     );
-    return () => {
-      console.log("unsubscribing");
-      patients.unsubscribe();
-      users.unsubscribe();
-    };
   }, []);
   return <Outlet />;
 };

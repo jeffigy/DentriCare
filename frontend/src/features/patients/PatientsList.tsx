@@ -1,5 +1,6 @@
 import { useGetPatientsQuery } from "./patientsApiSlice";
 import PatientRow from "./PatientRow";
+import { Spinner } from "@chakra-ui/react";
 
 const PatientsList = () => {
   const {
@@ -15,7 +16,7 @@ const PatientsList = () => {
   });
 
   let content;
-  if (isLoading) content = <p>Loading...</p>;
+  if (isLoading) content = <Spinner />;
   if (isError) content = <p>{error.toString()}</p>;
   if (isSuccess) {
     const { ids } = patients;

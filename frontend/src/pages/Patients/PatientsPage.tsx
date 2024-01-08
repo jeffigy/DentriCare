@@ -2,7 +2,10 @@ import { Flex, Icon, IconButton } from "@chakra-ui/react";
 import PatientsList from "features/patients/PatientsList";
 import { Link } from "react-router-dom";
 import { FiUserPlus } from "react-icons/fi";
+import useTitle from "hooks/useTitle";
+
 const PatientsPage = () => {
+  useTitle("Patients");
   return (
     <Flex justify={"center"} align={"center"} w={"full"}>
       <IconButton
