@@ -5,6 +5,6 @@ export const ButtonTheme: ComponentStyleConfig = {
     borderRadius: "0",
   },
   defaultProps: {
-    colorScheme: "blue",
+    colorScheme: "primary",
   },
 };

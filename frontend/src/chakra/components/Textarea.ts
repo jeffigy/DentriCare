@@ -1,7 +1,7 @@
 import { defineStyle, defineStyleConfig } from "@chakra-ui/react";
 
 const defaultProps = {
-  colorScheme: "blue",
+  colorScheme: "primary",
 };
 
 const baseStyle = defineStyle({

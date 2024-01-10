@@ -1,5 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
-const DashboardFooter = () => {
+const Footer = () => {
   return (
     <Flex
       bgColor={"white"}
@@ -12,4 +12,4 @@ const DashboardFooter = () => {
     </Flex>
   );
 };
-export default DashboardFooter;
+export default Footer;

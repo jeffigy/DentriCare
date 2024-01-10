@@ -11,7 +11,7 @@ const baseStyle = definePartsStyle({
 });
 
 const defaultProps = {
-  colorScheme: "blue",
+  colorScheme: "primary",
 };
 
 export const InputTheme = defineMultiStyleConfig({ baseStyle, defaultProps });

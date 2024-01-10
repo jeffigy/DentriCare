@@ -7,7 +7,37 @@ import { SpinnerTheme } from "./components/Spinner";
 import { ModalTheme } from "./components/Modal";
 import { TextareaTheme } from "./components/Textarea";
 
+const primary = {
+  50: "#e5edff",
+  100: "#bccaf9",
+  200: "#92a6ef",
+  300: "#6683e5",
+  400: "#3c5fdd",
+  500: "#2246c3",
+  600: "#193699",
+  700: "#10276e",
+  800: "#061745",
+  900: "#00081d",
+};
+
+const secondary = {
+  50: "#d9fdff",
+  100: "#adf0ff",
+  200: "#7fe6fc",
+  300: "#4fdaf8",
+  400: "#23cff5",
+  500: "#0ab6dc",
+  600: "#008dac",
+  700: "#00657c",
+  800: "#003e4c",
+  900: "#00161d",
+};
+
 export const theme = extendTheme({
+  colors: {
+    primary,
+    secondary,
+  },
   components: {
     Button: ButtonTheme,
     FormLabel: FormLabelTheme,
