@@ -4,14 +4,23 @@ import {
   DrawerContent,
   Flex,
   useDisclosure,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import SideBar from "./SideBar/SideBar";
+import { useEffect } from "react";
 
 const Layout = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLargerThanMD] = useMediaQuery("(min-width: 48em)");
+
+  useEffect(() => {
+    if (isLargerThanMD && isOpen) {
+      onClose();
+    }
+  }, [isLargerThanMD, isOpen, onClose]);
   return (
     <Box minH={"100vh"} w="full">
       <SideBar
@@ -19,7 +28,7 @@ const Layout = () => {
         display={{ base: "none", md: "block" }}
       />
       <Drawer
-        isOpen={isOpen}
+        isOpen={isOpen && !isLargerThanMD}
         placement="left"
         onClose={onClose}
         returnFocusOnClose={false}

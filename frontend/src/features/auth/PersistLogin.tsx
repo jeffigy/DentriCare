@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useRefreshMutation } from "./authApiSlice";
 import usePersist from "hooks/usePersist";
 import { useAppSelector } from "app/hooks";
 import { selectCurrentToken } from "./authSlice";
 import { ErrorType } from "types/ErrorType";
-import { Spinner } from "@chakra-ui/react";
+import { Flex, Spinner, useToast } from "@chakra-ui/react";
 
 const PersistLogin = () => {
+  const toast = useToast();
   const [persist] = usePersist();
   const token = useAppSelector(selectCurrentToken);
   const effectRan = useRef(false);
@@ -19,56 +20,53 @@ const PersistLogin = () => {
 
   useEffect(() => {
     if (effectRan.current === true || process.env.NODE_ENV !== "development") {
-      // React 18 Strict Mode
       const verifyRefreshToken = async () => {
-        console.log("verifying refresh token");
         try {
-          //const response =
-          await refresh(undefined); //! observe if this is correct
-          //const { accessToken } = response.data
+          await refresh({});
           setTrueSuccess(true);
         } catch (err) {
           console.error(err);
         }
       };
-
       if (!token && persist) verifyRefreshToken();
     }
-    //! observe if the below is correct
     return () => {
       effectRan.current = true;
     };
   }, []);
 
-  let content;
+  useEffect(() => {
+    if (isError) {
+      toast({
+        title: "Error",
+        description: `${
+          (error as ErrorType)?.data?.message
+        } - Please login again`,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [isError]);
+
   if (!persist) {
-    // persist: no
-    console.log("no persist");
-    content = <Outlet />;
-  } else if (isLoading) {
-    //persist: yes, token: no
-    console.log("loading");
-    content = <Spinner />;
-  } else if (isError) {
-    //persist: yes, token: no
-    console.log("error");
-    content = (
-      <p className="errmsg">
-        {`${(error as ErrorType)?.data?.message} - `}
-        <Link to="/login">Please login again</Link>.
-      </p>
-    );
-  } else if (isSuccess && trueSuccess) {
-    //persist: yes, token: yes
-    console.log("success");
-    content = <Outlet />;
-  } else if (token && isUninitialized) {
-    //persist: yes, token: yes
-    console.log("token and uninit");
-    console.log(isUninitialized);
-    content = <Outlet />;
+    return <Outlet />;
   }
 
-  return content;
+  if (isLoading) {
+    return (
+      <Flex justify={"center"} align={"center"} w={"full"} h={"100vh"}>
+        <Spinner />
+      </Flex>
+    );
+  }
+
+  if (isSuccess && trueSuccess) {
+    return <Outlet />;
+  }
+
+  if (token && isUninitialized) {
+    return <Outlet />;
+  }
 };
 export default PersistLogin;

@@ -2,7 +2,7 @@ import { Flex, Text } from "@chakra-ui/react";
 const Footer = () => {
   return (
     <Flex
-      bgColor={"white"}
+      bgColor={"bg"}
       h={"56px"}
       align={"center"}
       justify={"center"}

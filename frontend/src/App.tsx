@@ -12,7 +12,7 @@ import LoginPage from "pages/LoginPage";
 import EditPatientPage from "pages/Patients/EditPatientPage";
 import NewPatientPage from "pages/Patients/NewPatientPage";
 import PatientsPage from "pages/Patients/PatientsPage";
-import TreatmentsPage from "pages/Treatments/TreatmentsPage";
+import ProceduresPage from "pages/Procedures/ProceduresPage";
 import EditUserPage from "pages/Users/EditUserPage";
 import NewUserPage from "pages/Users/NewUserPage";
 import UsersPage from "pages/Users/UsersPage";
@@ -25,10 +25,11 @@ const App = () => {
         {/* Public Routes */}
         <Route index element={<HomePage />} />
         <Route path="login" element={<LoginPage />} />
-        <Route
-          element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}
-        >
-          <Route element={<PersistLogin />}>
+        {/* Protected Routes */}
+        <Route element={<PersistLogin />}>
+          <Route
+            element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}
+          >
             <Route element={<Prefetch />}>
               {/* start of dashboard route */}
               <Route path="dash" element={<Layout />}>
@@ -59,7 +60,7 @@ const App = () => {
                 </Route>
                 {/* treatments route */}
                 <Route path="treatments">
-                  <Route index element={<TreatmentsPage />} />
+                  <Route index element={<ProceduresPage />} />
                 </Route>
                 {/* finances */}
                 <Route path="finances">

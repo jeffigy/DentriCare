@@ -33,10 +33,21 @@ const secondary = {
   900: "#00161d",
 };
 
+const bg = "#f2f5fd";
+
 export const theme = extendTheme({
+  styles: {
+    // set global body color to #f2f5fd
+    global: {
+      body: {
+        bg: bg,
+      },
+    },
+  },
   colors: {
     primary,
     secondary,
+    bg,
   },
   components: {
     Button: ButtonTheme,

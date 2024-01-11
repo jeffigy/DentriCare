@@ -5,10 +5,21 @@ import {
   MenuItem,
   Flex,
   MenuList,
+  Avatar,
+  Text,
+  useToast,
+  Button,
+  Icon,
 } from "@chakra-ui/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AddIcon, ArrowBackIcon } from "@chakra-ui/icons";
 import { FiMenu } from "react-icons/fi";
+import { useSendLogoutMutation } from "features/auth/authApiSlice";
+import useAuth from "hooks/useAuth";
+import { ErrorType } from "types/ErrorType";
+import { useEffect } from "react";
+import { LuLogOut } from "react-icons/lu";
+
 type NavbarProps = {
   onOpen?: () => void;
 };
@@ -17,6 +28,10 @@ const Navbar: React.FC<NavbarProps> = ({ onOpen }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
+  const [sendLogout, { isLoading, isSuccess, isError, error }] =
+    useSendLogoutMutation();
+  const toast = useToast();
+  const { email, status } = useAuth();
 
   const rootRoutes = [
     "/dash",
@@ -27,9 +42,31 @@ const Navbar: React.FC<NavbarProps> = ({ onOpen }) => {
     "/dash/finances",
   ];
 
+  useEffect(() => {
+    if (isSuccess) {
+      toast({
+        title: "Success",
+        description: "Logout successful",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate("/", { replace: true });
+    }
+    if (isError) {
+      toast({
+        title: "Error",
+        description: (error as ErrorType).data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [isSuccess, navigate]);
+
   return (
     <Flex
-      bgColor={"white"}
+      bgColor={"bg"}
       h={"56px"}
       justify={"space-between"}
       align={"center"}
@@ -37,9 +74,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpen }) => {
     >
       <IconButton
         display={{
-          base:
-            // if currentPath is not in rootRoutes, then display back button
-            !rootRoutes.includes(currentPath) ? "flex" : "none",
+          base: !rootRoutes.includes(currentPath) ? "flex" : "none",
           md: "none",
         }}
         icon={<ArrowBackIcon boxSize={6} />}
@@ -78,18 +113,25 @@ const Navbar: React.FC<NavbarProps> = ({ onOpen }) => {
       </Link>
       <Menu>
         <MenuButton>
-          <IconButton
-            aria-label="add-icon"
-            icon={<AddIcon />}
-            borderRadius={"full"}
-          />
+          <Avatar boxSize={"40px"} />
         </MenuButton>
-        <MenuList alignItems={"center"}>
-          <MenuItem as={Link}>Appointment</MenuItem>
-          <MenuItem as={Link}>Patient</MenuItem>
-          <MenuItem as={Link}>User</MenuItem>
-          <MenuItem as={Link}>Treatment</MenuItem>
-          <MenuItem as={Link}>Payment</MenuItem>
+        <MenuList>
+          <Flex align={"center"} direction={"column"} p={"10px"}>
+            <Avatar mb={"10px"} />
+            <Text fontWeight={"bold"} color={"gray.700"} lineHeight={0.9}>
+              {email}
+            </Text>
+            <Text mb={"10px"} color={"gray.700"}>
+              {status}
+            </Text>
+            <Button
+              w="full"
+              leftIcon={<Icon as={LuLogOut} />}
+              onClick={sendLogout}
+            >
+              {isLoading ? "logging Out..." : "Logout"}
+            </Button>
+          </Flex>
         </MenuList>
       </Menu>
     </Flex>

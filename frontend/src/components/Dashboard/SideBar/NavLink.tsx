@@ -16,8 +16,19 @@ const Navlink: React.FC<NavLinkProps> = ({ name, icon, to, onClose }) => {
     <Flex
       p={"12px"}
       align={"center"}
-      bgColor={isActive ? "gray.100" : ""}
-      _hover={{ bgColor: "gray.300" }}
+      bgColor={isActive ? "bg" : ""}
+      sx={{
+        "&:hover": {
+          backgroundColor: "gray.100",
+          color: "gray.400",
+          ".chakra-icon": {
+            color: "gray.400",
+          },
+          ".chakra-text": {
+            color: "gray.400",
+          },
+        },
+      }}
       as={NavLink}
       mx="4"
       to={to}
@@ -26,10 +37,10 @@ const Navlink: React.FC<NavLinkProps> = ({ name, icon, to, onClose }) => {
       <Icon
         as={icon}
         boxSize={6}
-        color={isActive ? "gray.700" : "gray.200"}
+        color={isActive ? "#2d53da" : "bg"}
         mr={"10px"}
       />
-      <Text fontWeight={600} color={isActive ? "gray.700" : "gray.200"}>
+      <Text fontWeight={600} color={isActive ? "gray.700" : "bg"}>
         {name}
       </Text>
     </Flex>
