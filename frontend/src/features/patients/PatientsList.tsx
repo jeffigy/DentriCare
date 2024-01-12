@@ -1,8 +1,22 @@
 import { useGetPatientsQuery } from "./patientsApiSlice";
 import PatientRow from "./PatientRow";
-import { Spinner } from "@chakra-ui/react";
+import {
+  Card,
+  CardBody,
+  Table,
+  Tbody,
+  Th,
+  Thead,
+  Tr,
+  useToast,
+} from "@chakra-ui/react";
+import DashSpinner from "components/Dashboard/DashSpinner";
+import { useEffect } from "react";
+import { ErrorType } from "types/ErrorType";
 
 const PatientsList = () => {
+  const toast = useToast();
+
   const {
     data: patients,
     isLoading,
@@ -15,35 +29,41 @@ const PatientsList = () => {
     refetchOnMountOrArgChange: true,
   });
 
-  let content;
-  if (isLoading) content = <Spinner />;
-  if (isError) content = <p>{error.toString()}</p>;
-  if (isSuccess) {
-    const { ids } = patients;
-    // console.log("ids", ids);
+  useEffect(() => {
+    if (isError) {
+      toast({
+        title: "Error",
+        description: (error as ErrorType)?.data?.message,
+        status: "error",
+        duration: 6000,
+        isClosable: true,
+      });
+    }
+  }, [isError]);
 
-    const tableContent = ids?.length
-      ? ids.map((patientId) => (
-          <PatientRow key={patientId} patientId={String(patientId)} />
-        ))
-      : null;
-    content = (
-      <table className="table table--users">
-        <thead className="table__thead">
-          <tr>
-            <th scope="col" className="table__th user__edit">
-              Patient Name
-            </th>
-            <th scope="col" className="table__th user__edit">
-              edit
-            </th>
-          </tr>
-        </thead>
-        <tbody>{tableContent}</tbody>
-      </table>
+  if (isLoading) return <DashSpinner />;
+
+  if (isSuccess) {
+    return (
+      <Card>
+        <CardBody>
+          {" "}
+          <Table size={"sm"}>
+            <Thead>
+              <Tr>
+                <Th>Patient Name</Th>
+                <Th>Actions</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {patients?.ids?.map((patientId) => (
+                <PatientRow key={patientId} patientId={String(patientId)} />
+              ))}
+            </Tbody>
+          </Table>
+        </CardBody>
+      </Card>
     );
   }
-
-  return content;
 };
 export default PatientsList;

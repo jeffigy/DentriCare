@@ -9,5 +9,5 @@ export const newPatientValidation = Yup.object({
   bday: Yup.number().required("Birthday is required"),
   phone: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
   address: Yup.string().required("Address is required"),
-  createdBy: Yup.string().required("Required"),
+  createdBy: Yup.string().nullable(),
 });

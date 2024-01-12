@@ -25,13 +25,14 @@ import { useNavigate } from "react-router-dom";
 import { PatientFormValues } from "types/PatientFormValues";
 import { newPatientValidation } from "validations/patientValidation";
 import { useAddNewPatientMutation } from "./patientsApiSlice";
-import "style.css";
+import useAuth from "hooks/useAuth";
 
 const NewPatientForm = () => {
   const toast = useToast();
   const [addNewPatient, { isSuccess, isError, error }] =
     useAddNewPatientMutation();
   const navigate = useNavigate();
+  const { email } = useAuth();
 
   const form = useForm<PatientFormValues>({
     defaultValues: {
@@ -41,7 +42,6 @@ const NewPatientForm = () => {
       bday: undefined,
       address: "",
       phone: "",
-      createdBy: "",
     },
     resolver: yupResolver(newPatientValidation) as Resolver<PatientFormValues>,
   });
@@ -49,7 +49,7 @@ const NewPatientForm = () => {
   const { errors, isDirty, isSubmitting } = formState;
 
   const onSubmit = async (data: PatientFormValues) => {
-    const { fname, mname, lname, bday, address, phone, createdBy } = data;
+    const { fname, mname, lname, bday, address, phone } = data;
     try {
       await addNewPatient({
         fname,
@@ -58,10 +58,9 @@ const NewPatientForm = () => {
         bday,
         address,
         phone,
-        createdBy,
+        createdBy: email,
       });
     } catch (error) {
-      // Handle errors
       toast({
         title: "Error",
         description: "An error occurred",
@@ -161,6 +160,9 @@ const NewPatientForm = () => {
                 render={({ field }) => (
                   <div className="customDatePickerWidth">
                     <DatePicker
+                      maxDate={new Date()}
+                      showMonthDropdown
+                      showYearDropdown
                       customInput={<Input isInvalid={!!errors.bday} />}
                       selected={
                         field.value
@@ -174,7 +176,6 @@ const NewPatientForm = () => {
                   </div>
                 )}
               />
-
               {errors.bday && (
                 <FormHelperText color={"red"}>
                   {errors.bday.message}
@@ -211,21 +212,6 @@ const NewPatientForm = () => {
               {errors.address && (
                 <FormHelperText color={"red"}>
                   {errors.address.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>Created By</FormLabel>
-              <Input
-                autoComplete={"false"}
-                id="createdBy"
-                type="text"
-                {...register("createdBy")}
-                isInvalid={!!errors.createdBy}
-              />
-              {errors.createdBy && (
-                <FormHelperText color={"red"}>
-                  {errors.createdBy.message}
                 </FormHelperText>
               )}
             </FormControl>

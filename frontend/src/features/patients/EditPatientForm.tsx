@@ -22,7 +22,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Controller, Resolver, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import "style.css";
 import { ErrorType } from "types/ErrorType";
 import { Patient } from "types/Patient";
 import { PatientFormValues } from "types/PatientFormValues";
@@ -49,7 +48,6 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
       bday: patient.bday,
       address: patient.address,
       phone: patient.phone,
-      createdBy: patient.createdBy.toString(),
     },
     resolver: yupResolver(newPatientValidation) as Resolver<PatientFormValues>,
   });
@@ -57,7 +55,7 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
   const { errors, isDirty, isSubmitting } = formState;
 
   const onSubmit = async (data: PatientFormValues) => {
-    const { fname, mname, lname, bday, address, phone, createdBy } = data;
+    const { fname, mname, lname, bday, address, phone } = data;
     try {
       await updatePatient({
         id: patient.id,
@@ -67,7 +65,6 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
         bday,
         address,
         phone,
-        createdBy,
       });
     } catch (error) {
       toast({
@@ -174,6 +171,9 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
                 render={({ field }) => (
                   <div className="customDatePickerWidth">
                     <DatePicker
+                      maxDate={new Date()}
+                      showMonthDropdown
+                      showYearDropdown
                       customInput={<Input isInvalid={!!errors.bday} />}
                       selected={
                         field.value
@@ -187,7 +187,6 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
                   </div>
                 )}
               />
-
               {errors.bday && (
                 <FormHelperText color={"red"}>
                   {errors.bday.message}
@@ -224,21 +223,6 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
               {errors.address && (
                 <FormHelperText color={"red"}>
                   {errors.address.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>Created By</FormLabel>
-              <Input
-                autoComplete={"false"}
-                id="createdBy"
-                type="text"
-                {...register("createdBy")}
-                isInvalid={!!errors.createdBy}
-              />
-              {errors.createdBy && (
-                <FormHelperText color={"red"}>
-                  {errors.createdBy.message}
                 </FormHelperText>
               )}
             </FormControl>

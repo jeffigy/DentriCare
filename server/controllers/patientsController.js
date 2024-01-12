@@ -2,7 +2,7 @@ const Patient = require("../models/Patient");
 
 //* get all patients
 const getAllPatients = async (req, res) => {
-  const patients = await Patient.find().lean();
+  const patients = await Patient.find().select("-createdBy").lean();
 
   if (!patients?.length) {
     return res.status(400).json({ message: "no patients found" });
@@ -59,7 +59,7 @@ const createNewPatient = async (req, res) => {
 
 //* update patient
 const updatePatient = async (req, res) => {
-  const { id, createdBy, fname, mname, lname, bday, address, phone } = req.body;
+  const { id, fname, mname, lname, bday, address, phone } = req.body;
 
   if (
     !id ||
@@ -93,7 +93,6 @@ const updatePatient = async (req, res) => {
     return res.status(409).json({ message: "Duplicate patient complete name" });
   }
 
-  patient.createdBy = createdBy;
   patient.fname = fname;
   patient.mname = mname;
   patient.lname = lname;

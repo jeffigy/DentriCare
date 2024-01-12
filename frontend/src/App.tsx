@@ -17,6 +17,7 @@ import EditUserPage from "pages/Users/EditUserPage";
 import NewUserPage from "pages/Users/NewUserPage";
 import UsersPage from "pages/Users/UsersPage";
 import { Route, Routes } from "react-router-dom";
+import "style.css";
 
 const App = () => {
   return (

@@ -4,9 +4,8 @@ const AutoIncrement = require("mongoose-sequence")(mongoose);
 const patientSchema = new mongoose.Schema(
   {
     createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       required: true,
-      ref: "User",
     },
     fname: {
       type: String,

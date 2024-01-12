@@ -1,42 +1,23 @@
 import { useGetUsersQuery } from "./usersApiSlice";
 import UserRow from "./UserRow";
-import { Spinner } from "@chakra-ui/react";
-import DataTable, { TableColumn } from "react-data-table-component";
-
-// type DataRow = {
-//   id: number;
-//   title: string;
-//   year: string;
-// };
-// const columns: TableColumn<DataRow>[] = [
-//   {
-//     name: "ID",
-//     selector: (row) => row.id,
-//   },
-//   {
-//     name: "Title",
-//     selector: (row) => row.title,
-//   },
-//   {
-//     name: "Year",
-//     selector: (row) => row.year,
-//   },
-// ];
-
-// const data = [
-//   {
-//     id: 1,
-//     title: "Beetlejuice",
-//     year: "1988",
-//   },
-//   {
-//     id: 2,
-//     title: "Ghostbusters",
-//     year: "1984",
-//   },
-// ];
+import {
+  Card,
+  CardBody,
+  Table,
+  TableContainer,
+  Tbody,
+  Th,
+  Thead,
+  Tr,
+  useToast,
+} from "@chakra-ui/react";
+import { useEffect } from "react";
+import DashSpinner from "components/Dashboard/DashSpinner";
+import { ErrorType } from "types/ErrorType";
 
 const UsersList = () => {
+  const toast = useToast();
+
   const {
     data: users,
     isLoading,
@@ -47,43 +28,46 @@ const UsersList = () => {
     pollingInterval: 6000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
-  }); //! observe if the 'undefined' is a problem
-  let content;
-  if (isLoading) content = <Spinner />;
-  if (isError) {
-    content = <p>{error.toString()}</p>;
-  }
+  });
+
+  useEffect(() => {
+    if (isError) {
+      toast({
+        title: "Error",
+        description: (error as ErrorType)?.data?.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [isError]);
+
+  if (isLoading) return <DashSpinner />;
+
   if (isSuccess) {
-    const { ids } = users;
-    const tableContent = ids?.length
-      ? ids.map((userId) => <UserRow key={userId} userId={String(userId)} />)
-      : null;
-    content = (
-      <table className="table table--users">
-        <thead className="table__thead">
-          <tr>
-            <th scope="col" className="table__th user__username">
-              First Name
-            </th>
-            <th scope="col" className="table__th user__username">
-              Last Name
-            </th>
-            <th scope="col" className="table__th user__username">
-              Email
-            </th>
-            <th scope="col" className="table__th user__roles">
-              Roles
-            </th>
-            <th scope="col" className="table__th user__edit">
-              Edit
-            </th>
-          </tr>
-        </thead>
-        <tbody>{tableContent}</tbody>
-      </table>
+    return (
+      <Card>
+        <CardBody>
+          {" "}
+          <TableContainer>
+            <Table size={"sm"}>
+              <Thead>
+                <Tr>
+                  <Th>Name</Th>
+                  <Th>Roles</Th>
+                  <Th>Actions</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {users?.ids?.map((userId) => (
+                  <UserRow key={userId} userId={String(userId)} />
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </CardBody>
+      </Card>
     );
   }
-  return content;
-  // return <DataTable columns={columns} data={data} />;
 };
 export default UsersList;

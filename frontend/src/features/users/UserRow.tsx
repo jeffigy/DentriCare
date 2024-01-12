@@ -2,41 +2,38 @@ import { useNavigate } from "react-router-dom";
 import { useGetUsersQuery } from "./usersApiSlice";
 import { User } from "types/User";
 import { memo } from "react";
+import { Icon, IconButton, Td, Tr } from "@chakra-ui/react";
+import { EditIcon } from "@chakra-ui/icons";
 
 type UserRowProps = {
   userId: string;
 };
 
 const UserRow = ({ userId }: UserRowProps) => {
-  console.log("userId", userId);
+  const navigate = useNavigate();
   const { user } = useGetUsersQuery("usersList", {
     selectFromResult: ({ data }) => ({
       user: data?.entities[userId as string] as User,
     }),
   });
-  console.log("user", user);
-
-  const navigate = useNavigate();
 
   if (user) {
-    const handleEdit = () => navigate(`/dash/users/${userId}`);
-
-    const userRolesString = user.roles.toString().replace(/,/g, ", "); //! observe if the change in replace() is a problem
-
-    const cellStatus = user.active ? "" : "table__cell--inactive";
+    const userRolesString = user.roles.toString().replace(/,/g, ", ");
 
     return (
-      <tr className="table__row user">
-        <td className={`table__cell ${cellStatus}`}>{user.fname}</td>
-        <td className={`table__cell ${cellStatus}`}>{user.lname}</td>
-        <td className={`table__cell ${cellStatus}`}>{user.email}</td>
-        <td className={`table__cell ${cellStatus}`}>{userRolesString}</td>
-        <td className={`table__cell ${cellStatus}`}>
-          <button className="icon-button table__button" onClick={handleEdit}>
-            edit
-          </button>
-        </td>
-      </tr>
+      <Tr>
+        <Td>
+          {user.fname} {user.lname}
+        </Td>
+        <Td>{userRolesString}</Td>
+        <Td>
+          <IconButton
+            aria-label="view"
+            onClick={() => navigate(`/dash/users/${userId}`)}
+            icon={<Icon as={EditIcon} />}
+          />
+        </Td>
+      </Tr>
     );
   } else return null;
 };
