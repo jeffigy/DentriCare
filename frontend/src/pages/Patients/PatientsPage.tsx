@@ -1,24 +1,16 @@
-import { Flex, Icon, IconButton } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import PatientsList from "features/patients/PatientsList";
-import { Link } from "react-router-dom";
 import { FiUserPlus } from "react-icons/fi";
 import useTitle from "hooks/useTitle";
+import FloatingButton from "components/FloatingButton";
 
 const PatientsPage = () => {
   useTitle("Patients");
   return (
     <Flex justify={"center"} align={"center"} w={"full"}>
-      <IconButton
-        as={Link}
-        size={"lg"}
-        isRound={true}
-        aria-label="new-patient"
-        icon={<Icon as={FiUserPlus} />}
-        sx={{
-          position: "fixed",
-          right: "16px",
-          bottom: "16px",
-        }}
+      <FloatingButton
+        ariaLabel="new-patient"
+        icon={FiUserPlus}
         to={"/dash/patients/new"}
       />
       <PatientsList />

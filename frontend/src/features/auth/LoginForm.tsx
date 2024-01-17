@@ -127,7 +127,7 @@ const Login = () => {
             </FormControl>
             <Checkbox
               isChecked={persist}
-              onChange={(e) => setPersist(e.target.checked)}
+              onChange={(e) => setPersist(!persist)}
             >
               Keep me signed in
             </Checkbox>

@@ -19,7 +19,6 @@ const PatientRow: React.FC<PatientRowProps> = ({ patientId }) => {
   const navigate = useNavigate();
 
   if (patient) {
-    const handleEdit = () => navigate(`/dash/patients/${patientId}`);
     return (
       <Tr>
         <Td>
@@ -27,7 +26,7 @@ const PatientRow: React.FC<PatientRowProps> = ({ patientId }) => {
         </Td>
         <Td>
           <IconButton
-            onClick={handleEdit}
+            onClick={() => navigate(`/dash/patients/${patientId}`)}
             aria-label="patient info"
             icon={<Icon as={InfoOutlineIcon} />}
           />

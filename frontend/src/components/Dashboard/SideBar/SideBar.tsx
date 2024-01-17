@@ -21,7 +21,7 @@ const SideBar: React.FC<SideBarProps> = ({ onClose, display }) => {
   const LinkItems = [
     { name: "Dashboard", icon: LuHome, to: "/dash" },
     { name: "Appointments", icon: LuClipboardList, to: "/dash/appointments" },
-    { name: "Treatments", icon: LuShapes, to: "/dash/treatments" },
+    { name: "Procedures", icon: LuShapes, to: "/dash/procedures" },
     { name: "Patients", icon: LuUsers, to: "/dash/patients" },
     ...(isAdmin || isSuperAdmin
       ? [
@@ -38,10 +38,18 @@ const SideBar: React.FC<SideBarProps> = ({ onClose, display }) => {
       w={{ base: "full", md: 60 }}
       pos="fixed"
       h="full"
-      bgColor={"#2d53da"}
+      bgColor={"primary.500"}
       display={display}
     >
-      <Flex mx={"4"} h="56px" align="center" justifyContent="space-between">
+      <Flex
+        mx={"4"}
+        h="56px"
+        align="center"
+        justify={{
+          base: "space-between",
+          md: "center",
+        }}
+      >
         <Text fontSize="2xl" color={"gray.800"} fontWeight="bold">
           DentriCare
         </Text>

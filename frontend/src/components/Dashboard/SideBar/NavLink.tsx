@@ -37,7 +37,7 @@ const Navlink: React.FC<NavLinkProps> = ({ name, icon, to, onClose }) => {
       <Icon
         as={icon}
         boxSize={6}
-        color={isActive ? "#2d53da" : "bg"}
+        color={isActive ? "primary.500" : "bg"}
         mr={"10px"}
       />
       <Text fontWeight={600} color={isActive ? "gray.700" : "bg"}>

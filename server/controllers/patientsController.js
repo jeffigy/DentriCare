@@ -2,7 +2,8 @@ const Patient = require("../models/Patient");
 
 //* get all patients
 const getAllPatients = async (req, res) => {
-  const patients = await Patient.find().select("-createdBy").lean();
+  // const patients = await Patient.find().select("-createdBy").lean();
+  const patients = await Patient.find().lean();
 
   if (!patients?.length) {
     return res.status(400).json({ message: "no patients found" });

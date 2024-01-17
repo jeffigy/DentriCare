@@ -1,5 +1,5 @@
-import { useGetPatientsQuery } from "./patientsApiSlice";
-import PatientRow from "./PatientRow";
+import DashSpinner from "components/Dashboard/DashSpinner";
+import { useGetProceduresQuery } from "./proceduresApiSlice";
 import {
   Alert,
   AlertIcon,
@@ -11,23 +11,23 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import DashSpinner from "components/Dashboard/DashSpinner";
 import { ErrorType } from "types/ErrorType";
+import ProcedureRow from "./ProcedureRow";
 
-const PatientsList = () => {
+const ProceduresList = () => {
   const {
-    data: patients,
+    data: procedures,
     isLoading,
     isSuccess,
     isError,
     error,
-  } = useGetPatientsQuery("patientslist", {
+  } = useGetProceduresQuery("procedureslist", {
     pollingInterval: 6000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
-
   if (isLoading) return <DashSpinner />;
+
   if (isError)
     return (
       <Alert status="error">
@@ -40,17 +40,20 @@ const PatientsList = () => {
     return (
       <Card>
         <CardBody>
-          {" "}
           <Table size={"sm"}>
             <Thead>
               <Tr>
-                <Th>Patient Name</Th>
-                <Th>Actions</Th>
+                <Th>Procedure Name</Th>
+                <Th>Amount</Th>
+                <Th></Th>
               </Tr>
             </Thead>
             <Tbody>
-              {patients?.ids?.map((patientId) => (
-                <PatientRow key={patientId} patientId={String(patientId)} />
+              {procedures?.ids?.map((procedureId) => (
+                <ProcedureRow
+                  key={procedureId}
+                  procedureId={String(procedureId)}
+                />
               ))}
             </Tbody>
           </Table>
@@ -58,5 +61,9 @@ const PatientsList = () => {
       </Card>
     );
   }
+
+  if (!procedures) {
+    return <div>no procedures</div>;
+  }
 };
-export default PatientsList;
+export default ProceduresList;

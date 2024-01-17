@@ -1,24 +1,16 @@
-import { Flex, Icon, IconButton } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import UsersList from "features/users/UsersList";
-import { Link } from "react-router-dom";
 import { GrUserAdmin } from "react-icons/gr";
 import useTitle from "hooks/useTitle";
+import FloatingButton from "components/FloatingButton";
 
 const UsersPage = () => {
   useTitle("Users");
   return (
     <Flex justify={"center"} align={"center"}>
-      <IconButton
-        as={Link}
-        size={"lg"}
-        isRound={true}
-        aria-label="new-user"
-        icon={<Icon as={GrUserAdmin} />}
-        sx={{
-          position: "fixed",
-          right: "16px",
-          bottom: "16px",
-        }}
+      <FloatingButton
+        ariaLabel="new-user"
+        icon={GrUserAdmin}
         to={"/dash/users/new"}
       />
       <UsersList />
