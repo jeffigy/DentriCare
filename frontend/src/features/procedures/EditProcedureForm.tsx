@@ -173,7 +173,7 @@ const EditProcedureForm: React.FC<EditProcedureFormProps> = ({ procedure }) => {
             <Input value={procedure.updatedBy} variant={"unstyle"} disabled />
           </FormControl>
           <FormControl>
-            <FormLabel>Created at</FormLabel>
+            <FormLabel>Updated at</FormLabel>
             <Input
               value={new Date(procedure.updatedAt).toLocaleString("en-US", {
                 day: "numeric",

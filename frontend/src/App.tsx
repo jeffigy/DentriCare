@@ -10,6 +10,7 @@ import HomePage from "pages/HomePage";
 import LandingPage from "pages/LandingPage";
 import LoginPage from "pages/LoginPage";
 import DentalNotesPage from "pages/Patients/DentalNotes/DentalNotesPage";
+import EditDentalNotePage from "pages/Patients/DentalNotes/EditDentalNotePage";
 import NewDentalNotePage from "pages/Patients/DentalNotes/NewDentalNotePage";
 import EditPatientPage from "pages/Patients/EditPatientPage";
 import MedicalHistoryPage from "pages/Patients/MedicalHistory/MedicalHistoryPage";
@@ -70,6 +71,7 @@ const App = () => {
                     <Route path="dental-notes">
                       <Route index element={<DentalNotesPage />} />
                       <Route path="new" element={<NewDentalNotePage />} />
+                      <Route path=":noteId" element={<EditDentalNotePage />} />
                     </Route>
                     {/* medical history route */}
                     <Route path="medical-history">

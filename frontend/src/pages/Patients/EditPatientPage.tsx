@@ -1,4 +1,5 @@
 import { Alert, AlertIcon, Flex, Spinner } from "@chakra-ui/react";
+import DashSpinner from "components/Dashboard/DashSpinner";
 import EditPatientForm from "features/patients/EditPatientForm";
 import { useGetPatientsQuery } from "features/patients/patientsApiSlice";
 import useAuth from "hooks/useAuth";
@@ -19,12 +20,7 @@ const EditPatientPage = () => {
     }),
   });
 
-  if (!patient)
-    return (
-      <Flex w={"full"} justify={"center"}>
-        <Spinner />;
-      </Flex>
-    );
+  if (!patient) return <DashSpinner />;
 
   if (!isAdmin && !isSuperAdmin) {
     <Flex w={"full"} justify={"center"}>

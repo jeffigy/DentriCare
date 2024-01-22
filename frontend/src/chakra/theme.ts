@@ -7,6 +7,7 @@ import { SpinnerTheme } from "./components/Spinner";
 import { ModalTheme } from "./components/Modal";
 import { TextareaTheme } from "./components/Textarea";
 import { selectTheme } from "./components/Select";
+import { TagTheme } from "./components/Tag";
 
 const primary = {
   50: "#e5edff",
@@ -59,5 +60,6 @@ export const theme = extendTheme({
     Modal: ModalTheme,
     Textarea: TextareaTheme,
     Select: selectTheme,
+    Tag: TagTheme,
   },
 });

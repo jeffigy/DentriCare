@@ -26,6 +26,7 @@ app.use("/auth", require("./routes/authRoutes"));
 app.use("/users", require("./routes/userRoutes"));
 app.use("/patients", require("./routes/patientRoutes"));
 app.use("/procedures", require("./routes/procedureRoutes"));
+app.use("/dental-notes", require("./routes/dentalNoteRoutes"));
 app.all("*", (req, res) => {
   res.status(404);
   if (req.accepts("html")) {
