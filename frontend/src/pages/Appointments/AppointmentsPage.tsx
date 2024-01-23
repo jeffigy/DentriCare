@@ -1,8 +1,21 @@
-import React from "react";
+import { Flex } from "@chakra-ui/react";
+import FloatingButton from "components/FloatingButton";
+import AppointmentsList from "features/appointments/AppointmentsList";
+import { useGetPatientsQuery } from "features/patients/patientsApiSlice";
+import { MdPlaylistAdd } from "react-icons/md";
+import useTitle from "hooks/useTitle";
 
-type AppointmentsPageProps = {};
-
-const AppointmentsPage: React.FC<AppointmentsPageProps> = () => {
-  return <div>Appointments page</div>;
+const AppointmentsPage = () => {
+  useTitle("Appointments");
+  return (
+    <Flex w="full" direction={"column"} align={"center"}>
+      <AppointmentsList />
+      <FloatingButton
+        icon={MdPlaylistAdd}
+        ariaLabel={"new appointment"}
+        to={`/dash/appointments/new`}
+      />
+    </Flex>
+  );
 };
 export default AppointmentsPage;

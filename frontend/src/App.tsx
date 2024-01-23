@@ -5,6 +5,8 @@ import PersistLogin from "features/auth/PersistLogin";
 import Prefetch from "features/auth/Prefetch";
 import RequireAuth from "features/auth/RequireAuth";
 import AppointmentsPage from "pages/Appointments/AppointmentsPage";
+import EditAppointmentPage from "pages/Appointments/EditAppointmentPage";
+import NewAppointmentPage from "pages/Appointments/NewAppointmentPage";
 import FinancesPage from "pages/Finances/FinancesPage";
 import HomePage from "pages/HomePage";
 import LandingPage from "pages/LandingPage";
@@ -98,6 +100,8 @@ const App = () => {
                 {/* Appointments route */}
                 <Route path="appointments">
                   <Route index element={<AppointmentsPage />} />
+                  <Route path="new" element={<NewAppointmentPage />} />
+                  <Route path=":id" element={<EditAppointmentPage />} />
                 </Route>
                 {/* procedures route */}
                 <Route path="procedures">
