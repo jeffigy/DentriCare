@@ -1,7 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import FloatingButton from "components/FloatingButton";
 import AppointmentsList from "features/appointments/AppointmentsList";
-import { useGetPatientsQuery } from "features/patients/patientsApiSlice";
 import { MdPlaylistAdd } from "react-icons/md";
 import useTitle from "hooks/useTitle";
 

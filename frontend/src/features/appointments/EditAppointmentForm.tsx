@@ -15,7 +15,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Appointment } from "types/Appointment";
 import { useUpdateAppointmentMutation } from "./appointmentsApiSlice";
 import { Controller, Resolver, useForm } from "react-hook-form";
@@ -40,6 +40,8 @@ const EditAppointmentForm: React.FC<EditAppointmentFormProps> = ({
   const toast = useToast();
   const navigate = useNavigate();
   const { email } = useAuth();
+
+  const patientId = new URLSearchParams(useLocation().search).get("patientId");
 
   const [updateAppointment, { isSuccess, isError, error }] =
     useUpdateAppointmentMutation();
@@ -92,7 +94,7 @@ const EditAppointmentForm: React.FC<EditAppointmentFormProps> = ({
   useEffect(() => {
     if (isSuccess) {
       reset();
-      navigate("/dash/appointments");
+      navigate(-1);
       toast({
         title: "Success",
         description: "Appointment updated successfully",
@@ -149,7 +151,7 @@ const EditAppointmentForm: React.FC<EditAppointmentFormProps> = ({
                 </FormHelperText>
               )}
             </FormControl>
-            <FormControl>
+            <FormControl isDisabled={patientId ? true : false}>
               <FormLabel>Patient</FormLabel>
               <Select placeholder="Select Patient" {...register("patient")}>
                 {patients.map((patient) => (

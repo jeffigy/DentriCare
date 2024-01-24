@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 import { useGetDentalNotesQuery } from "features/dental-notes/dentalNotesApiSlice";
 import React from "react";
-import { LuTrash2 } from "react-icons/lu";
 import { MdOutlinePayments } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { DentalNote } from "types/DentalNote";

@@ -18,7 +18,7 @@ import useAuth from "hooks/useAuth";
 import React, { useEffect } from "react";
 import DatePicker from "react-datepicker";
 import { Controller, Resolver, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Patient } from "types/Patient";
 import { useAddNewAppointmentMutation } from "./appointmentsApiSlice";
 import { AppointmentFormValues } from "types/AppointmentFormValues";
@@ -40,13 +40,15 @@ const NewAppointmentForm: React.FC<NewAppointmentFormProps> = ({
   const navigate = useNavigate();
   const toast = useToast();
 
+  const patientId = new URLSearchParams(useLocation().search).get("patientId");
+
   const [addNewAppointment, { isSuccess, isError, error }] =
     useAddNewAppointmentMutation();
 
   const form = useForm<AppointmentFormValues>({
     defaultValues: {
       date: undefined,
-      patient: "",
+      patient: patientId ? patientId : "",
       startTime: undefined,
       endTime: undefined,
       remarks: "",
@@ -56,8 +58,9 @@ const NewAppointmentForm: React.FC<NewAppointmentFormProps> = ({
     ) as Resolver<AppointmentFormValues>,
   });
 
-  const { register, control, handleSubmit, formState, reset } = form;
+  const { register, control, handleSubmit, formState, reset, watch } = form;
   const { errors, isSubmitting, dirtyFields } = formState;
+  const patientValue = watch("patient");
 
   const onSubmit = async (data: AppointmentFormValues) => {
     const { date, patient, startTime, endTime, remarks } = data;
@@ -91,7 +94,7 @@ const NewAppointmentForm: React.FC<NewAppointmentFormProps> = ({
   useEffect(() => {
     if (isSuccess) {
       reset();
-      navigate("/dash/appointments");
+      navigate(-1);
       toast({
         title: "Success",
         description: "New appointment added successfully",
@@ -150,7 +153,7 @@ const NewAppointmentForm: React.FC<NewAppointmentFormProps> = ({
                 </FormHelperText>
               )}
             </FormControl>
-            <FormControl>
+            <FormControl isDisabled={patientId ? true : false}>
               <FormLabel>Patient</FormLabel>
               <Select placeholder="Select Patient" {...register("patient")}>
                 {patients.map((patient) => (
@@ -236,7 +239,7 @@ const NewAppointmentForm: React.FC<NewAppointmentFormProps> = ({
             <Button
               w={"full"}
               type="submit"
-              isDisabled={!dirtyFields.date || !dirtyFields.patient}
+              isDisabled={!dirtyFields.date || !patientValue}
               isLoading={isSubmitting}
             >
               Submit

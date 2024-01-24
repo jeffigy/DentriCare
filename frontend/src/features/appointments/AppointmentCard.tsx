@@ -10,15 +10,19 @@ import {
 import React from "react";
 import { Appointment } from "types/Appointment";
 import { useGetAppointmentsQuery } from "./appointmentsApiSlice";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { EditIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import DeleteAppointment from "./DeleteAppointment";
 
 type AppointmentCardProps = {
   appointmentId: string;
+  patientId?: string;
 };
 
-const AppointmentCard: React.FC<AppointmentCardProps> = ({ appointmentId }) => {
+const AppointmentCard: React.FC<AppointmentCardProps> = ({
+  appointmentId,
+  patientId,
+}) => {
   const navigate = useNavigate();
   const { appointment } = useGetAppointmentsQuery("appointmentsList", {
     selectFromResult: ({ data }) => ({
@@ -61,7 +65,13 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({ appointmentId }) => {
         </CardBody>
         <CardFooter as={Flex} justify={"space-between"}>
           <IconButton
-            onClick={() => navigate(`/dash/appointments/${appointmentId}`)}
+            onClick={() =>
+              navigate(
+                patientId
+                  ? `/dash/appointments/${appointmentId}?patientId=${patientId}`
+                  : `/dash/appointments/${appointmentId}`
+              )
+            }
             aria-label="edit appointment"
             icon={<Icon as={EditIcon} />}
           />

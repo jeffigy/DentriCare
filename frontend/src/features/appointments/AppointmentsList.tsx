@@ -3,8 +3,10 @@ import { useGetAppointmentsQuery } from "./appointmentsApiSlice";
 import { Alert, AlertIcon, Stack } from "@chakra-ui/react";
 import { ErrorType } from "types/ErrorType";
 import AppointmentCard from "./AppointmentCard";
+import { useParams } from "react-router-dom";
 
 const AppointmentsList = () => {
+  const { id: patientId } = useParams<{ id: string }>();
   const {
     data: appointments,
     isLoading,
@@ -26,16 +28,45 @@ const AppointmentsList = () => {
       </Alert>
     );
   if (isSuccess) {
-    return (
-      <Stack>
-        {appointments?.ids?.map((appointmentId) => (
-          <AppointmentCard
-            key={appointmentId}
-            appointmentId={String(appointmentId)}
-          />
-        ))}
-      </Stack>
-    );
+    const { ids, entities } = appointments;
+
+    if (patientId) {
+      if (
+        !ids?.filter(
+          (appointmentId) => entities[appointmentId]?.patient === patientId
+        ).length
+      ) {
+        return <Alert status="info">No appointments found</Alert>;
+      }
+      return (
+        <Stack>
+          {ids.length &&
+            ids
+              ?.filter(
+                (appointmentId) =>
+                  entities[appointmentId]?.patient === patientId
+              )
+              .map((appointmentId) => (
+                <AppointmentCard
+                  key={appointmentId}
+                  appointmentId={String(appointmentId)}
+                  patientId={patientId}
+                />
+              ))}
+        </Stack>
+      );
+    } else {
+      return (
+        <Stack>
+          {ids?.map((appointmentId) => (
+            <AppointmentCard
+              key={appointmentId}
+              appointmentId={String(appointmentId)}
+            />
+          ))}
+        </Stack>
+      );
+    }
   }
 };
 export default AppointmentsList;

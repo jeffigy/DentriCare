@@ -30,11 +30,8 @@ type DeleteAppointmentProps = {
 const DeleteAppointment: React.FC<DeleteAppointmentProps> = ({
   appointment,
 }) => {
-  const { id } = useParams<{ id: string }>();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const navigate = useNavigate();
-
   const [DeleteAppointment, { isSuccess, isError, error }] =
     useDeleteAppointmentMutation();
 
@@ -61,7 +58,6 @@ const DeleteAppointment: React.FC<DeleteAppointmentProps> = ({
         isClosable: true,
       });
       onClose();
-      navigate(`/dash/appointments`);
     }
     if (isError) {
       toast({

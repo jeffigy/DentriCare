@@ -1,7 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import NewAppointmentForm from "features/appointments/NewAppointmentForm";
 import { useGetPatientsQuery } from "features/patients/patientsApiSlice";
-import { useGetUsersQuery } from "features/users/usersApiSlice";
 import useTitle from "hooks/useTitle";
 import { Patient } from "types/Patient";
 

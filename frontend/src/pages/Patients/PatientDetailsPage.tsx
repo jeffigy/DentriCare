@@ -30,7 +30,6 @@ const PatientDetailsPage = () => {
       patient: data?.entities[id as string] as Patient,
     }),
   });
-  console.log(patient);
 
   if (!patient) return <DashSpinner />;
 

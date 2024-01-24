@@ -35,7 +35,8 @@ const DentalNotesList = () => {
 
     if (
       !ids.length ||
-      !ids.filter((noteId) => entities[noteId]?.patient === id).length
+      !ids.filter((noteId: string | number) => entities[noteId]?.patient === id)
+        .length
     ) {
       return <Text>No dental notes found</Text>;
     }
