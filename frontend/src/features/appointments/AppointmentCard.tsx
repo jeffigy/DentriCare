@@ -12,6 +12,7 @@ import { Appointment } from "types/Appointment";
 import { useGetAppointmentsQuery } from "./appointmentsApiSlice";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
+import DeleteAppointment from "./DeleteAppointment";
 
 type AppointmentCardProps = {
   appointmentId: string;
@@ -64,11 +65,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({ appointmentId }) => {
             aria-label="edit appointment"
             icon={<Icon as={EditIcon} />}
           />
-          <IconButton
-            aria-label="delete appointment"
-            colorScheme="red"
-            icon={<Icon as={DeleteIcon} />}
-          />
+          <DeleteAppointment appointment={appointment} />
         </CardFooter>
       </Card>
     );

@@ -17,6 +17,7 @@ import { LuTrash2 } from "react-icons/lu";
 import { MdOutlinePayments } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { DentalNote } from "types/DentalNote";
+import DeleteDentalNote from "./DeleteDentalNote";
 
 type DentalNoteCardProps = {
   dentalNoteId: string;
@@ -102,11 +103,7 @@ const DentalNoteCard: React.FC<DentalNoteCardProps> = ({
                 aria-label="edit note"
                 icon={<Icon as={EditIcon} />}
               />
-              <IconButton
-                aria-label="delete note"
-                colorScheme="red"
-                icon={<Icon as={LuTrash2} />}
-              />
+              <DeleteDentalNote dentalNote={dentalNote} />
             </Flex>
           </CardFooter>
         </CardBody>
