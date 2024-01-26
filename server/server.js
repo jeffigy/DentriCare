@@ -28,6 +28,8 @@ app.use("/patients", require("./routes/patientRoutes"));
 app.use("/procedures", require("./routes/procedureRoutes"));
 app.use("/dental-notes", require("./routes/dentalNoteRoutes"));
 app.use("/appointments", require("./routes/appointmentRoutes"));
+app.use("/payments", require("./routes/paymentRoutes"));
+
 app.all("*", (req, res) => {
   res.status(404);
   if (req.accepts("html")) {
@@ -38,6 +40,7 @@ app.all("*", (req, res) => {
     res.type("txt").send("404 Not found");
   }
 });
+
 app.use(errorHandler);
 
 mongoose.connection.once("open", () => {

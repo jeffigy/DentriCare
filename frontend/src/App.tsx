@@ -19,7 +19,7 @@ import MedicalHistoryPage from "pages/Patients/MedicalHistory/MedicalHistoryPage
 import NewPatientPage from "pages/Patients/NewPatientPage";
 import PatientAppointmentsPage from "pages/Patients/PatientAppointments/PatientAppointmentsPage";
 import PatientDetailsPage from "pages/Patients/PatientDetailsPage";
-import PatientPaymentsPage from "pages/Patients/PatientPayments/PatientPaymentsPage";
+import PaymentsPage from "pages/Patients/Payments/PaymentsPage";
 import PatientsPage from "pages/Patients/PatientsPage";
 import PhotosPage from "pages/Patients/Photos/PhotosPage";
 import TreatmentPlansPage from "pages/Patients/TreatmentPlans/TreatmentPlansPage";
@@ -30,6 +30,8 @@ import EditUserPage from "pages/Users/EditUserPage";
 import NewUserPage from "pages/Users/NewUserPage";
 import UsersPage from "pages/Users/UsersPage";
 import { Route, Routes } from "react-router-dom";
+import NewPaymentPage from "pages/Patients/Payments/NewPaymentPage";
+import EditPaymentPage from "pages/Patients/Payments/EditPaymentPage";
 import "style.css";
 
 const App = () => {
@@ -83,9 +85,11 @@ const App = () => {
                     <Route path="patient-appointments">
                       <Route index element={<PatientAppointmentsPage />} />
                     </Route>
-                    {/* patient payments routes */}
-                    <Route path="patient-payments">
-                      <Route index element={<PatientPaymentsPage />} />
+                    {/*payments routes */}
+                    <Route path="payments">
+                      <Route index element={<PaymentsPage />} />
+                      <Route path="new" element={<NewPaymentPage />} />
+                      <Route path=":paymentId" element={<EditPaymentPage />} />
                     </Route>
                     {/* photos route */}
                     <Route path="photos">
