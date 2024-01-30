@@ -8,9 +8,4 @@ export const paymentValidation = Yup.object({
   total: Yup.number().required("Total is required"),
   remarks: Yup.string().nullable().notRequired(),
   planName: Yup.string().nullable().notRequired(),
-  initPayment: Yup.number()
-    .transform((value) => (Number.isNaN(value) ? null : value))
-    .nullable()
-    .notRequired(),
-  initPaymentRemarks: Yup.string().nullable().notRequired(),
 });

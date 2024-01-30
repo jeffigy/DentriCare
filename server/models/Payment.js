@@ -34,14 +34,14 @@ const paymentSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    initPayment: {
-      type: Number,
-      required: false,
-    },
-    initPaymentRemarks: {
-      type: String,
-      required: false,
-    },
+    // initPayment: {
+    //   type: Number,
+    //   required: false,
+    // },
+    // initPaymentRemarks: {
+    //   type: String,
+    //   required: false,
+    // },
     createdBy: {
       type: String,
       required: false,

@@ -5,13 +5,14 @@ import { Payment } from "types/Payment";
 import {
   Card,
   CardBody,
-  CardFooter,
+  Divider,
   Flex,
   Icon,
   IconButton,
+  Tag,
   Text,
 } from "@chakra-ui/react";
-import { EditIcon } from "@chakra-ui/icons";
+import { ViewIcon } from "@chakra-ui/icons";
 import DeletePayment from "./DeletePayment";
 
 type PaymentCardProps = {
@@ -29,46 +30,78 @@ const PaymentCard: React.FC<PaymentCardProps> = ({ paymentId }) => {
 
   if (payment) {
     return (
-      <Card w={"300px"}>
+      <Card
+        w={{
+          base: "300px",
+          md: "400px",
+        }}
+      >
         <CardBody>
-          <Text>Payment Type: {payment.type}</Text>
-          <Text>
-            Date of Payment:{" "}
-            {new Date(payment.date * 1000)
-              .toDateString()
-              .split(" ")
-              .slice(1)
-              .join(" ")}
-          </Text>
-          <Text>Total Amount: {payment.total}</Text>
-          {payment.remarks && <Text>Remarks: {payment.remarks}</Text>}
-          <Text>
-            Last Updated:{" "}
-            {new Date(payment.updatedAt).toLocaleString("en-US", {
-              day: "numeric",
-              month: "short",
-              year: "numeric",
-            })}
-          </Text>
-          {payment.remarks && <Text>Remarks: {payment.remarks}</Text>}
-          {payment.planName && <Text>Plan Name: {payment.planName}</Text>}
-          {payment.initPayment && (
-            <Text>Initial Payment: {payment.initPayment}</Text>
+          <Flex justify={"space-between"}>
+            <Text color={"gray.500"}>Payment Type:</Text>
+            <Tag>{payment.type}</Tag>
+          </Flex>
+          <Divider />
+          <Flex justify={"space-between"}>
+            <Text color={"gray.500"}>Date of Payment:</Text>
+            <Text>
+              {" "}
+              {new Date(payment.date * 1000)
+                .toDateString()
+                .split(" ")
+                .slice(1)
+                .join(" ")}
+            </Text>
+          </Flex>
+          <Divider />
+          <Flex justify={"space-between"}>
+            <Text color={"gray.500"}> Total Amount:</Text>
+            <Text>₱{new Intl.NumberFormat("en-US").format(payment.total)}</Text>
+          </Flex>
+          <Divider />
+          <Flex justify={"space-between"}>
+            <Text color={"gray.500"}>Last Updated:</Text>
+            <Text>
+              {new Date(payment.updatedAt).toLocaleString("en-US", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })}
+            </Text>
+          </Flex>
+          {payment.remarks && (
+            <>
+              <Divider />
+              <Flex direction={"column"}>
+                <Text color={"gray.500"}>Remarks:</Text>
+                <Text>{payment.remarks}</Text>
+              </Flex>
+            </>
           )}
-          {payment.initPaymentRemarks && (
-            <Text>Initial Payment Remarks: {payment.initPaymentRemarks}</Text>
+          {payment.planName && (
+            <>
+              <Divider />
+              <Flex justify={"space-between"}>
+                <Text color={"gray.500"}>Plan Name:</Text>
+                <Text>{payment.planName}</Text>
+              </Flex>
+            </>
           )}
         </CardBody>
-        <CardFooter as={Flex} justify={"space-between"}>
+        <Flex borderTop={"1px solid"} borderColor={"gray.100"}>
           <IconButton
-            aria-label="edit"
-            icon={<Icon as={EditIcon} />}
+            variant={"ghost"}
+            as={Flex}
+            w={"full"}
+            aria-label=" view details"
+            icon={<Icon as={ViewIcon} />}
             onClick={() =>
               navigate(`/dash/patients/${id}/payments/${payment.id}`)
             }
           />
+          <Divider orientation="vertical" h={"inherit"} />
           <DeletePayment payment={payment} />
-        </CardFooter>
+        </Flex>
       </Card>
     );
   }

@@ -4,14 +4,26 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  Checkbox,
   Flex,
   FormControl,
   FormHelperText,
   FormLabel,
   Heading,
   Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Select,
   Stack,
+  Tag,
+  Text,
+  Textarea,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { DevTool } from "@hookform/devtools";
@@ -37,12 +49,17 @@ const NewPaymentForm: React.FC<NewPaymentFormProps> = ({
   patients,
   dentalNotes,
 }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { id } = useParams<{ id: string }>();
   const { email } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
   const [addNewPayment, { isSuccess, isError, error }] =
     useAddNewPaymentMutation();
+  const [checkedItems, setCheckedItems] = React.useState([false, false]);
+
+  const allChecked = checkedItems.every(Boolean);
+  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
 
   //TODO: find a way to maintain select patient field to maintain state on reload
 
@@ -54,31 +71,31 @@ const NewPaymentForm: React.FC<NewPaymentFormProps> = ({
       total: undefined,
       remarks: "",
       planName: "",
-      initPayment: undefined,
-      initPaymentRemarks: "",
+      notesAndProcedures: [],
     },
     resolver: yupResolver(paymentValidation) as Resolver<PaymentFormValues>,
   });
 
-  const { register, control, handleSubmit, formState, reset, watch } = form;
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState,
+    reset,
+    watch,
+    setValue,
+    getValues,
+  } = form;
   const { errors, isSubmitting } = formState;
 
   const watchFields = watch(["patient", "date", "type", "total"]);
   const allFieldsHaveValue = watchFields.every(
     (field) => field !== undefined && field !== ""
   );
+  const paymentType = watch("type");
 
   const onSubmit = async (data: PaymentFormValues) => {
-    const {
-      patient,
-      date,
-      type,
-      total,
-      remarks,
-      planName,
-      initPayment,
-      initPaymentRemarks,
-    } = data;
+    const { patient, date, type, total, remarks, planName } = data;
 
     try {
       await addNewPayment({
@@ -88,8 +105,6 @@ const NewPaymentForm: React.FC<NewPaymentFormProps> = ({
         total,
         remarks,
         planName,
-        initPayment,
-        initPaymentRemarks,
         createdBy: email,
       });
     } catch (error) {
@@ -122,9 +137,17 @@ const NewPaymentForm: React.FC<NewPaymentFormProps> = ({
       });
     }
   }, [isSuccess]);
+
+  useEffect(() => {
+    if (paymentType === "Full Payment") {
+      setValue("planName", "");
+    } else if (paymentType === "Installment") {
+      setValue("remarks", "");
+    }
+  });
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <Card
           w={{
             base: "300px",
@@ -150,6 +173,7 @@ const NewPaymentForm: React.FC<NewPaymentFormProps> = ({
                   ))}
               </Select>
             </FormControl>
+
             <FormControl isRequired>
               <FormLabel>Date</FormLabel>
               <Controller
@@ -161,7 +185,13 @@ const NewPaymentForm: React.FC<NewPaymentFormProps> = ({
                       maxDate={new Date()}
                       showMonthDropdown
                       showYearDropdown
-                      customInput={<Input isInvalid={!!errors.date} />}
+                      customInput={
+                        <Input
+                          isInvalid={!!errors.date}
+                          autoComplete="false"
+                          name="hidden"
+                        />
+                      }
                       selected={
                         field.value
                           ? new Date(Number(field.value) * 1000)
@@ -180,6 +210,112 @@ const NewPaymentForm: React.FC<NewPaymentFormProps> = ({
                 </FormHelperText>
               )}
             </FormControl>
+            <>
+              <Button onClick={onOpen}>Select Notes</Button>
+              <Modal
+                isOpen={isOpen}
+                onClose={onClose}
+                closeOnOverlayClick={false}
+              >
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader as={Flex} justify={"center"}>
+                    Select Dental Notes
+                  </ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody p={"5px"}>
+                    <Stack>
+                      <Checkbox
+                        isChecked={allChecked}
+                        isIndeterminate={isIndeterminate}
+                        onChange={(e) =>
+                          setCheckedItems([e.target.checked, e.target.checked])
+                        }
+                      >
+                        Select All
+                      </Checkbox>
+                      {dentalNotes &&
+                        dentalNotes.map((note) => (
+                          <Card p={"5px"}>
+                            <Checkbox
+                              key={note.id}
+                              value={note.id}
+                              {...register("notesAndProcedures")}
+                              // isChecked={checkedItems[index]}
+                            >
+                              <Text>
+                                Tooth Number:{" "}
+                                {note.teethNums &&
+                                  note.teethNums.map((num) => (
+                                    <Tag mr={"2px"} mb={"2px"}>
+                                      {num}
+                                    </Tag>
+                                  ))}
+                              </Text>
+
+                              <Text>
+                                Tooth Procedures:{" "}
+                                {note.procedureNames &&
+                                  note.procedureNames.map((procedure) => (
+                                    <Tag>{procedure}</Tag>
+                                  ))}
+                              </Text>
+                              <Text>
+                                Note Date:{" "}
+                                {new Date(note.date * 1000).toLocaleString(
+                                  "en-US",
+                                  {
+                                    day: "numeric",
+                                    month: "short",
+                                    year: "numeric",
+                                  }
+                                )}
+                              </Text>
+                              <Text>
+                                Created On:{" "}
+                                {new Date(note.createdAt).toLocaleString(
+                                  "en-US",
+                                  {
+                                    day: "numeric",
+                                    month: "long",
+                                    year: "numeric",
+                                    hour: "numeric",
+                                    minute: "numeric",
+                                    second: "numeric",
+                                    hour12: true,
+                                  }
+                                )}
+                              </Text>
+                              <Text>Created by: {note.createdBy}</Text>
+                              <Text>
+                                Last Updated{" "}
+                                {new Date(note.updatedAt).toLocaleString(
+                                  "en-US",
+                                  {
+                                    day: "numeric",
+                                    month: "long",
+                                    year: "numeric",
+                                  }
+                                )}
+                              </Text>
+                              <Text>Updated by: {note.updatedBy}</Text>
+                            </Checkbox>
+                          </Card>
+                        ))}
+                    </Stack>
+                  </ModalBody>
+
+                  <ModalFooter>
+                    <Button
+                      isDisabled={!getValues("notesAndProcedures").length}
+                      onClick={onClose}
+                    >
+                      Confirm
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+            </>
             <FormControl isRequired>
               <FormLabel>Payment Type</FormLabel>
               <Select placeholder="Select payment type" {...register("type")}>
@@ -202,7 +338,7 @@ const NewPaymentForm: React.FC<NewPaymentFormProps> = ({
             {watch("type") === "Full Payment" && (
               <FormControl>
                 <FormLabel>Remarks</FormLabel>
-                <Input type="text" {...register("remarks")} />
+                <Textarea {...register("remarks")}> </Textarea>
                 {errors.remarks && (
                   <FormHelperText color={"red"}>
                     {errors.remarks.message}
@@ -221,21 +357,6 @@ const NewPaymentForm: React.FC<NewPaymentFormProps> = ({
                       {errors.planName.message}
                     </FormHelperText>
                   )}
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Initial Payment</FormLabel>
-
-                  <Input type="number" {...register("initPayment")} />
-                  {errors.initPayment && (
-                    <FormHelperText color={"red"}>
-                      {errors.initPayment.message}
-                    </FormHelperText>
-                  )}
-                </FormControl>
-
-                <FormControl>
-                  <FormLabel>Initial Payment Remarks</FormLabel>
-                  <Input type={"text"} {...register("initPaymentRemarks")} />
                 </FormControl>
               </>
             )}

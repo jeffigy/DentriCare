@@ -33,6 +33,9 @@ import { Route, Routes } from "react-router-dom";
 import NewPaymentPage from "pages/Patients/Payments/NewPaymentPage";
 import EditPaymentPage from "pages/Patients/Payments/EditPaymentPage";
 import "style.css";
+import PaymentDetailsPage from "pages/Patients/Payments/PaymentDetailsPage";
+import NewInstallmentPaymentPage from "pages/Patients/Payments/InstallmentPayment/NewInstallmentPaymentPage";
+import EditInstallmentPaymentPage from "pages/Patients/Payments/InstallmentPayment/EditInstallmentPaymentPage";
 
 const App = () => {
   return (
@@ -89,7 +92,20 @@ const App = () => {
                     <Route path="payments">
                       <Route index element={<PaymentsPage />} />
                       <Route path="new" element={<NewPaymentPage />} />
-                      <Route path=":paymentId" element={<EditPaymentPage />} />
+                      <Route path=":paymentId">
+                        <Route index element={<PaymentDetailsPage />} />
+                        <Route path="edit" element={<EditPaymentPage />} />
+                        <Route path="installment-payment">
+                          <Route
+                            path="new"
+                            element={<NewInstallmentPaymentPage />}
+                          />
+                          <Route
+                            path=":installmentPaymentId"
+                            element={<EditInstallmentPaymentPage />}
+                          />
+                        </Route>
+                      </Route>
                     </Route>
                     {/* photos route */}
                     <Route path="photos">

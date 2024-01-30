@@ -6,6 +6,6 @@ export type PaymentFormValues = {
   total: number;
   remarks: string;
   planName: string;
-  initPayment: number | undefined | null;
-  initPaymentRemarks: string;
+  // initPayment: number | undefined | null;
+  // initPaymentRemarks: string;
 };

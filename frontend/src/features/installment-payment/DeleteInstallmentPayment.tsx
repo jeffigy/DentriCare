@@ -2,6 +2,7 @@ import {
   Button,
   Flex,
   Icon,
+  Text,
   IconButton,
   Modal,
   ModalBody,
@@ -10,40 +11,37 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useDeletePaymentMutation } from "./paymentApiSlice";
-import { LuTrash2 } from "react-icons/lu";
-import { useNavigate } from "react-router-dom";
+import { useDeleteInstallmentPaymentMutation } from "./installmentPaymentApiSlice";
 import { ErrorType } from "types/ErrorType";
+import { LuTrash2 } from "react-icons/lu";
 
-type DeletePaymentProps = {
-  payment: {
+type DeleteInstallmentPaymentProps = {
+  installmentPayment: {
     id: string;
     date: number;
+    amount: number;
   };
-  backToPrev?: boolean;
 };
 
-const DeletePayment: React.FC<DeletePaymentProps> = ({
-  payment,
-  backToPrev,
+const DeleteInstallmentPayment: React.FC<DeleteInstallmentPaymentProps> = ({
+  installmentPayment,
 }) => {
   const toast = useToast();
-  const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [DeletePayment, { isSuccess, isError, error }] =
-    useDeletePaymentMutation();
+
+  const [DeleteInstallmentPayment, { isSuccess, isError, error }] =
+    useDeleteInstallmentPaymentMutation();
 
   const [delButtonState, setDelButtonState] = useState(false);
 
   const onDelete = async () => {
     setDelButtonState(true);
     try {
-      await DeletePayment({ id: payment.id });
+      await DeleteInstallmentPayment({ id: installmentPayment.id });
       setDelButtonState(false);
       onClose();
     } catch (error) {
@@ -55,15 +53,12 @@ const DeletePayment: React.FC<DeletePaymentProps> = ({
     if (isSuccess) {
       toast({
         title: "Success.",
-        description: "Payment has been deleted.",
+        description: "Installment Payment has been deleted.",
         status: "success",
         duration: 5000,
         isClosable: true,
       });
       onClose();
-      if (backToPrev) {
-        navigate(-1);
-      }
     }
   }, [isSuccess]);
 
@@ -98,14 +93,26 @@ const DeletePayment: React.FC<DeletePaymentProps> = ({
             {" "}
             <Text>
               {" "}
-              A you sure on deleting payment with date of{" "}
+              A you sure on deleting installment payment with date of{" "}
               <Text
                 as={"span"}
                 color={"red"}
                 fontWeight={"bold"}
                 fontSize={"lg"}
               >
-                {new Date(payment.date * 1000).toDateString()}
+                {new Date(installmentPayment.date * 1000).toDateString()}{" "}
+              </Text>
+              with the amount of{" "}
+              <Text
+                as={"span"}
+                color={"red"}
+                fontWeight={"bold"}
+                fontSize={"lg"}
+              >
+                ₱
+                {new Intl.NumberFormat("en-US").format(
+                  installmentPayment.amount
+                )}
               </Text>
               ? This action cannot be undone.
             </Text>
@@ -127,4 +134,4 @@ const DeletePayment: React.FC<DeletePaymentProps> = ({
     </>
   );
 };
-export default DeletePayment;
+export default DeleteInstallmentPayment;

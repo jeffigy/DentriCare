@@ -8,8 +8,6 @@ export type Payment = {
   total: number;
   remarks?: string;
   planName?: string;
-  initPayment?: number;
-  initPaymentRemarks?: string;
   createdBy: string;
   updatedBy: string;
   createdAt: string;

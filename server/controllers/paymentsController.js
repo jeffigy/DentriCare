@@ -37,8 +37,8 @@ const newPayment = async (req, res) => {
     total,
     remarks,
     planName,
-    initPayment,
-    initPaymentRemarks,
+    // initPayment,
+    // initPaymentRemarks,
     createdBy,
   } = req.body;
 
@@ -58,8 +58,8 @@ const newPayment = async (req, res) => {
   if (notesAndProcedures) paymentObj.notesAndProcedures = notesAndProcedures;
   if (remarks) paymentObj.remarks = remarks;
   if (planName) paymentObj.planName = planName;
-  if (initPayment) paymentObj.initPayment = initPayment;
-  if (initPaymentRemarks) paymentObj.initPaymentRemarks = initPaymentRemarks;
+  // if (initPayment) paymentObj.initPayment = initPayment;
+  // if (initPaymentRemarks) paymentObj.initPaymentRemarks = initPaymentRemarks;
 
   const payment = await Payment.create(paymentObj);
 
@@ -81,8 +81,8 @@ const updatePayment = async (req, res) => {
     total,
     remarks,
     planName,
-    initPayment,
-    initPaymentRemarks,
+    // initPayment,
+    // initPaymentRemarks,
     updatedBy,
   } = req.body;
 
@@ -108,8 +108,8 @@ const updatePayment = async (req, res) => {
   payment.notesAndProcedures = notesAndProcedures;
   payment.remarks = remarks;
   payment.planName = planName;
-  payment.initPayment = initPayment;
-  payment.initPaymentRemarks = initPaymentRemarks;
+  // payment.initPayment = initPayment;
+  // payment.initPaymentRemarks = initPaymentRemarks;
 
   const updatedPayment = await payment.save();
 

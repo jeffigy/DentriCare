@@ -21,7 +21,7 @@ const NewPaymentPage = () => {
     }),
   });
 
-  if (!dentalNotes || !patients) return <DashSpinner />;
+  if (!patients) return <DashSpinner />;
 
   return (
     <Flex w={"full"} justify={"center"}>

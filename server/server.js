@@ -29,6 +29,7 @@ app.use("/procedures", require("./routes/procedureRoutes"));
 app.use("/dental-notes", require("./routes/dentalNoteRoutes"));
 app.use("/appointments", require("./routes/appointmentRoutes"));
 app.use("/payments", require("./routes/paymentRoutes"));
+app.use("/installment-payments", require("./routes/installmentPaymentRoutes"));
 
 app.all("*", (req, res) => {
   res.status(404);

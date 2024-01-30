@@ -12,6 +12,7 @@ import {
   Input,
   Select,
   Stack,
+  Textarea,
   useToast,
 } from "@chakra-ui/react";
 import { DevTool } from "@hookform/devtools";
@@ -19,17 +20,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import useAuth from "hooks/useAuth";
 import React, { useEffect } from "react";
 import { Controller, Resolver, useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { DentalNote } from "types/DentalNote";
 import { Patient } from "types/Patient";
 import { PaymentFormValues } from "types/PaymentFormValues";
 import { paymentValidation } from "validations/paymentValidation";
 import DatePicker from "react-datepicker";
-import { paymentTypes } from "config/PaymentTypes";
-import {
-  useAddNewPaymentMutation,
-  useUpdatePaymentMutation,
-} from "./paymentApiSlice";
+import { useUpdatePaymentMutation } from "./paymentApiSlice";
 import { ErrorType } from "types/ErrorType";
 import { Payment } from "types/Payment";
 
@@ -57,29 +54,15 @@ const EditPaymentForm: React.FC<EditPaymentFormProps> = ({
       total: payment.total,
       remarks: payment.remarks,
       planName: payment.planName,
-      initPayment: payment.initPayment,
-      initPaymentRemarks: payment.initPaymentRemarks,
     },
     resolver: yupResolver(paymentValidation) as Resolver<PaymentFormValues>,
   });
 
-  const { register, control, handleSubmit, formState, reset, watch, setValue } =
-    form;
+  const { register, control, handleSubmit, formState, reset, watch } = form;
   const { errors, isSubmitting, isDirty } = formState;
 
-  const paymentType = watch("type");
-
   const onSubmit = async (data: PaymentFormValues) => {
-    const {
-      patient,
-      date,
-      type,
-      total,
-      remarks,
-      planName,
-      initPayment,
-      initPaymentRemarks,
-    } = data;
+    const { patient, date, type, total, remarks, planName } = data;
 
     try {
       await updatePayment({
@@ -90,8 +73,6 @@ const EditPaymentForm: React.FC<EditPaymentFormProps> = ({
         total,
         remarks,
         planName,
-        initPayment,
-        initPaymentRemarks,
         updatedBy: email,
       });
     } catch (error) {
@@ -125,15 +106,6 @@ const EditPaymentForm: React.FC<EditPaymentFormProps> = ({
     }
   }, [isSuccess]);
 
-  useEffect(() => {
-    if (paymentType === "Installment") {
-      setValue("remarks", "");
-    } else if (paymentType === "Full Payment") {
-      setValue("planName", "");
-      setValue("initPayment", null);
-      setValue("initPaymentRemarks", "");
-    }
-  }, [paymentType]);
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -144,7 +116,7 @@ const EditPaymentForm: React.FC<EditPaymentFormProps> = ({
           }}
         >
           <CardHeader as={Flex} justify={"center"}>
-            <Heading size={"md"}>New Payment</Heading>
+            <Heading size={"md"}>Edit Payment</Heading>
           </CardHeader>
           <CardBody as={Stack} spacing={"10px"}>
             <FormControl isRequired>
@@ -192,16 +164,7 @@ const EditPaymentForm: React.FC<EditPaymentFormProps> = ({
                 </FormHelperText>
               )}
             </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Payment Type</FormLabel>
-              <Select placeholder="Select payment type" {...register("type")}>
-                {Object.values(paymentTypes).map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
+
             <FormControl isRequired>
               <FormLabel>Total</FormLabel>
               <Input type="number" {...register("total")} />
@@ -214,7 +177,7 @@ const EditPaymentForm: React.FC<EditPaymentFormProps> = ({
             {watch("type") === "Full Payment" && (
               <FormControl>
                 <FormLabel>Remarks</FormLabel>
-                <Input type="text" {...register("remarks")} />
+                <Textarea {...register("remarks")}></Textarea>
                 {errors.remarks && (
                   <FormHelperText color={"red"}>
                     {errors.remarks.message}
@@ -227,27 +190,12 @@ const EditPaymentForm: React.FC<EditPaymentFormProps> = ({
                 <FormControl>
                   <FormLabel>Plan</FormLabel>
 
-                  <Input {...register("planName")} />
+                  <Textarea {...register("planName")}> </Textarea>
                   {errors.planName && (
                     <FormHelperText color={"red"}>
                       {errors.planName.message}
                     </FormHelperText>
                   )}
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Initial Payment</FormLabel>
-
-                  <Input type="number" {...register("initPayment")} />
-                  {errors.initPayment && (
-                    <FormHelperText color={"red"}>
-                      {errors.initPayment.message}
-                    </FormHelperText>
-                  )}
-                </FormControl>
-
-                <FormControl>
-                  <FormLabel>Initial Payment Remarks</FormLabel>
-                  <Input type={"text"} {...register("initPaymentRemarks")} />
                 </FormControl>
               </>
             )}

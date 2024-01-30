@@ -69,7 +69,14 @@ const DentalNoteCard: React.FC<DentalNoteCardProps> = ({
                 year: "numeric",
               })}
             </Text>
-            <Text>Date: {new Date(dentalNote.date * 1000).toDateString()}</Text>
+            <Text>
+              Date:{" "}
+              {new Date(dentalNote.date * 1000).toLocaleString("en-US", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })}
+            </Text>
             <Text>
               created on:{" "}
               {new Date(dentalNote.updatedAt).toLocaleString("en-US", {

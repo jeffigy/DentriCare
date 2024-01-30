@@ -12,8 +12,7 @@ import { Payment } from "types/Payment";
 
 const EditPaymentPage = () => {
   useTitle("Edit Payment");
-  const { id, paymentId } = useParams<{ id: string; paymentId: string }>();
-  console.log("paymentId", paymentId);
+  const { paymentId } = useParams<{ paymentId: string }>();
   const { payment } = useGetPaymentsQuery("paymentsList", {
     selectFromResult: ({ data }) => ({
       payment: data?.entities[paymentId as string],
