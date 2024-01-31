@@ -9,8 +9,8 @@ router
   .patch(installmentPaymentController.updateInstallmentPayment)
   .delete(installmentPaymentController.deleteInstallmentPayment);
 
-// router
-//   .route("/:paymentId")
-//   .get(installmentPaymentController.getInstallmentPaymentsByPaymentId);
+router
+  .route("/:paymentId")
+  .get(installmentPaymentController.getInstallmentPaymentsByPaymentId);
 
 module.exports = router;

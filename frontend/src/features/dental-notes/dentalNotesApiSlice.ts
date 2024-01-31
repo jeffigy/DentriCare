@@ -7,6 +7,7 @@ const dentalNotesAdapter = createEntityAdapter({
   sortComparer: (a: DentalNote, b: DentalNote) =>
     b.createdAt.localeCompare(a.createdAt),
 });
+
 const initialState = dentalNotesAdapter.getInitialState();
 
 export const dentalNotesApiSlice = apiSlice.injectEndpoints({
@@ -18,6 +19,34 @@ export const dentalNotesApiSlice = apiSlice.injectEndpoints({
           return response.status === 200 && !result.isError;
         },
       }),
+      transformResponse: (responseData: DentalNote[]) => {
+        const loadedDentalNotes = responseData.map((dentalNote) => {
+          dentalNote.id = String(dentalNote._id);
+          return dentalNote;
+        });
+        return dentalNotesAdapter.addMany(initialState, loadedDentalNotes);
+      },
+
+      providesTags: (result) => {
+        if (result?.ids) {
+          return [
+            { type: "DentalNote" as const, id: "LIST" as const },
+            ...result.ids.map((id) => ({ type: "DentalNote" as const, id })),
+          ];
+        } else {
+          return [{ type: "DentalNote" as const, id: "LIST" as const }];
+        }
+      },
+    }),
+
+    getDentalNotesByPatientId: builder.query({
+      query: (patientId) => ({
+        url: `/dental-notes/${patientId}`,
+        validateStatus: (response, result) => {
+          return response.status === 200 && !result.isError;
+        },
+      }),
+
       transformResponse: (responseData: DentalNote[]) => {
         const loadedDentalNotes = responseData.map((dentalNote) => {
           dentalNote.id = String(dentalNote._id);
@@ -73,6 +102,7 @@ export const dentalNotesApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetDentalNotesQuery,
+  useGetDentalNotesByPatientIdQuery,
   useAddNewDentalNoteMutation,
   useUpdateDentalNoteMutation,
   useDeleteDentalNoteMutation,

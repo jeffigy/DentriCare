@@ -27,6 +27,18 @@ const getAllPayments = async (req, res) => {
   //   );
 };
 
+const getAllPaymentByPatientId = async (req, res) => {
+  const { id } = req.params;
+
+  const payments = await Payment.find({ patient: id }).lean();
+
+  if (!payments?.length) {
+    return res.status(400).json({ message: "No payments found" });
+  }
+
+  res.json(payments);
+};
+
 //* create new payment
 const newPayment = async (req, res) => {
   const {
@@ -37,8 +49,6 @@ const newPayment = async (req, res) => {
     total,
     remarks,
     planName,
-    // initPayment,
-    // initPaymentRemarks,
     createdBy,
   } = req.body;
 
@@ -58,8 +68,6 @@ const newPayment = async (req, res) => {
   if (notesAndProcedures) paymentObj.notesAndProcedures = notesAndProcedures;
   if (remarks) paymentObj.remarks = remarks;
   if (planName) paymentObj.planName = planName;
-  // if (initPayment) paymentObj.initPayment = initPayment;
-  // if (initPaymentRemarks) paymentObj.initPaymentRemarks = initPaymentRemarks;
 
   const payment = await Payment.create(paymentObj);
 
@@ -81,8 +89,6 @@ const updatePayment = async (req, res) => {
     total,
     remarks,
     planName,
-    // initPayment,
-    // initPaymentRemarks,
     updatedBy,
   } = req.body;
 
@@ -108,8 +114,6 @@ const updatePayment = async (req, res) => {
   payment.notesAndProcedures = notesAndProcedures;
   payment.remarks = remarks;
   payment.planName = planName;
-  // payment.initPayment = initPayment;
-  // payment.initPaymentRemarks = initPaymentRemarks;
 
   const updatedPayment = await payment.save();
 
@@ -139,6 +143,7 @@ const deletePayment = async (req, res) => {
 
 module.exports = {
   getAllPayments,
+  getAllPaymentByPatientId,
   newPayment,
   updatePayment,
   deletePayment,

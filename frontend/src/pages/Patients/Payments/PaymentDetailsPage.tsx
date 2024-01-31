@@ -97,9 +97,10 @@ const PaymentDetailsPage = () => {
               })}
             </Text>
           </Flex>
-          <Divider />
+
           {payment.updatedBy && (
             <>
+              <Divider />
               <Flex justify={"space-between"}>
                 <Text color={"gray.500"}> Updated By</Text>
                 <Text color={"gray.500"}>{payment.updatedBy}</Text>

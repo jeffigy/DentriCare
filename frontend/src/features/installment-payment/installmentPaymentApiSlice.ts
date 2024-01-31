@@ -48,6 +48,42 @@ export const installmentPaymentApiSlice = apiSlice.injectEndpoints({
       },
     }),
 
+    getInstallmentPaymentsByPaymentId: builder.query({
+      query: (paymentId) => ({
+        url: `/installment-payments/${paymentId}`,
+        validateStatus: (response, result) => {
+          return response.status === 200 && !result.isError;
+        },
+      }),
+
+      transformResponse: (responseData: InstallmentPayment[]) => {
+        const loadedInstallmentPayments = responseData.map(
+          (installmentPayment) => {
+            installmentPayment.id = String(installmentPayment._id);
+            return installmentPayment;
+          }
+        );
+        return installmentPaymentsAdapter.addMany(
+          initialState,
+          loadedInstallmentPayments
+        );
+      },
+
+      providesTags: (result) => {
+        if (result?.ids) {
+          return [
+            { type: "InstallmentPayment" as const, id: "LIST" as const },
+            ...result.ids.map((id) => ({
+              type: "InstallmentPayment" as const,
+              id,
+            })),
+          ];
+        } else {
+          return [{ type: "InstallmentPayment" as const, id: "LIST" as const }];
+        }
+      },
+    }),
+
     addNewInstallmentPayment: builder.mutation({
       query: (initialInstallmentPaymentData) => ({
         url: "/installment-payments",
@@ -84,6 +120,7 @@ export const installmentPaymentApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetInstallmentPaymentsQuery,
+  useGetInstallmentPaymentsByPaymentIdQuery,
   useAddNewInstallmentPaymentMutation,
   useUpdateInstallmentPaymentMutation,
   useDeleteInstallmentPaymentMutation,

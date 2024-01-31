@@ -12,4 +12,6 @@ router
   .patch(paymentsController.updatePayment)
   .delete(paymentsController.deletePayment);
 
+router.route("/:id").get(paymentsController.getAllPaymentByPatientId);
+
 module.exports = router;

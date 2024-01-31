@@ -39,6 +39,34 @@ export const paymentApiSlice = apiSlice.injectEndpoints({
       },
     }),
 
+    getPaymentsByPatientId: builder.query({
+      query: (patientId) => ({
+        url: `/payments/${patientId}`,
+        validateStatus: (response, result) => {
+          return response.status === 200 && !result.isError;
+        },
+      }),
+
+      transformResponse: (responseData: Payment[]) => {
+        const loadedPayments = responseData.map((payment) => {
+          payment.id = String(payment._id);
+          return payment;
+        });
+        return paymentsAdapter.addMany(initialState, loadedPayments);
+      },
+
+      providesTags: (result) => {
+        if (result?.ids) {
+          return [
+            { type: "Payment" as const, id: "LIST" as const },
+            ...result.ids.map((id) => ({ type: "Payment" as const, id })),
+          ];
+        } else {
+          return [{ type: "Payment" as const, id: "LIST" as const }];
+        }
+      },
+    }),
+
     addNewPayment: builder.mutation({
       query: (initialPayment) => ({
         url: "/payments",
@@ -75,6 +103,7 @@ export const paymentApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetPaymentsQuery,
+  useGetPaymentsByPatientIdQuery,
   useAddNewPaymentMutation,
   useUpdatePaymentMutation,
   useDeletePaymentMutation,

@@ -4,28 +4,28 @@ const InstallmentPayment = require("../models/InstallmentPayment");
 const getAllInstallmentPayments = async (req, res) => {
   const installmentPayments = await InstallmentPayment.find().lean();
   if (!installmentPayments?.length) {
-    return res.status(400).json({ message: "no installment payments found" });
+    return res.status(400).json({ message: "No installment payments found" });
   }
 
   res.json(installmentPayments);
 };
 
 // //* get all installment by payment id
-// const getInstallmentPaymentsByPaymentId = async (req, res) => {
-//   const { paymentId } = req.params;
+const getInstallmentPaymentsByPaymentId = async (req, res) => {
+  const { paymentId } = req.params;
 
-//   const installmentPayments = await InstallmentPayment.find({
-//     payment: paymentId,
-//   }).lean();
+  const installmentPayments = await InstallmentPayment.find({
+    payment: paymentId,
+  }).lean();
 
-//   if (!installmentPayments?.length) {
-//     return res.status(400).json({
-//       message: `No installment payments found for payment id ${paymentId}`,
-//     });
-//   }
+  if (!installmentPayments?.length) {
+    return res.status(400).json({
+      message: "No installment payments found",
+    });
+  }
 
-//   res.json(installmentPayments);
-// };
+  res.json(installmentPayments);
+};
 
 //* create new installment payment
 const newInstallmentPayment = async (req, res) => {
@@ -111,5 +111,5 @@ module.exports = {
   newInstallmentPayment,
   updateInstallmentPayment,
   deleteInstallmentPayment,
-  // getInstallmentPaymentsByPaymentId,
+  getInstallmentPaymentsByPaymentId,
 };

@@ -1,10 +1,10 @@
+import { Flex, Stack } from "@chakra-ui/react";
 import DashSpinner from "components/Dashboard/DashSpinner";
-import { useGetDentalNotesQuery } from "./dentalNotesApiSlice";
-import { Alert, AlertIcon, Stack, Text } from "@chakra-ui/react";
-import { ErrorType } from "types/ErrorType";
 import DentalNoteCard from "features/dental-notes/DentalNoteCard";
-import { useParams } from "react-router-dom";
 import useTitle from "hooks/useTitle";
+import { useParams } from "react-router-dom";
+import { ErrorType } from "types/ErrorType";
+import { useGetDentalNotesByPatientIdQuery } from "./dentalNotesApiSlice";
 
 const DentalNotesList = () => {
   useTitle("Dental Notes");
@@ -15,7 +15,7 @@ const DentalNotesList = () => {
     error,
     isLoading,
     isSuccess,
-  } = useGetDentalNotesQuery("dentalNotesList", {
+  } = useGetDentalNotesByPatientIdQuery(id, {
     pollingInterval: 6000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
@@ -24,22 +24,19 @@ const DentalNotesList = () => {
   if (isLoading) return <DashSpinner />;
   if (isError)
     return (
-      <Alert status="error">
-        <AlertIcon />
-        {(error as ErrorType)?.data?.message}
-      </Alert>
+      <Flex justify={"center"}>{(error as ErrorType)?.data?.message}</Flex>
     );
 
   if (isSuccess) {
     const { ids, entities } = dentalNotes;
 
-    if (
-      !ids.length ||
-      !ids.filter((noteId: string | number) => entities[noteId]?.patient === id)
-        .length
-    ) {
-      return <Text>No dental notes found</Text>;
-    }
+    // if (
+    //   !ids.length ||
+    //   !ids.filter((noteId: string | number) => entities[noteId]?.patient === id)
+    //     .length
+    // ) {
+    //   return <Text>No dental notes found</Text>;
+    // }
     return (
       <Stack>
         {ids.length &&

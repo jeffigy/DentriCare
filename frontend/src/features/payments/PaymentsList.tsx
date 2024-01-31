@@ -1,14 +1,7 @@
 import { useParams } from "react-router-dom";
-import { useGetPaymentsQuery } from "./paymentApiSlice";
+import { useGetPaymentsByPatientIdQuery } from "./paymentApiSlice";
 import DashSpinner from "components/Dashboard/DashSpinner";
-import {
-  Alert,
-  AlertIcon,
-  Card,
-  CardBody,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, Stack } from "@chakra-ui/react";
 import { ErrorType } from "types/ErrorType";
 import PaymentCard from "./PaymentCard";
 
@@ -20,7 +13,7 @@ const PaymentsList = () => {
     error,
     isLoading,
     isSuccess,
-  } = useGetPaymentsQuery("paymentsList", {
+  } = useGetPaymentsByPatientIdQuery(id, {
     pollingInterval: 6000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
@@ -30,22 +23,19 @@ const PaymentsList = () => {
 
   if (isError)
     return (
-      <Alert status="error">
-        <AlertIcon />
-        {(error as ErrorType)?.data?.message}
-      </Alert>
+      <Flex justify={"center"}>{(error as ErrorType)?.data?.message}</Flex>
     );
 
   if (isSuccess) {
     const { ids, entities } = payments;
-    if (
-      !ids.length ||
-      !ids.filter(
-        (paymentId: string | number) => entities[paymentId]?.patient === id
-      ).length
-    ) {
-      return <div>No payments found</div>;
-    }
+    // if (
+    //   !ids.length ||
+    //   !ids.filter(
+    //     (paymentId: string | number) => entities[paymentId]?.patient === id
+    //   ).length
+    // ) {
+    //   return <div>No payments found</div>;
+    // }
     return (
       <Stack>
         {ids.length &&
@@ -60,7 +50,5 @@ const PaymentsList = () => {
       </Stack>
     );
   }
-
-  return <div>Have a good coding</div>;
 };
 export default PaymentsList;

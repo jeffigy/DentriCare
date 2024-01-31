@@ -28,6 +28,36 @@ const getAllDentalNotes = async (req, res) => {
   res.json(notesWithProcedure);
 };
 
+//* get all dental notes by patient id
+const getAllDentalNotesByPatientId = async (req, res) => {
+  const { id } = req.params;
+  const dentalNotes = await DentalNote.find({ patient: id }).lean();
+
+  if (!dentalNotes?.length) {
+    return res
+      .status(400)
+      .json({ message: `No dental notes found for patient ${id}` });
+  }
+
+  const notesWithProcedure = await Promise.all(
+    dentalNotes.map(async (note) => {
+      const procedures = await Promise.all(
+        note.procedures.map(async (procedure) => {
+          const procedureObj = await Procedure.findById(procedure).exec();
+          return procedureObj;
+        })
+      );
+
+      return {
+        ...note,
+        procedureNames: procedures.map((procedure) => procedure.name),
+      };
+    })
+  );
+
+  res.json(notesWithProcedure);
+};
+
 //* create new dental note
 const newDentalNote = async (req, res) => {
   const { teethType, teethNums, createdBy, date, procedures, note, patient } =
@@ -112,6 +142,7 @@ const deleteDentalNote = async (req, res) => {
 
 module.exports = {
   getAllDentalNotes,
+  getAllDentalNotesByPatientId,
   newDentalNote,
   updateDentalNote,
   deleteDentalNote,

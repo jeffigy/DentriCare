@@ -1,7 +1,7 @@
-import { Alert, AlertIcon, Stack } from "@chakra-ui/react";
+import { Flex, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useGetInstallmentPaymentsQuery } from "./installmentPaymentApiSlice";
+import { useGetInstallmentPaymentsByPaymentIdQuery } from "./installmentPaymentApiSlice";
 import DashSpinner from "components/Dashboard/DashSpinner";
 import { ErrorType } from "types/ErrorType";
 import InstallmentPaymentCard from "./InstallmentPaymentCard";
@@ -16,7 +16,7 @@ const InstallmentPaymentsList: React.FC<InstallmentPaymentsListProps> = () => {
     error,
     isLoading,
     isSuccess,
-  } = useGetInstallmentPaymentsQuery("installmentPaymentsList", {
+  } = useGetInstallmentPaymentsByPaymentIdQuery(paymentId, {
     pollingInterval: 6000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
@@ -26,28 +26,26 @@ const InstallmentPaymentsList: React.FC<InstallmentPaymentsListProps> = () => {
 
   if (isError)
     return (
-      <Alert status="error">
-        <AlertIcon />
-        {(error as ErrorType)?.data?.message}
-      </Alert>
+      <Flex justify={"center"}>{(error as ErrorType)?.data?.message}</Flex>
     );
+
   if (isSuccess) {
+    const installmentPaymentsArray = installmentPayment.ids.map(
+      (id) => installmentPayment.entities[id]
+    );
+    const totalAmount = installmentPaymentsArray.reduce(
+      (total, payment) => total + (payment?.amount ?? 0),
+      0
+    );
+
     const { ids, entities } = installmentPayment;
 
-    if (
-      !ids.length ||
-      !ids.filter((id: string | number) => entities[id]?.payment === paymentId)
-        .length
-    ) {
-      return (
-        <Alert status="error">
-          <AlertIcon />
-          No installment payments found
-        </Alert>
-      );
-    }
     return (
       <Stack>
+        <Text>
+          Total amount Paid: ₱
+          {new Intl.NumberFormat("en-US").format(totalAmount)}
+        </Text>
         {ids.length &&
           ids
             .filter((id) => entities[id]?.payment === paymentId)

@@ -12,4 +12,6 @@ router
   .patch(dentalNotesController.updateDentalNote)
   .delete(dentalNotesController.deleteDentalNote);
 
+router.route("/:id").get(dentalNotesController.getAllDentalNotesByPatientId);
+
 module.exports = router;
