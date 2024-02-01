@@ -110,11 +110,6 @@ const PatientDetailsPage = () => {
         </Flex>
         <Stack flexGrow={1}>
           <NavCard
-            title={"Treatment Plans"}
-            icon={FiFileText}
-            to={`/dash/patients/${id}/treatment-plans`}
-          />
-          <NavCard
             title={"Appointments"}
             icon={FiCalendar}
             to={`/dash/patients/${id}/patient-appointments`}

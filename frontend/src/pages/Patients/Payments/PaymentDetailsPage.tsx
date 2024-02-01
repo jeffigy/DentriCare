@@ -147,6 +147,7 @@ const PaymentDetailsPage = () => {
           >
             <Text>Installment Payments</Text>
             <Button
+              borderRadius={"md"}
               leftIcon={<AddIcon />}
               onClick={() =>
                 navigate(
