@@ -4,13 +4,15 @@ import {
   Button,
   Card,
   CardBody,
+  Divider,
   Flex,
   Icon,
+  IconButton,
   Stack,
   Text,
 } from "@chakra-ui/react";
 import { LuHistory } from "react-icons/lu";
-import { FiFileText, FiCalendar } from "react-icons/fi";
+import { FiCalendar } from "react-icons/fi";
 import { MdOutlinePayments, MdOutlineInsertPhoto } from "react-icons/md";
 import { PiNotepadBold } from "react-icons/pi";
 import DashSpinner from "components/Dashboard/DashSpinner";
@@ -21,6 +23,7 @@ import useTitle from "hooks/useTitle";
 import { useNavigate, useParams } from "react-router-dom";
 import { Patient } from "types/Patient";
 import { useEffect } from "react";
+import DeletePatient from "features/patients/DeletePatient";
 
 const PatientDetailsPage = () => {
   useTitle("Patient Details");
@@ -32,6 +35,12 @@ const PatientDetailsPage = () => {
     }),
   });
 
+  const calculateAge = (birthdate: number) => {
+    const ageDiffMs = Date.now() - birthdate * 1000;
+    const ageDate = new Date(ageDiffMs);
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+  };
+
   useEffect(() => {
     if (localStorage.getItem("patientId")) {
       localStorage.removeItem("patientId");
@@ -42,12 +51,6 @@ const PatientDetailsPage = () => {
   if (!patient) return <DashSpinner />;
 
   if (patient) {
-    const created = new Date(patient.createdAt).toLocaleString("en-US", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-
     return (
       <Flex
         w={"full"}
@@ -67,25 +70,6 @@ const PatientDetailsPage = () => {
         >
           <Card mb={"10px"}>
             <CardBody as={Flex} direction={"column"} align={"center"} w="full">
-              <Flex w={"full"} justify={"space-between"}>
-                <Button
-                  size={"sm"}
-                  aria-label="edit"
-                  colorScheme="red"
-                  leftIcon={<Icon as={DeleteIcon} />}
-                  onClick={() => navigate(`/dash/patients/${id}/edit`)}
-                >
-                  Delete
-                </Button>{" "}
-                <Button
-                  size={"sm"}
-                  aria-label="edit"
-                  leftIcon={<Icon as={EditIcon} />}
-                  onClick={() => navigate(`/dash/patients/${id}/edit`)}
-                >
-                  Edit
-                </Button>
-              </Flex>
               <Avatar boxSize={"150px"} mb={"10px"} />
               <Text
                 fontSize={"24px"}
@@ -93,6 +77,18 @@ const PatientDetailsPage = () => {
                 color={"gray.600"}
               >{`${patient.fname} ${patient.mname} ${patient.lname}`}</Text>
             </CardBody>
+            <Flex borderTop={"1px solid"} borderColor={"gray.100"}>
+              <IconButton
+                variant={"ghost"}
+                w={"full"}
+                aria-label="edit"
+                icon={<Icon as={EditIcon} />}
+                onClick={() => navigate(`/dash/patients/${id}/edit`)}
+              />
+
+              <Divider orientation="vertical" h={"inherit"} />
+              <DeletePatient patient={patient} />
+            </Flex>
           </Card>
 
           <Flex p={"10px"}>
@@ -101,10 +97,39 @@ const PatientDetailsPage = () => {
               <Detail title={"Address:"} value={patient.address} />
               <Detail
                 title={"Birthdate:"}
-                value={new Date(patient.bday * 1000).toDateString()}
+                value={new Date(patient.bday * 1000)
+                  .toDateString()
+                  .split(" ")
+                  .slice(1)
+                  .join(" ")}
+              />
+              <Detail
+                title={"Age"}
+                value={calculateAge(patient.bday).toString()}
               />
               <Detail title={"Created By:"} value={patient.createdBy} />
-              <Detail title={"Created At:"} value={created} />
+              <Detail
+                title={"Date Created:"}
+                value={new Date(patient.createdAt).toLocaleString("en-US", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              />
+              {patient.updatedBy && (
+                <>
+                  {" "}
+                  <Detail title={"Created By:"} value={patient.updatedBy} />
+                  <Detail
+                    title={"Last Updated:"}
+                    value={new Date(patient.updatedAt).toLocaleString("en-US", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  />
+                </>
+              )}
             </Flex>
           </Flex>
         </Flex>

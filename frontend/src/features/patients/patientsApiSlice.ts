@@ -3,7 +3,10 @@ import { apiSlice } from "app/api/apiSlice";
 import { RootState } from "app/store";
 import { Patient } from "types/Patient";
 
-const patientsAdapter = createEntityAdapter({});
+const patientsAdapter = createEntityAdapter({
+  sortComparer: (a: Patient, b: Patient) =>
+    b.createdAt.localeCompare(a.createdAt),
+});
 
 const initialState = patientsAdapter.getInitialState();
 

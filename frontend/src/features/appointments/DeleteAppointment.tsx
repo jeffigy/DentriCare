@@ -16,7 +16,6 @@ import {
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { LuTrash2 } from "react-icons/lu";
-import { useNavigate, useParams } from "react-router-dom";
 import { useDeleteAppointmentMutation } from "./appointmentsApiSlice";
 import { ErrorType } from "types/ErrorType";
 

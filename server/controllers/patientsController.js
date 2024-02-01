@@ -2,7 +2,6 @@ const Patient = require("../models/Patient");
 
 //* get all patients
 const getAllPatients = async (req, res) => {
-  // const patients = await Patient.find().select("-createdBy").lean();
   const patients = await Patient.find().lean();
 
   if (!patients?.length) {
@@ -60,7 +59,7 @@ const createNewPatient = async (req, res) => {
 
 //* update patient
 const updatePatient = async (req, res) => {
-  const { id, fname, mname, lname, bday, address, phone } = req.body;
+  const { id, fname, mname, lname, bday, address, phone, updatedBy } = req.body;
 
   if (
     !id ||
@@ -100,6 +99,7 @@ const updatePatient = async (req, res) => {
   patient.bday = bday;
   patient.phone = phone;
   patient.address = address;
+  patient.updatedBy = updatedBy;
 
   const updatedPatient = await patient.save();
   res.json(

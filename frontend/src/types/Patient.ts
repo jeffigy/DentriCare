@@ -1,5 +1,4 @@
 export type Patient = {
-  [x: string]: string | number | undefined;
   _id?: string;
   id: string;
   createdBy: string;
@@ -11,6 +10,16 @@ export type Patient = {
   phone: string;
   createdAt: string;
   updatedAt: string;
+  updatedBy: string;
   patient: string;
   __v?: number;
+};
+
+export type PatientFormValues = {
+  fname: string;
+  mname: string;
+  lname: string;
+  bday: number | Date;
+  address: string;
+  phone: string;
 };

@@ -5,7 +5,11 @@ const patientSchema = new mongoose.Schema(
   {
     createdBy: {
       type: String,
-      required: true,
+      required: false,
+    },
+    updatedBy: {
+      type: String,
+      required: false,
     },
     fname: {
       type: String,

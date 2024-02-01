@@ -1,19 +1,23 @@
 import {
   Button,
+  Icon,
+  IconButton,
   Modal,
-  Text,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
   ModalBody,
+  ModalCloseButton,
+  ModalContent,
   ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useDeletePatientMutation } from "./patientsApiSlice";
+import { LuTrash2 } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
+import { ErrorType } from "types/ErrorType";
+import { useDeletePatientMutation } from "./patientsApiSlice";
 
 type DeletePatientProps = {
   patient: {
@@ -28,10 +32,8 @@ const DeletePatient: React.FC<DeletePatientProps> = ({ patient }) => {
   const toast = useToast();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [
-    deletePatient,
-    { isSuccess: isDelSuccess, isError: isDelError, error: delError },
-  ] = useDeletePatientMutation();
+  const [deletePatient, { isSuccess, isError, error }] =
+    useDeletePatientMutation();
   const [delButtonState, setDelButtonState] = useState(false);
 
   const onDelete = async () => {
@@ -46,7 +48,7 @@ const DeletePatient: React.FC<DeletePatientProps> = ({ patient }) => {
   };
 
   useEffect(() => {
-    if (isDelSuccess) {
+    if (isSuccess) {
       toast({
         title: "Patient deleted.",
         description: "Patient has been deleted.",
@@ -55,25 +57,34 @@ const DeletePatient: React.FC<DeletePatientProps> = ({ patient }) => {
         isClosable: true,
       });
       onClose();
-      navigate("/dash/patients");
+      navigate(-1);
     }
-    if (isDelError) {
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
       toast({
         title: "Patient not deleted.",
-        description: "Patient has not been deleted.",
+        description: `${(error as ErrorType).data.message}`,
         status: "error",
         duration: 5000,
         isClosable: true,
       });
       onClose();
     }
-  }, [isDelSuccess, isDelError]);
+  }, [isError]);
 
   return (
     <>
-      <Button variant={"ghost"} w={"full"} colorScheme="red" onClick={onOpen}>
-        Delete Patient
-      </Button>
+      <IconButton
+        aria-label="delete patient"
+        variant={"ghost"}
+        w={"full"}
+        icon={<Icon as={LuTrash2} />}
+        colorScheme="red"
+        onClick={onOpen}
+      />
+
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

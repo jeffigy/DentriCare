@@ -17,15 +17,15 @@ import {
 } from "@chakra-ui/react";
 import { DevTool } from "@hookform/devtools";
 import { yupResolver } from "@hookform/resolvers/yup";
+import useAuth from "hooks/useAuth";
 import { useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Controller, Resolver, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { PatientFormValues } from "types/PatientFormValues";
+import { PatientFormValues } from "types/Patient";
 import { newPatientValidation } from "validations/patientValidation";
 import { useAddNewPatientMutation } from "./patientsApiSlice";
-import useAuth from "hooks/useAuth";
 
 const NewPatientForm = () => {
   const toast = useToast();

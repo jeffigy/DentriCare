@@ -17,16 +17,15 @@ import {
 } from "@chakra-ui/react";
 import { DevTool } from "@hookform/devtools";
 import { yupResolver } from "@hookform/resolvers/yup";
+import useAuth from "hooks/useAuth";
 import React, { useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Controller, Resolver, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ErrorType } from "types/ErrorType";
-import { Patient } from "types/Patient";
-import { PatientFormValues } from "types/PatientFormValues";
+import { Patient, PatientFormValues } from "types/Patient";
 import { newPatientValidation } from "validations/patientValidation";
-import DeletePatient from "./DeletePatient";
 import { useUpdatePatientMutation } from "./patientsApiSlice";
 
 type EditPatientFormProps = {
@@ -34,6 +33,7 @@ type EditPatientFormProps = {
 };
 
 const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
+  const { email } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -65,22 +65,30 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
         bday,
         address,
         phone,
+        updatedBy: email,
       });
     } catch (error) {
-      toast({
-        title: "Error",
-        description: `${
-          (error as ErrorType)?.data?.message ?? "An error occurred"
-        }`,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      console.log("edit patient error", error);
     }
   };
 
   useEffect(() => {
-    if (isError && !toast.isActive("errorToast")) {
+    if (isSuccess) {
+      reset();
+      toast({
+        id: "successToast",
+        title: "Success",
+        description: "Patient updated successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate(-1);
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
       toast({
         id: "errorToast",
         title: "Error",
@@ -90,19 +98,7 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
         isClosable: true,
       });
     }
-    if (isSuccess && !toast.isActive("successToast")) {
-      toast({
-        id: "successToast",
-        title: "Success",
-        description: "Patient updated successfully",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-      reset();
-      navigate("/dash/patients");
-    }
-  }, [isError, isSuccess]);
+  }, [isError]);
 
   return (
     <>
@@ -227,7 +223,7 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
               )}
             </FormControl>
           </CardBody>
-          <CardFooter as={Stack}>
+          <CardFooter>
             <Button
               w={"full"}
               type="submit"
@@ -236,14 +232,6 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
             >
               Save
             </Button>
-            <DeletePatient
-              patient={{
-                id: patient.id,
-                fname: patient.fname,
-                mname: patient.mname,
-                lname: patient.lname,
-              }}
-            />
           </CardFooter>
         </Card>
       </form>
