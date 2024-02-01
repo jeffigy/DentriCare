@@ -38,6 +38,34 @@ export const appointmentsApiSlice = apiSlice.injectEndpoints({
       },
     }),
 
+    getAppointmentsByPatientId: builder.query({
+      query: (patientId) => ({
+        url: `/appointments/${patientId}`,
+        validateStatus: (response, result) => {
+          return response.status === 200 && !result.isError;
+        },
+      }),
+
+      transformResponse: (responseData: Appointment[]) => {
+        const loadedAppointments = responseData.map((appointment) => {
+          appointment.id = String(appointment._id);
+          return appointment;
+        });
+        return appointmentAdapter.addMany(initialState, loadedAppointments);
+      },
+
+      providesTags: (result) => {
+        if (result?.ids) {
+          return [
+            { type: "Appointment" as const, id: "LIST" as const },
+            ...result.ids.map((id) => ({ type: "Appointment" as const, id })),
+          ];
+        } else {
+          return [{ type: "Appointment" as const, id: "LIST" as const }];
+        }
+      },
+    }),
+
     addNewAppointment: builder.mutation({
       query: (initialAppointmentData) => ({
         url: "/appointments",
@@ -75,6 +103,7 @@ export const appointmentsApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetAppointmentsQuery,
+  useGetAppointmentsByPatientIdQuery,
   useAddNewAppointmentMutation,
   useUpdateAppointmentMutation,
   useDeleteAppointmentMutation,

@@ -13,6 +13,33 @@ const getAllAppointments = async (req, res) => {
     appointments.map(async (appointment) => {
       const patient = await Patient.findById(appointment.patient).exec();
 
+      // if (!patient) {
+      //   console.error(`No patient found for appointment ${appointment._id}`);
+      //   return appointment;
+      // }
+
+      return {
+        ...appointment,
+        patientName: patient.fname + " " + patient.mname + " " + patient.lname,
+      };
+    })
+  );
+
+  res.json(appointmentsWithPatient);
+};
+
+//* get all appointment by patient id
+const getAllAppointmentsByPatientId = async (req, res) => {
+  const { id } = req.params;
+  const appointments = await Appointment.find({ patient: id }).lean();
+  if (!appointments?.length) {
+    return res.status(400).json({ message: "no patient appointments found" });
+  }
+
+  const appointmentsWithPatient = await Promise.all(
+    appointments.map(async (appointment) => {
+      const patient = await Patient.findById(appointment.patient).exec();
+
       return {
         ...appointment,
         patientName: patient.fname + " " + patient.mname + " " + patient.lname,
@@ -114,6 +141,7 @@ const deleteAppointment = async (req, res) => {
 
 module.exports = {
   getAllAppointments,
+  getAllAppointmentsByPatientId,
   newAppointment,
   updateAppointment,
   deleteAppointment,

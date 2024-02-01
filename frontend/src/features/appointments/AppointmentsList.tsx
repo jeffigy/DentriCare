@@ -1,72 +1,55 @@
 import DashSpinner from "components/Dashboard/DashSpinner";
-import { useGetAppointmentsQuery } from "./appointmentsApiSlice";
-import { Alert, AlertIcon, Stack } from "@chakra-ui/react";
+import {
+  useGetAppointmentsByPatientIdQuery,
+  useGetAppointmentsQuery,
+} from "./appointmentsApiSlice";
+import { Flex, Stack } from "@chakra-ui/react";
 import { ErrorType } from "types/ErrorType";
 import AppointmentCard from "./AppointmentCard";
 import { useParams } from "react-router-dom";
 
 const AppointmentsList = () => {
-  const { id: patientId } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
+
   const {
     data: appointments,
     isLoading,
     isSuccess,
     isError,
     error,
-  } = useGetAppointmentsQuery("appointmentslist", {
-    pollingInterval: 6000,
-    refetchOnFocus: true,
-    refetchOnMountOrArgChange: true,
-  });
+  } = id
+    ? useGetAppointmentsByPatientIdQuery(id, {
+        pollingInterval: 6000,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
+      })
+    : useGetAppointmentsQuery("appointmentslist", {
+        pollingInterval: 6000,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
+      });
 
   if (isLoading) return <DashSpinner />;
-  if (isError)
-    return (
-      <Alert status="error">
-        <AlertIcon />
-        {(error as ErrorType)?.data?.message}
-      </Alert>
-    );
-  if (isSuccess) {
-    const { ids, entities } = appointments;
 
-    if (patientId) {
-      if (
-        !ids?.filter(
-          (appointmentId) => entities[appointmentId]?.patient === patientId
-        ).length
-      ) {
-        return <Alert status="info">No appointments found</Alert>;
-      }
-      return (
-        <Stack>
-          {ids.length &&
-            ids
-              ?.filter(
-                (appointmentId) =>
-                  entities[appointmentId]?.patient === patientId
-              )
-              .map((appointmentId) => (
-                <AppointmentCard
-                  key={appointmentId}
-                  appointmentId={String(appointmentId)}
-                  patientId={patientId}
-                />
-              ))}
-        </Stack>
-      );
-    } else {
-      return (
-        <Stack>
-          {ids?.map((appointmentId) => (
-            <AppointmentCard
-              key={appointmentId}
-              appointmentId={String(appointmentId)}
-            />
-          ))}
-        </Stack>
-      );
-    }
+  if (isError) {
+    return (
+      <Flex justify={"center"}>{(error as ErrorType)?.data?.message}</Flex>
+    );
+  }
+
+  if (isSuccess) {
+    return (
+      <Stack>
+        {appointments?.ids?.map((appointmentId) => (
+          <AppointmentCard
+            key={appointmentId}
+            appointmentId={String(appointmentId)}
+            patientId={id ? String(id) : undefined}
+          />
+        ))}
+      </Stack>
+    );
   }
 };
+
 export default AppointmentsList;

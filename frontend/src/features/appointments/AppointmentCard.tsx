@@ -1,7 +1,7 @@
 import {
   Card,
   CardBody,
-  CardFooter,
+  Divider,
   Flex,
   Icon,
   IconButton,
@@ -39,32 +39,98 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
         }}
       >
         <CardBody>
-          <Text>{appointment.patientName}</Text>
-          <Text>{new Date(appointment.date * 1000).toDateString()}</Text>
+          <Flex justify={"space-between"}>
+            <Text color={"gray.500"}>Patient Name:</Text>
+            <Text>{appointment.patientName}</Text>
+          </Flex>
+          <Divider />
+          <Flex justify={"space-between"}>
+            <Text color={"gray.500"}>Date:</Text>
+            <Text>
+              {" "}
+              {new Date(appointment.date * 1000)
+                .toDateString()
+                .split(" ")
+                .slice(1)
+                .join(" ")}
+            </Text>
+          </Flex>
 
           {appointment.startTime && appointment.endTime ? (
-            <Text>
-              From:{" "}
-              {new Date(appointment.startTime * 1000)
-                .toTimeString()
-                .split(" ")[0]
-                .split(":")
-                .slice(0, 2)
-                .join(":")}{" "}
-              - To:{" "}
-              {new Date(appointment.endTime * 1000)
-                .toTimeString()
-                .split(" ")[0]
-                .split(":")
-                .slice(0, 2)
-                .join(":")}
-            </Text>
+            <>
+              <Divider />
+              <Flex justify={"space-between"}>
+                <Text color={"gray.500"}>Time: </Text>
+                <Text>
+                  {new Date(appointment.startTime * 1000)
+                    .toTimeString()
+                    .split(" ")[0]
+                    .split(":")
+                    .slice(0, 2)
+                    .join(":")}{" "}
+                  -{" "}
+                  {new Date(appointment.endTime * 1000)
+                    .toTimeString()
+                    .split(" ")[0]
+                    .split(":")
+                    .slice(0, 2)
+                    .join(":")}
+                </Text>
+              </Flex>
+            </>
           ) : null}
 
-          <Text>Remarks: {appointment.remarks}</Text>
+          {appointment.remarks && (
+            <>
+              <Divider />
+              <Flex direction={"column"}>
+                <Text color={"gray.500"}>Remarks:</Text>
+                <Text>{appointment.remarks}</Text>
+              </Flex>
+            </>
+          )}
+          <Divider />
+          <Flex justify={"space-between"}>
+            <Text color={"gray.500"}> Created By</Text>
+            <Text color={"gray.500"}>{appointment.createdBy}</Text>
+          </Flex>
+          <Divider />
+          <Flex justify={"space-between"}>
+            <Text color={"gray.500"}>Creation Date:</Text>
+            <Text color={"gray.500"}>
+              {new Date(appointment.createdAt).toLocaleString("en-US", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })}
+            </Text>
+          </Flex>
+          {appointment.updatedBy && (
+            <>
+              <Divider />
+              <Flex justify={"space-between"}>
+                <Text color={"gray.500"}> Updated By</Text>
+                <Text color={"gray.500"}>{appointment.updatedBy}</Text>
+              </Flex>
+              <Divider />
+              <Flex justify={"space-between"}>
+                <Text color={"gray.500"}>Last Updated:</Text>
+                <Text color={"gray.500"}>
+                  {new Date(appointment.updatedAt).toLocaleString("en-US", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </Text>
+              </Flex>
+            </>
+          )}
         </CardBody>
-        <CardFooter as={Flex} justify={"space-between"}>
+        <Flex borderTop={"1px solid"} borderColor={"gray.100"}>
           <IconButton
+            variant={"ghost"}
+            as={Flex}
+            w={"full"}
             onClick={() =>
               navigate(
                 patientId
@@ -75,8 +141,9 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
             aria-label="edit appointment"
             icon={<Icon as={EditIcon} />}
           />
+          <Divider orientation="vertical" h={"inherit"} />
           <DeleteAppointment appointment={appointment} />
-        </CardFooter>
+        </Flex>
       </Card>
     );
   }

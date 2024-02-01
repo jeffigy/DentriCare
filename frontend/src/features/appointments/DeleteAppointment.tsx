@@ -12,6 +12,7 @@ import {
   ModalOverlay,
   useToast,
   useDisclosure,
+  Flex,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { LuTrash2 } from "react-icons/lu";
@@ -72,6 +73,9 @@ const DeleteAppointment: React.FC<DeleteAppointmentProps> = ({
   return (
     <>
       <IconButton
+        variant={"ghost"}
+        as={Flex}
+        w={"full"}
         aria-label="delete note"
         icon={<Icon as={LuTrash2} />}
         colorScheme="red"

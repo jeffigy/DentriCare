@@ -22,6 +22,7 @@ const DentalNotesList = () => {
   });
 
   if (isLoading) return <DashSpinner />;
+
   if (isError)
     return (
       <Flex justify={"center"}>{(error as ErrorType)?.data?.message}</Flex>
@@ -30,13 +31,6 @@ const DentalNotesList = () => {
   if (isSuccess) {
     const { ids, entities } = dentalNotes;
 
-    // if (
-    //   !ids.length ||
-    //   !ids.filter((noteId: string | number) => entities[noteId]?.patient === id)
-    //     .length
-    // ) {
-    //   return <Text>No dental notes found</Text>;
-    // }
     return (
       <Stack>
         {ids.length &&

@@ -34,9 +34,7 @@ const getAllDentalNotesByPatientId = async (req, res) => {
   const dentalNotes = await DentalNote.find({ patient: id }).lean();
 
   if (!dentalNotes?.length) {
-    return res
-      .status(400)
-      .json({ message: `No dental notes found for patient ${id}` });
+    return res.status(400).json({ message: "No dental notes found" });
   }
 
   const notesWithProcedure = await Promise.all(

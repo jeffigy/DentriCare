@@ -12,4 +12,6 @@ router
   .patch(appointmentsController.updateAppointment)
   .delete(appointmentsController.deleteAppointment);
 
+router.route("/:id").get(appointmentsController.getAllAppointmentsByPatientId);
+
 module.exports = router;
