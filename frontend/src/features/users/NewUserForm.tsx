@@ -61,7 +61,7 @@ const NewUserForm = () => {
     if (isError) {
       toast({
         title: "Error",
-        description: error?.toString(),
+        description: (error as ErrorType).data.message,
         status: "error",
         duration: 5000,
         isClosable: true,

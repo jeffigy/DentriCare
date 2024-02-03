@@ -36,6 +36,8 @@ import "style.css";
 import PaymentDetailsPage from "pages/Patients/Payments/PaymentDetailsPage";
 import NewInstallmentPaymentPage from "pages/Patients/Payments/InstallmentPayment/NewInstallmentPaymentPage";
 import EditInstallmentPaymentPage from "pages/Patients/Payments/InstallmentPayment/EditInstallmentPaymentPage";
+import NewMedicalHistoryPage from "pages/Patients/MedicalHistory/NewMedicalHistoryPage";
+import EditMedicalHistoryPage from "pages/Patients/MedicalHistory/EditMedicalHistoryPage";
 
 const App = () => {
   return (
@@ -83,6 +85,11 @@ const App = () => {
                     {/* medical history route */}
                     <Route path="medical-history">
                       <Route index element={<MedicalHistoryPage />} />
+                      <Route path="new" element={<NewMedicalHistoryPage />} />
+                      <Route
+                        path=":historyId"
+                        element={<EditMedicalHistoryPage />}
+                      />
                     </Route>
                     {/* patient appointments route */}
                     <Route path="patient-appointments">

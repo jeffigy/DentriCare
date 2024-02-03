@@ -14,6 +14,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDeleteUserMutation } from "./usersApiSlice";
 import { useNavigate } from "react-router-dom";
+import { ErrorType } from "types/ErrorType";
 
 type DeleteUserProps = {
   user: {
@@ -57,7 +58,7 @@ const DeleteUser: React.FC<DeleteUserProps> = ({ user }) => {
     if (isDelError) {
       toast({
         title: "An error occurred.",
-        description: " User has not been deleted.",
+        description: (delError as ErrorType).data.message,
         status: "error",
         duration: 5000,
         isClosable: true,

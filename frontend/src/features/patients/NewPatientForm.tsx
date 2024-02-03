@@ -26,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 import { PatientFormValues } from "types/Patient";
 import { newPatientValidation } from "validations/patientValidation";
 import { useAddNewPatientMutation } from "./patientsApiSlice";
+import { ErrorType } from "types/ErrorType";
 
 const NewPatientForm = () => {
   const toast = useToast();
@@ -61,13 +62,7 @@ const NewPatientForm = () => {
         createdBy: email,
       });
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "An error occurred",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      console.log(error);
     }
   };
 
@@ -75,7 +70,7 @@ const NewPatientForm = () => {
     if (isError) {
       toast({
         title: "Error",
-        description: "An error occurred",
+        description: (error as ErrorType).data.message,
         status: "error",
         duration: 5000,
         isClosable: true,

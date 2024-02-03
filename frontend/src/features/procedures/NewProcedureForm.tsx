@@ -55,13 +55,6 @@ const NewProcedureForm = () => {
       });
     } catch (err) {
       console.log("err: ", err);
-      toast({
-        title: "An error occurred.",
-        description: `${err}`,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
     }
   };
 
@@ -69,7 +62,7 @@ const NewProcedureForm = () => {
     if (isError) {
       toast({
         title: "An error occurred.",
-        description: `${(error as ErrorType)?.data?.message}`,
+        description: (error as ErrorType).data.message,
         status: "error",
         duration: 5000,
         isClosable: true,

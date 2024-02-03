@@ -41,21 +41,14 @@ const DeleteProcedure: React.FC<DeleteProcedureProps> = ({ procedure }) => {
       onClose();
     } catch (error) {
       console.log(error);
-      toast({
-        title: "An error occurred.",
-        description: `${error}`,
-        status: "error",
-        duration: 6000,
-        isClosable: true,
-      });
     }
   };
 
   useEffect(() => {
     if (isError) {
       toast({
-        title: "An error occurred.",
-        description: `${(error as ErrorType)?.data?.message}`,
+        title: "Error",
+        description: (error as ErrorType).data.message,
         status: "error",
         duration: 6000,
         isClosable: true,
@@ -66,7 +59,7 @@ const DeleteProcedure: React.FC<DeleteProcedureProps> = ({ procedure }) => {
   useEffect(() => {
     if (isSuccess) {
       toast({
-        title: "Procedure deleted.",
+        title: "Success",
         description: "Procedure has been deleted.",
         status: "success",
         duration: 5000,

@@ -34,7 +34,7 @@ const UsersList = () => {
     if (isError) {
       toast({
         title: "Error",
-        description: (error as ErrorType)?.data?.message,
+        description: (error as ErrorType).data.message,
         status: "error",
         duration: 5000,
         isClosable: true,

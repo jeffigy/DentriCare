@@ -30,6 +30,7 @@ app.use("/dental-notes", require("./routes/dentalNoteRoutes"));
 app.use("/appointments", require("./routes/appointmentRoutes"));
 app.use("/payments", require("./routes/paymentRoutes"));
 app.use("/installment-payments", require("./routes/installmentPaymentRoutes"));
+app.use("/medical-history", require("./routes/medicalHistoryRoutes"));
 
 app.all("*", (req, res) => {
   res.status(404);

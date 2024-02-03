@@ -64,13 +64,6 @@ const EditProcedureForm: React.FC<EditProcedureFormProps> = ({ procedure }) => {
       });
     } catch (err) {
       console.log("err: ", err);
-      toast({
-        title: "An error occurred.",
-        description: `${err}`,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
     }
   };
 
@@ -78,7 +71,7 @@ const EditProcedureForm: React.FC<EditProcedureFormProps> = ({ procedure }) => {
     if (isError) {
       toast({
         title: "An error occurred.",
-        description: `${(error as ErrorType)?.data?.message}`,
+        description: (error as ErrorType).data.message,
         status: "error",
         duration: 3000,
         isClosable: true,

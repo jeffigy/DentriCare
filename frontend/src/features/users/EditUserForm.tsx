@@ -79,15 +79,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user }) => {
         await updateUser({ id: user.id, fname, lname, email, roles, active });
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: `${
-          (error as ErrorType)?.data?.message ?? "An error occurred"
-        }`,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      console.log("error: ", error);
     }
   };
 
