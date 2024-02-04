@@ -64,7 +64,7 @@ const DeletePatient: React.FC<DeletePatientProps> = ({ patient }) => {
   useEffect(() => {
     if (isError) {
       toast({
-        title: "Patient not deleted.",
+        title: "Error",
         description: (error as ErrorType).data.message,
         status: "error",
         duration: 5000,

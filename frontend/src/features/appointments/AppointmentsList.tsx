@@ -1,12 +1,12 @@
+import { Flex, Stack } from "@chakra-ui/react";
 import DashSpinner from "components/Dashboard/DashSpinner";
+import { useParams } from "react-router-dom";
+import { ErrorType } from "types/ErrorType";
+import AppointmentCard from "./AppointmentCard";
 import {
   useGetAppointmentsByPatientIdQuery,
   useGetAppointmentsQuery,
 } from "./appointmentsApiSlice";
-import { Flex, Stack } from "@chakra-ui/react";
-import { ErrorType } from "types/ErrorType";
-import AppointmentCard from "./AppointmentCard";
-import { useParams } from "react-router-dom";
 
 const AppointmentsList = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,9 +32,7 @@ const AppointmentsList = () => {
   if (isLoading) return <DashSpinner />;
 
   if (isError) {
-    return (
-      <Flex justify={"center"}>{(error as ErrorType)?.data?.message}</Flex>
-    );
+    return <Flex justify={"center"}>{(error as ErrorType).data.message}</Flex>;
   }
 
   if (isSuccess) {

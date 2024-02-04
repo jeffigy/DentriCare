@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Flex, Spinner } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import DashSpinner from "components/Dashboard/DashSpinner";
 import EditPatientForm from "features/patients/EditPatientForm";
 import { useGetPatientsQuery } from "features/patients/patientsApiSlice";
@@ -24,12 +24,7 @@ const EditPatientPage = () => {
 
   if (!isAdmin && !isSuperAdmin) {
     <Flex w={"full"} justify={"center"}>
-      <Alert status="error">
-        {" "}
-        <AlertIcon />
-        You are not authorized to view this page.
-      </Alert>
-      ;
+      You are not authorized to view this page.
     </Flex>;
   }
 

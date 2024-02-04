@@ -1,21 +1,20 @@
-import { useGetPatientsQuery } from "./patientsApiSlice";
+import { InfoOutlineIcon, SmallCloseIcon } from "@chakra-ui/icons";
 import {
-  Alert,
-  AlertIcon,
   Card,
   CardBody,
+  Flex,
   IconButton,
   Input,
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
 import DashSpinner from "components/Dashboard/DashSpinner";
-import { ErrorType } from "types/ErrorType";
-import DataTable, { TableColumn } from "react-data-table-component";
-import { InfoOutlineIcon, SmallCloseIcon } from "@chakra-ui/icons";
 import { useMemo, useState } from "react";
-import { Patient } from "types/Patient";
+import DataTable, { TableColumn } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
+import { ErrorType } from "types/ErrorType";
+import { Patient } from "types/Patient";
+import { useGetPatientsQuery } from "./patientsApiSlice";
 
 const PatientsList = () => {
   const navigate = useNavigate();
@@ -66,12 +65,7 @@ const PatientsList = () => {
   if (isLoading) return <DashSpinner />;
 
   if (isError)
-    return (
-      <Alert status="error">
-        <AlertIcon />
-        {(error as ErrorType)?.data?.message}
-      </Alert>
-    );
+    return <Flex justify={"center"}>{(error as ErrorType).data.message}</Flex>;
 
   if (isSuccess) {
     const subHeaderComponent = (

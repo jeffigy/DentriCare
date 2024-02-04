@@ -19,12 +19,12 @@ import {
   Stack,
   useToast,
 } from "@chakra-ui/react";
-import { DevTool } from "@hookform/devtools";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ROLES } from "config/roles";
 import React, { useEffect, useState } from "react";
 import { Resolver, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { ErrorType } from "types/ErrorType";
 import { UserFormValues } from "types/UserFormValues";
 import { newUserValidation } from "validations/userValidation";
 import { useAddNewUserMutation } from "./usersApiSlice";
@@ -50,7 +50,7 @@ const NewUserForm = () => {
     },
     resolver: yupResolver(newUserValidation) as Resolver<UserFormValues>,
   });
-  const { register, control, handleSubmit, formState, reset } = form;
+  const { register, handleSubmit, formState, reset } = form;
   const { errors, isDirty, isSubmitting } = formState;
 
   const onSubmit = async (data: UserFormValues) => {
@@ -58,6 +58,23 @@ const NewUserForm = () => {
     if (Object.keys(errors).length === 0) {
       await addNewUser({ fname, lname, email, password, roles });
     }
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast({
+        title: "Success",
+        description: "User has been created successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      reset();
+      navigate(-1);
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
     if (isError) {
       toast({
         title: "Error",
@@ -67,21 +84,7 @@ const NewUserForm = () => {
         isClosable: true,
       });
     }
-  };
-
-  useEffect(() => {
-    if (!isSubmitting && isSuccess) {
-      toast({
-        title: "User Created",
-        description: "User has been created successfully",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-      reset();
-      navigate("/dash/users");
-    }
-  }, [isSubmitting, isSuccess, reset, navigate]);
+  }, [isError]);
 
   return (
     <>
@@ -227,7 +230,6 @@ const NewUserForm = () => {
           </CardFooter>
         </Card>
       </form>
-      <DevTool control={control} />
     </>
   );
 };

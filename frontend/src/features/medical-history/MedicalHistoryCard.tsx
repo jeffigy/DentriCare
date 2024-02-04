@@ -1,18 +1,18 @@
-import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useGetMedicalHistoriesQuery } from "./medicalHistoryApiSlice";
-import { MedicalHistory } from "types/MedicalHistory";
+import { EditIcon } from "@chakra-ui/icons";
 import {
   Card,
   CardBody,
   Divider,
   Flex,
-  Text,
   Icon,
   IconButton,
+  Text,
 } from "@chakra-ui/react";
-import { EditIcon } from "@chakra-ui/icons";
+import React from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { MedicalHistory } from "types/MedicalHistory";
 import DeleteMedicalHistory from "./DeleteMedicalHistory";
+import { useGetMedicalHistoriesQuery } from "./medicalHistoryApiSlice";
 
 type MedicalHistoryCardProps = {
   medicalHistoryId: string;

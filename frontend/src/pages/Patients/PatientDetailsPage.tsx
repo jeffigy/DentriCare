@@ -1,7 +1,6 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { EditIcon } from "@chakra-ui/icons";
 import {
   Avatar,
-  Button,
   Card,
   CardBody,
   Divider,
@@ -11,46 +10,101 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { LuHistory } from "react-icons/lu";
-import { FiCalendar } from "react-icons/fi";
-import { MdOutlinePayments, MdOutlineInsertPhoto } from "react-icons/md";
-import { PiNotepadBold } from "react-icons/pi";
 import DashSpinner from "components/Dashboard/DashSpinner";
 import Detail from "components/Patients/Detail";
 import NavCard from "components/Patients/NavCard";
+import DeletePatient from "features/patients/DeletePatient";
 import { useGetPatientsQuery } from "features/patients/patientsApiSlice";
 import useTitle from "hooks/useTitle";
+import { FiCalendar } from "react-icons/fi";
+import { LuHistory } from "react-icons/lu";
+import { MdOutlineInsertPhoto, MdOutlinePayments } from "react-icons/md";
+import { PiNotepadBold } from "react-icons/pi";
 import { useNavigate, useParams } from "react-router-dom";
 import { Patient } from "types/Patient";
-import { useEffect } from "react";
-import DeletePatient from "features/patients/DeletePatient";
 
 const PatientDetailsPage = () => {
   useTitle("Patient Details");
-  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+
+  const menu = [
+    {
+      title: "Appointments",
+      icon: FiCalendar,
+      to: `/dash/patients/${id}/patient-appointments`,
+    },
+    {
+      title: "Medical History",
+      icon: LuHistory,
+      to: `/dash/patients/${id}/medical-history`,
+    },
+    {
+      title: "Dental Notes",
+      icon: PiNotepadBold,
+      to: `/dash/patients/${id}/dental-notes`,
+    },
+    {
+      title: "Payments",
+      icon: MdOutlinePayments,
+      to: `/dash/patients/${id}/payments`,
+    },
+    {
+      title: "Photos",
+      icon: MdOutlineInsertPhoto,
+      to: `/dash/patients/${id}/photos`,
+    },
+  ];
+
   const { patient } = useGetPatientsQuery("patientsList", {
     selectFromResult: ({ data }) => ({
       patient: data?.entities[id as string] as Patient,
     }),
   });
 
-  const calculateAge = (birthdate: number) => {
+  const patientAge = (birthdate: number) => {
     const ageDiffMs = Date.now() - birthdate * 1000;
     const ageDate = new Date(ageDiffMs);
     return Math.abs(ageDate.getUTCFullYear() - 1970);
   };
 
-  useEffect(() => {
-    if (localStorage.getItem("patientId")) {
-      localStorage.removeItem("patientId");
-    }
-    localStorage.setItem("patientId", String(id));
-  }, []);
-
   if (!patient) return <DashSpinner />;
 
   if (patient) {
+    const patientDetails = [
+      {
+        title: "Phone:",
+        value: patient.phone,
+      },
+      {
+        title: "Address:",
+        value: patient.address,
+      },
+      {
+        title: "Birthdate:",
+        value: new Date(patient.bday * 1000)
+          .toDateString()
+          .split(" ")
+          .slice(1)
+          .join(" "),
+      },
+      {
+        title: "Age",
+        value: patientAge(patient.bday).toString(),
+      },
+      {
+        title: "Created By:",
+        value: patient.createdBy,
+      },
+      {
+        title: "Date Created:",
+        value: new Date(patient.createdAt).toLocaleString("en-US", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }),
+      },
+    ];
     return (
       <Flex
         w={"full"}
@@ -93,29 +147,10 @@ const PatientDetailsPage = () => {
 
           <Flex p={"10px"}>
             <Flex direction={"column"}>
-              <Detail title={"Phone:"} value={patient.phone} />
-              <Detail title={"Address:"} value={patient.address} />
-              <Detail
-                title={"Birthdate:"}
-                value={new Date(patient.bday * 1000)
-                  .toDateString()
-                  .split(" ")
-                  .slice(1)
-                  .join(" ")}
-              />
-              <Detail
-                title={"Age"}
-                value={calculateAge(patient.bday).toString()}
-              />
-              <Detail title={"Created By:"} value={patient.createdBy} />
-              <Detail
-                title={"Date Created:"}
-                value={new Date(patient.createdAt).toLocaleString("en-US", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-              />
+              {patientDetails.map((detail, index) => (
+                <Detail key={index} title={detail.title} value={detail.value} />
+              ))}
+
               {patient.updatedBy && (
                 <>
                   {" "}
@@ -134,31 +169,14 @@ const PatientDetailsPage = () => {
           </Flex>
         </Flex>
         <Stack flexGrow={1}>
-          <NavCard
-            title={"Appointments"}
-            icon={FiCalendar}
-            to={`/dash/patients/${id}/patient-appointments`}
-          />
-          <NavCard
-            title={"Medical History"}
-            icon={LuHistory}
-            to={`/dash/patients/${id}/medical-history`}
-          />
-          <NavCard
-            title={"Dental Notes"}
-            icon={PiNotepadBold}
-            to={`/dash/patients/${id}/dental-notes`}
-          />
-          <NavCard
-            title={"Payments"}
-            icon={MdOutlinePayments}
-            to={`/dash/patients/${id}/payments`}
-          />
-          <NavCard
-            title={"Photos"}
-            icon={MdOutlineInsertPhoto}
-            to={`/dash/patients/${id}/photos`}
-          />
+          {menu.map((item, index) => (
+            <NavCard
+              key={index}
+              title={item.title}
+              icon={item.icon}
+              to={item.to}
+            />
+          ))}
         </Stack>
       </Flex>
     );

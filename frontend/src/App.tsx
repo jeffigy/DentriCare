@@ -15,14 +15,20 @@ import DentalNotesPage from "pages/Patients/DentalNotes/DentalNotesPage";
 import EditDentalNotePage from "pages/Patients/DentalNotes/EditDentalNotePage";
 import NewDentalNotePage from "pages/Patients/DentalNotes/NewDentalNotePage";
 import EditPatientPage from "pages/Patients/EditPatientPage";
+import EditMedicalHistoryPage from "pages/Patients/MedicalHistory/EditMedicalHistoryPage";
 import MedicalHistoryPage from "pages/Patients/MedicalHistory/MedicalHistoryPage";
+import NewMedicalHistoryPage from "pages/Patients/MedicalHistory/NewMedicalHistoryPage";
 import NewPatientPage from "pages/Patients/NewPatientPage";
 import PatientAppointmentsPage from "pages/Patients/PatientAppointments/PatientAppointmentsPage";
 import PatientDetailsPage from "pages/Patients/PatientDetailsPage";
-import PaymentsPage from "pages/Patients/Payments/PaymentsPage";
 import PatientsPage from "pages/Patients/PatientsPage";
+import EditPaymentPage from "pages/Patients/Payments/EditPaymentPage";
+import EditInstallmentPaymentPage from "pages/Patients/Payments/InstallmentPayment/EditInstallmentPaymentPage";
+import NewInstallmentPaymentPage from "pages/Patients/Payments/InstallmentPayment/NewInstallmentPaymentPage";
+import NewPaymentPage from "pages/Patients/Payments/NewPaymentPage";
+import PaymentDetailsPage from "pages/Patients/Payments/PaymentDetailsPage";
+import PaymentsPage from "pages/Patients/Payments/PaymentsPage";
 import PhotosPage from "pages/Patients/Photos/PhotosPage";
-import TreatmentPlansPage from "pages/Patients/TreatmentPlans/TreatmentPlansPage";
 import EditProcedurePage from "pages/Procedures/EditProcedurePage";
 import NewProcedurePage from "pages/Procedures/NewProcedurePage";
 import ProceduresPage from "pages/Procedures/ProceduresPage";
@@ -30,14 +36,7 @@ import EditUserPage from "pages/Users/EditUserPage";
 import NewUserPage from "pages/Users/NewUserPage";
 import UsersPage from "pages/Users/UsersPage";
 import { Route, Routes } from "react-router-dom";
-import NewPaymentPage from "pages/Patients/Payments/NewPaymentPage";
-import EditPaymentPage from "pages/Patients/Payments/EditPaymentPage";
 import "style.css";
-import PaymentDetailsPage from "pages/Patients/Payments/PaymentDetailsPage";
-import NewInstallmentPaymentPage from "pages/Patients/Payments/InstallmentPayment/NewInstallmentPaymentPage";
-import EditInstallmentPaymentPage from "pages/Patients/Payments/InstallmentPayment/EditInstallmentPaymentPage";
-import NewMedicalHistoryPage from "pages/Patients/MedicalHistory/NewMedicalHistoryPage";
-import EditMedicalHistoryPage from "pages/Patients/MedicalHistory/EditMedicalHistoryPage";
 
 const App = () => {
   return (
@@ -117,10 +116,6 @@ const App = () => {
                     {/* photos route */}
                     <Route path="photos">
                       <Route index element={<PhotosPage />} />
-                    </Route>
-                    {/* treatment-plans route */}
-                    <Route path="treatment-plans">
-                      <Route index element={<TreatmentPlansPage />} />
                     </Route>
                   </Route>
                 </Route>

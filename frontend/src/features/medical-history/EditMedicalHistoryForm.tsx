@@ -12,16 +12,16 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
+import { DevTool } from "@hookform/devtools";
+import { yupResolver } from "@hookform/resolvers/yup";
 import useAuth from "hooks/useAuth";
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { MedicalHistory, MedicalHistoryFormValues } from "types/MedicalHistory";
-import { useUpdateMedicalHistoryMutation } from "./medicalHistoryApiSlice";
 import { Resolver, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { medicalHistoryValidation } from "validations/medicalHistoryValidation";
+import { useNavigate } from "react-router-dom";
 import { ErrorType } from "types/ErrorType";
-import { DevTool } from "@hookform/devtools";
+import { MedicalHistory, MedicalHistoryFormValues } from "types/MedicalHistory";
+import { medicalHistoryValidation } from "validations/medicalHistoryValidation";
+import { useUpdateMedicalHistoryMutation } from "./medicalHistoryApiSlice";
 
 type EditMedicalHistoryFormProps = {
   medicalHistory: MedicalHistory;

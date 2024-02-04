@@ -1,3 +1,4 @@
+import { EditIcon } from "@chakra-ui/icons";
 import {
   Card,
   CardBody,
@@ -8,11 +9,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
-import { Appointment } from "types/Appointment";
-import { useGetAppointmentsQuery } from "./appointmentsApiSlice";
-import { EditIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
+import { Appointment } from "types/Appointment";
 import DeleteAppointment from "./DeleteAppointment";
+import { useGetAppointmentsQuery } from "./appointmentsApiSlice";
 
 type AppointmentCardProps = {
   appointmentId: string;

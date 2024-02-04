@@ -1,13 +1,11 @@
 import { Flex, Stack } from "@chakra-ui/react";
 import DashSpinner from "components/Dashboard/DashSpinner";
 import DentalNoteCard from "features/dental-notes/DentalNoteCard";
-import useTitle from "hooks/useTitle";
 import { useParams } from "react-router-dom";
 import { ErrorType } from "types/ErrorType";
 import { useGetDentalNotesByPatientIdQuery } from "./dentalNotesApiSlice";
 
 const DentalNotesList = () => {
-  useTitle("Dental Notes");
   const { id } = useParams();
   const {
     data: dentalNotes,
@@ -29,20 +27,14 @@ const DentalNotesList = () => {
     );
 
   if (isSuccess) {
-    const { ids, entities } = dentalNotes;
-
     return (
       <Stack>
-        {ids.length &&
-          ids
-            .filter((noteId) => entities[noteId]?.patient === id)
-            .map((dentalNoteId) => (
-              <DentalNoteCard
-                key={dentalNoteId as string}
-                dentalNoteId={dentalNoteId.toString()}
-                id={id}
-              />
-            ))}
+        {dentalNotes.ids.map((dentalNoteId) => (
+          <DentalNoteCard
+            key={dentalNoteId}
+            dentalNoteId={dentalNoteId.toString()}
+          />
+        ))}
       </Stack>
     );
   }

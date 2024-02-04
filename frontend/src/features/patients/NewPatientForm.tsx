@@ -78,12 +78,12 @@ const NewPatientForm = () => {
     }
     if (isSuccess) {
       reset();
-      navigate("/dash/patients");
+      navigate(-1);
       toast({
         title: "Success",
         description: "Patient added successfully",
         status: "success",
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
       });
     }

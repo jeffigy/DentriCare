@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router-dom";
-import { useGetUsersQuery } from "./usersApiSlice";
-import { User } from "types/User";
-import { memo } from "react";
-import { Icon, IconButton, Td, Tr } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
+import { Icon, IconButton, Td, Tr } from "@chakra-ui/react";
+import { memo } from "react";
+import { useNavigate } from "react-router-dom";
+import { User } from "types/User";
+import { useGetUsersQuery } from "./usersApiSlice";
 
 type UserRowProps = {
   userId: string;

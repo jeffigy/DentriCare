@@ -73,7 +73,7 @@ const EditProcedureForm: React.FC<EditProcedureFormProps> = ({ procedure }) => {
         title: "An error occurred.",
         description: (error as ErrorType).data.message,
         status: "error",
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
       });
     }
@@ -86,10 +86,10 @@ const EditProcedureForm: React.FC<EditProcedureFormProps> = ({ procedure }) => {
         title: "Success",
         description: "Procedure updated successfully",
         status: "success",
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
       });
-      navigate("/dash/procedures");
+      navigate(-1);
     }
   }, [isSuccess]);
 
@@ -124,7 +124,7 @@ const EditProcedureForm: React.FC<EditProcedureFormProps> = ({ procedure }) => {
             <FormLabel>Amount</FormLabel>
 
             <InputGroup>
-              <InputLeftAddon children="₱" />
+              <InputLeftAddon children="₱" borderRadius={0} />
               <Input
                 {...register("amount")}
                 autoComplete="false"
@@ -161,26 +161,35 @@ const EditProcedureForm: React.FC<EditProcedureFormProps> = ({ procedure }) => {
               disabled
             />
           </FormControl>
-          <FormControl>
-            <FormLabel>Updated By</FormLabel>
-            <Input value={procedure.updatedBy} variant={"unstyle"} disabled />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Updated at</FormLabel>
-            <Input
-              value={new Date(procedure.updatedAt).toLocaleString("en-US", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-                hour: "numeric",
-                minute: "numeric",
-                second: "numeric",
-                hour12: true,
-              })}
-              variant={"unstyle"}
-              disabled
-            />
-          </FormControl>
+          {procedure.updatedBy && (
+            <>
+              {" "}
+              <FormControl>
+                <FormLabel>Updated By</FormLabel>
+                <Input
+                  value={procedure.updatedBy}
+                  variant={"unstyle"}
+                  disabled
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Updated at</FormLabel>
+                <Input
+                  value={new Date(procedure.updatedAt).toLocaleString("en-US", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                    second: "numeric",
+                    hour12: true,
+                  })}
+                  variant={"unstyle"}
+                  disabled
+                />
+              </FormControl>
+            </>
+          )}
         </CardBody>
         <CardFooter as={Stack}>
           <Button

@@ -18,18 +18,18 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { DevTool } from "@hookform/devtools";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { permanentTeeths, primaryTeeths } from "config/teethChart";
+import useAuth from "hooks/useAuth";
 import { useEffect } from "react";
 import DatePicker from "react-datepicker";
 import { Controller, Resolver, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { DentalNoteFormValues } from "types/DentalNoteFormValues";
+import { ErrorType } from "types/ErrorType";
 import { Procedure } from "types/Procedure";
-import { primaryTeeths, permanentTeeths } from "config/teethChart";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { dentalNoteValidation } from "validations/dentalNoteValidation";
 import { useAddNewDentalNoteMutation } from "./dentalNotesApiSlice";
-import useAuth from "hooks/useAuth";
-import { ErrorType } from "types/ErrorType";
-import { useNavigate } from "react-router-dom";
 
 type NewDentalNoteFormProps = {
   patientId: string;
@@ -85,8 +85,8 @@ const NewDentalNoteForm: React.FC<NewDentalNoteFormProps> = ({
   useEffect(() => {
     if (isError) {
       toast({
-        title: "An error occurred.",
-        description: `${(error as ErrorType)?.data?.message}`,
+        title: "Error",
+        description: (error as ErrorType).data.message,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -97,9 +97,9 @@ const NewDentalNoteForm: React.FC<NewDentalNoteFormProps> = ({
   useEffect(() => {
     if (isSuccess) {
       reset();
-      navigate(`/dash/patients/${patientId}/dental-notes`);
+      navigate(-1);
       toast({
-        title: "New dental note added.",
+        title: "Success",
         description: "New dental note added successfully",
         status: "success",
         duration: 5000,

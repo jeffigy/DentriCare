@@ -10,7 +10,7 @@ import { Procedure } from "types/Procedure";
 
 const EditDentalNotePage = () => {
   useTitle("Edit Dental Note");
-  const { id, noteId } = useParams<{ id: string; noteId: string }>();
+  const { noteId } = useParams<{ noteId: string }>();
 
   const { dentalNote } = useGetDentalNotesQuery("dentalNotesList", {
     selectFromResult: ({ data }) => ({
@@ -31,7 +31,6 @@ const EditDentalNotePage = () => {
       <EditDentalNoteForm
         dentalNote={dentalNote as DentalNote}
         procedures={procedures as Procedure[]}
-        patientId={id}
       />
     </Flex>
   );

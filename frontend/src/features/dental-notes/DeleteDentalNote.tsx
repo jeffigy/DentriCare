@@ -1,5 +1,6 @@
 import {
   Button,
+  Flex,
   Icon,
   IconButton,
   Modal,
@@ -9,15 +10,14 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure,
   Text,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { LuTrash2 } from "react-icons/lu";
-import { useNavigate, useParams } from "react-router-dom";
-import { useDeleteDentalNoteMutation } from "./dentalNotesApiSlice";
 import { ErrorType } from "types/ErrorType";
+import { useDeleteDentalNoteMutation } from "./dentalNotesApiSlice";
 
 type DeleteDentalNoteProps = {
   dentalNote: {
@@ -27,10 +27,8 @@ type DeleteDentalNoteProps = {
 };
 
 const DeleteDentalNote: React.FC<DeleteDentalNoteProps> = ({ dentalNote }) => {
-  const { id } = useParams<{ id: string }>();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const navigate = useNavigate();
 
   const [DeleteDentalNote, { isSuccess, isError, error }] =
     useDeleteDentalNoteMutation();
@@ -51,14 +49,13 @@ const DeleteDentalNote: React.FC<DeleteDentalNoteProps> = ({ dentalNote }) => {
   useEffect(() => {
     if (isSuccess) {
       toast({
-        title: "Success.",
+        title: "Success",
         description: "Dental Note has been deleted.",
         status: "success",
         duration: 5000,
         isClosable: true,
       });
       onClose();
-      navigate(`/dash/patients/${id}/dental-notes`);
     }
   }, [isSuccess]);
 
@@ -77,6 +74,9 @@ const DeleteDentalNote: React.FC<DeleteDentalNoteProps> = ({ dentalNote }) => {
   return (
     <>
       <IconButton
+        as={Flex}
+        w={"full"}
+        variant={"ghost"}
         aria-label="delete note"
         icon={<Icon as={LuTrash2} />}
         colorScheme="red"

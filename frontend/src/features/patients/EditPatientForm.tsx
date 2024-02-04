@@ -76,7 +76,6 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
     if (isSuccess) {
       reset();
       toast({
-        id: "successToast",
         title: "Success",
         description: "Patient updated successfully",
         status: "success",
@@ -90,7 +89,6 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
   useEffect(() => {
     if (isError) {
       toast({
-        id: "errorToast",
         title: "Error",
         description: (error as ErrorType).data.message,
         status: "error",

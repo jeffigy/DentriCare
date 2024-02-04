@@ -7,14 +7,14 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
   useDisclosure,
   useToast,
-  Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDeleteProcedureMutation } from "./proceduresApiSlice";
 import { ErrorType } from "types/ErrorType";
+import { useDeleteProcedureMutation } from "./proceduresApiSlice";
 
 type DeleteProcedureProps = {
   procedure: {
@@ -50,7 +50,7 @@ const DeleteProcedure: React.FC<DeleteProcedureProps> = ({ procedure }) => {
         title: "Error",
         description: (error as ErrorType).data.message,
         status: "error",
-        duration: 6000,
+        duration: 5000,
         isClosable: true,
       });
     }
@@ -66,7 +66,7 @@ const DeleteProcedure: React.FC<DeleteProcedureProps> = ({ procedure }) => {
         isClosable: true,
       });
       onClose();
-      navigate("/dash/procedures");
+      navigate(-1);
     }
   }, [isSuccess]);
 

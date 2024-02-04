@@ -1,20 +1,23 @@
 import DashSpinner from "components/Dashboard/DashSpinner";
 import { useGetProceduresQuery } from "./proceduresApiSlice";
 import {
-  Alert,
-  AlertIcon,
   Card,
   CardBody,
-  Table,
-  Tbody,
-  Th,
-  Thead,
-  Tr,
+  Flex,
+  IconButton,
+  Input,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import { ErrorType } from "types/ErrorType";
-import ProcedureRow from "./ProcedureRow";
+import { useMemo, useState } from "react";
+import DataTable, { TableColumn } from "react-data-table-component";
+import { Procedure } from "types/Procedure";
+import { EditIcon, SmallCloseIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
 
 const ProceduresList = () => {
+  const navigate = useNavigate();
   const {
     data: procedures,
     isLoading,
@@ -26,44 +29,93 @@ const ProceduresList = () => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
+
+  const [filterProcedure, setFilterProcedure] = useState("");
+
+  const filteredProcedures = useMemo(() => {
+    return Object.values(procedures?.entities ?? {}).filter(
+      (item) =>
+        (item as Procedure)?.name &&
+        (item as Procedure).name
+          .toLowerCase()
+          .includes(filterProcedure.toLowerCase())
+    );
+  }, [procedures, filterProcedure]);
+
+  const columns: TableColumn<Procedure | undefined>[] = [
+    {
+      name: "Procedure Name",
+      selector: (row: Procedure | undefined) => row?.name ?? "",
+      sortable: true,
+      allowOverflow: true,
+      grow: 2,
+    },
+    {
+      name: "Amount",
+      selector: (row: Procedure | undefined) => row?.amount ?? "",
+      sortable: true,
+      allowOverflow: true,
+      grow: 2,
+    },
+    {
+      name: "Actions",
+      cell: (row: Procedure | undefined) =>
+        row ? (
+          <IconButton
+            aria-label="view details "
+            icon={<EditIcon />}
+            onClick={() => navigate(`/dash/procedures/${row.id}`)}
+          />
+        ) : null,
+      right: true,
+    },
+  ];
+
   if (isLoading) return <DashSpinner />;
 
   if (isError)
-    return (
-      <Alert status="error">
-        <AlertIcon />
-        {(error as ErrorType)?.data?.message}
-      </Alert>
-    );
+    return <Flex justify={"center"}>{(error as ErrorType).data.message}</Flex>;
 
   if (isSuccess) {
+    const subHeaderComponent = (
+      <InputGroup>
+        <Input
+          id="search"
+          type="text"
+          placeholder="Search procedure"
+          value={filterProcedure}
+          onChange={(e) => setFilterProcedure(e.target.value)}
+        />
+        <InputRightElement>
+          <IconButton
+            aria-label="clear"
+            onClick={() => setFilterProcedure("")}
+            variant={"ghost"}
+            isDisabled={filterProcedure === ""}
+            icon={<SmallCloseIcon />}
+          />
+        </InputRightElement>
+      </InputGroup>
+    );
     return (
-      <Card>
+      <Card w={"500px"}>
         <CardBody>
-          <Table size={"sm"}>
-            <Thead>
-              <Tr>
-                <Th>Procedure Name</Th>
-                <Th>Amount</Th>
-                <Th></Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {procedures?.ids?.map((procedureId) => (
-                <ProcedureRow
-                  key={procedureId}
-                  procedureId={String(procedureId)}
-                />
-              ))}
-            </Tbody>
-          </Table>
+          <DataTable
+            title="Procedures List"
+            columns={columns as TableColumn<unknown>[]}
+            data={filteredProcedures}
+            dense={true}
+            highlightOnHover={true}
+            pagination={true}
+            pointerOnHover={true}
+            striped={true}
+            responsive={true}
+            subHeader
+            subHeaderComponent={subHeaderComponent}
+          />
         </CardBody>
       </Card>
     );
-  }
-
-  if (!procedures) {
-    return <div>no procedures</div>;
   }
 };
 export default ProceduresList;

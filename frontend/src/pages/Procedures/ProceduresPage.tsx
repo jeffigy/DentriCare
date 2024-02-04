@@ -2,12 +2,9 @@ import { Flex } from "@chakra-ui/react";
 import FloatingButton from "components/FloatingButton";
 import ProceduresList from "features/procedures/ProceduresList";
 import useTitle from "hooks/useTitle";
-import React from "react";
 import { MdOutlineNoteAdd } from "react-icons/md";
 
-type ProceduresPageProps = {};
-
-const ProceduresPage: React.FC<ProceduresPageProps> = () => {
+const ProceduresPage = () => {
   useTitle("Procedures");
   return (
     <Flex justify={"center"} align={"center"} w={"full"}>

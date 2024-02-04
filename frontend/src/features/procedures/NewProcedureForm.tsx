@@ -15,15 +15,15 @@ import {
   Stack,
   useToast,
 } from "@chakra-ui/react";
-import { useAddNewProcedureMutation } from "./proceduresApiSlice";
-import { useNavigate } from "react-router-dom";
-import useAuth from "hooks/useAuth";
-import { ProcedureFormValues } from "types/ProcedureFormValues";
-import { Resolver, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { newProcedureValidation } from "validations/procedureValidation";
+import useAuth from "hooks/useAuth";
 import { useEffect } from "react";
+import { Resolver, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { ErrorType } from "types/ErrorType";
+import { ProcedureFormValues } from "types/ProcedureFormValues";
+import { newProcedureValidation } from "validations/procedureValidation";
+import { useAddNewProcedureMutation } from "./proceduresApiSlice";
 
 const NewProcedureForm = () => {
   const toast = useToast();
@@ -61,7 +61,7 @@ const NewProcedureForm = () => {
   useEffect(() => {
     if (isError) {
       toast({
-        title: "An error occurred.",
+        title: "Error",
         description: (error as ErrorType).data.message,
         status: "error",
         duration: 5000,
@@ -73,7 +73,7 @@ const NewProcedureForm = () => {
   useEffect(() => {
     if (isSuccess) {
       reset();
-      navigate("/dash/procedures");
+      navigate(-1);
       toast({
         title: "Success",
         description: "Procedure added successfully",
@@ -115,7 +115,7 @@ const NewProcedureForm = () => {
             <FormLabel>Amount</FormLabel>
 
             <InputGroup>
-              <InputLeftAddon children="₱" />
+              <InputLeftAddon children="₱" borderRadius={0} />
               <Input
                 {...register("amount")}
                 autoComplete="false"

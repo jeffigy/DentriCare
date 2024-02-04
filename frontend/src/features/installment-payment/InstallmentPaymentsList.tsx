@@ -38,23 +38,18 @@ const InstallmentPaymentsList: React.FC<InstallmentPaymentsListProps> = () => {
       0
     );
 
-    const { ids, entities } = installmentPayment;
-
     return (
       <Stack>
         <Text>
           Total amount Paid: ₱
           {new Intl.NumberFormat("en-US").format(totalAmount)}
         </Text>
-        {ids.length &&
-          ids
-            .filter((id) => entities[id]?.payment === paymentId)
-            .map((installmentPaymentId) => (
-              <InstallmentPaymentCard
-                key={installmentPaymentId as string}
-                installmentPaymentId={installmentPaymentId.toString()}
-              />
-            ))}
+        {installmentPayment.ids.map((installmentPaymentId) => (
+          <InstallmentPaymentCard
+            key={installmentPaymentId as string}
+            installmentPaymentId={installmentPaymentId.toString()}
+          />
+        ))}
       </Stack>
     );
   }

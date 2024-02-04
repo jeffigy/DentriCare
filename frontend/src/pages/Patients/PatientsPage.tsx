@@ -1,8 +1,8 @@
 import { Flex } from "@chakra-ui/react";
-import PatientsList from "features/patients/PatientsList";
-import { FiUserPlus } from "react-icons/fi";
-import useTitle from "hooks/useTitle";
 import FloatingButton from "components/FloatingButton";
+import PatientsList from "features/patients/PatientsList";
+import useTitle from "hooks/useTitle";
+import { FiUserPlus } from "react-icons/fi";
 
 const PatientsPage = () => {
   useTitle("Patients");

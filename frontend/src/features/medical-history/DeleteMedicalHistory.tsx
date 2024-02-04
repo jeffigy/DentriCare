@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useDeleteMedicalHistoryMutation } from "./medicalHistoryApiSlice";
 import {
   Button,
+  Flex,
   Icon,
   IconButton,
-  Text,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -12,12 +10,14 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
   useDisclosure,
   useToast,
-  Flex,
 } from "@chakra-ui/react";
-import { ErrorType } from "types/ErrorType";
+import React, { useEffect, useState } from "react";
 import { LuTrash2 } from "react-icons/lu";
+import { ErrorType } from "types/ErrorType";
+import { useDeleteMedicalHistoryMutation } from "./medicalHistoryApiSlice";
 
 type DeleteMedicalHistoryProps = {
   medicalHistoryId: string;

@@ -14,19 +14,19 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
+import { DevTool } from "@hookform/devtools";
+import { yupResolver } from "@hookform/resolvers/yup";
+import useAuth from "hooks/useAuth";
 import React, { useEffect } from "react";
+import DatePicker from "react-datepicker";
+import { Controller, Resolver, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Appointment } from "types/Appointment";
-import { useUpdateAppointmentMutation } from "./appointmentsApiSlice";
-import { Controller, Resolver, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { AppointmentFormValues } from "types/AppointmentFormValues";
+import { ErrorType } from "types/ErrorType";
 import { Patient } from "types/Patient";
 import { appointmentValidation } from "validations/appointmentValidation";
-import { DevTool } from "@hookform/devtools";
-import DatePicker from "react-datepicker";
-import useAuth from "hooks/useAuth";
-import { ErrorType } from "types/ErrorType";
+import { useUpdateAppointmentMutation } from "./appointmentsApiSlice";
 
 type EditAppointmentFormProps = {
   appointment: Appointment;
@@ -85,7 +85,7 @@ const EditAppointmentForm: React.FC<EditAppointmentFormProps> = ({
         title: "Error",
         description: (error as ErrorType).data.message,
         status: "error",
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
       });
     }
@@ -99,7 +99,7 @@ const EditAppointmentForm: React.FC<EditAppointmentFormProps> = ({
         title: "Success",
         description: "Appointment updated successfully",
         status: "success",
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
       });
     }

@@ -2,16 +2,16 @@ import { EditIcon } from "@chakra-ui/icons";
 import {
   Card,
   CardBody,
-  Text,
-  Flex,
-  IconButton,
-  Icon,
   Divider,
+  Flex,
+  Icon,
+  IconButton,
+  Text,
 } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetInstallmentPaymentsQuery } from "./installmentPaymentApiSlice";
 import { InstallmentPayment } from "types/InstallmentPayment";
 import DeleteInstallmentPayment from "./DeleteInstallmentPayment";
+import { useGetInstallmentPaymentsQuery } from "./installmentPaymentApiSlice";
 
 type InstallmentPaymentCardProps = {
   installmentPaymentId: string;

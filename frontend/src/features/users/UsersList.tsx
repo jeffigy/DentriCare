@@ -1,23 +1,20 @@
-import { useGetUsersQuery } from "./usersApiSlice";
-import UserRow from "./UserRow";
 import {
   Card,
   CardBody,
+  Flex,
   Table,
   TableContainer,
   Tbody,
   Th,
   Thead,
   Tr,
-  useToast,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
 import DashSpinner from "components/Dashboard/DashSpinner";
 import { ErrorType } from "types/ErrorType";
+import UserRow from "./UserRow";
+import { useGetUsersQuery } from "./usersApiSlice";
 
 const UsersList = () => {
-  const toast = useToast();
-
   const {
     data: users,
     isLoading,
@@ -25,22 +22,13 @@ const UsersList = () => {
     isError,
     error,
   } = useGetUsersQuery("userslist", {
-    pollingInterval: 6000,
+    pollingInterval: 5000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
 
-  useEffect(() => {
-    if (isError) {
-      toast({
-        title: "Error",
-        description: (error as ErrorType).data.message,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
-  }, [isError]);
+  if (isError)
+    return <Flex justify={"center"}>{(error as ErrorType).data.message}</Flex>;
 
   if (isLoading) return <DashSpinner />;
 

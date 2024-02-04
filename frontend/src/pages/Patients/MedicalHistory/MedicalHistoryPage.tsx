@@ -2,8 +2,8 @@ import { Flex } from "@chakra-ui/react";
 import FloatingButton from "components/FloatingButton";
 import MedicalHistoryList from "features/medical-history/MedicalHistoryList";
 import useTitle from "hooks/useTitle";
-import { useParams } from "react-router-dom";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
+import { useParams } from "react-router-dom";
 
 const MedicalHistoryPage = () => {
   const { id } = useParams<{ id: string }>();

@@ -27,26 +27,14 @@ const PaymentsList = () => {
     );
 
   if (isSuccess) {
-    const { ids, entities } = payments;
-    // if (
-    //   !ids.length ||
-    //   !ids.filter(
-    //     (paymentId: string | number) => entities[paymentId]?.patient === id
-    //   ).length
-    // ) {
-    //   return <div>No payments found</div>;
-    // }
     return (
       <Stack>
-        {ids.length &&
-          ids
-            .filter((paymentId) => entities[paymentId]?.patient === id)
-            .map((paymentId) => (
-              <PaymentCard
-                key={paymentId as string}
-                paymentId={paymentId.toString()}
-              />
-            ))}
+        {payments.ids.map((paymentId) => (
+          <PaymentCard
+            key={paymentId as string}
+            paymentId={paymentId.toString()}
+          />
+        ))}
       </Stack>
     );
   }

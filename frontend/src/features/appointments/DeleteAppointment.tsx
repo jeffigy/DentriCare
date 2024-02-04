@@ -1,7 +1,7 @@
 import {
   Button,
+  Flex,
   Icon,
-  Text,
   IconButton,
   Modal,
   ModalBody,
@@ -10,14 +10,14 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useToast,
+  Text,
   useDisclosure,
-  Flex,
+  useToast,
 } from "@chakra-ui/react";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { LuTrash2 } from "react-icons/lu";
-import { useDeleteAppointmentMutation } from "./appointmentsApiSlice";
 import { ErrorType } from "types/ErrorType";
+import { useDeleteAppointmentMutation } from "./appointmentsApiSlice";
 
 type DeleteAppointmentProps = {
   appointment: {

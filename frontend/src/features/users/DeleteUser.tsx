@@ -1,20 +1,20 @@
 import {
   Button,
   Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
   ModalOverlay,
   Text,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useDeleteUserMutation } from "./usersApiSlice";
 import { useNavigate } from "react-router-dom";
 import { ErrorType } from "types/ErrorType";
+import { useDeleteUserMutation } from "./usersApiSlice";
 
 type DeleteUserProps = {
   user: {
@@ -29,10 +29,7 @@ const DeleteUser: React.FC<DeleteUserProps> = ({ user }) => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [delButtonState, setDelButtonState] = useState(false);
-  const [
-    deleteUser,
-    { isSuccess: isDelSuccess, isError: isDelError, error: delError },
-  ] = useDeleteUserMutation();
+  const [deleteUser, { isSuccess, isError, error }] = useDeleteUserMutation();
 
   const onDelete = async () => {
     setDelButtonState(true);
@@ -44,27 +41,30 @@ const DeleteUser: React.FC<DeleteUserProps> = ({ user }) => {
   };
 
   useEffect(() => {
-    if (isDelSuccess) {
+    if (isSuccess) {
       toast({
-        title: "User deleted.",
+        title: "Success",
         description: "User has been deleted.",
         status: "success",
         duration: 5000,
         isClosable: true,
       });
       onClose();
-      navigate("/dash/users");
+      navigate(-1);
     }
-    if (isDelError) {
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
       toast({
-        title: "An error occurred.",
-        description: (delError as ErrorType).data.message,
+        title: "Error",
+        description: (error as ErrorType).data.message,
         status: "error",
         duration: 5000,
         isClosable: true,
       });
     }
-  }, [isDelSuccess, isDelError]);
+  }, [isError]);
 
   return (
     <>

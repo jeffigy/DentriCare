@@ -1,9 +1,9 @@
+import { InfoOutlineIcon } from "@chakra-ui/icons";
+import { Icon, IconButton, Td, Tr } from "@chakra-ui/react";
 import React from "react";
-import { useGetPatientsQuery } from "./patientsApiSlice";
 import { useNavigate } from "react-router-dom";
 import { Patient } from "types/Patient";
-import { Tr, Td, IconButton, Icon } from "@chakra-ui/react";
-import { InfoOutlineIcon } from "@chakra-ui/icons";
+import { useGetPatientsQuery } from "./patientsApiSlice";
 
 type PatientRowProps = {
   patientId: string;

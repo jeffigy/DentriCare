@@ -1,9 +1,6 @@
 import { Alert, AlertIcon } from "@chakra-ui/react";
-import React from "react";
 
-type FinancesPageProps = {};
-
-const FinancesPage: React.FC<FinancesPageProps> = () => {
+const FinancesPage = () => {
   return (
     <div>
       <Alert status="error">

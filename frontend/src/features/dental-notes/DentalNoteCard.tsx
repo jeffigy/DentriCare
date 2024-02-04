@@ -1,32 +1,30 @@
 import { EditIcon } from "@chakra-ui/icons";
 import {
-  Card,
-  Text,
-  CardBody,
-  Stack,
-  CardFooter,
-  Flex,
-  IconButton,
-  Icon,
   Box,
+  Card,
+  CardBody,
+  CardFooter,
+  Divider,
+  Flex,
+  Icon,
+  IconButton,
+  Stack,
   Tag,
+  Text,
 } from "@chakra-ui/react";
 import { useGetDentalNotesQuery } from "features/dental-notes/dentalNotesApiSlice";
 import React from "react";
 import { MdOutlinePayments } from "react-icons/md";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { DentalNote } from "types/DentalNote";
 import DeleteDentalNote from "./DeleteDentalNote";
 
 type DentalNoteCardProps = {
   dentalNoteId: string;
-  id: string | undefined;
 };
 
-const DentalNoteCard: React.FC<DentalNoteCardProps> = ({
-  dentalNoteId,
-  id,
-}) => {
+const DentalNoteCard: React.FC<DentalNoteCardProps> = ({ dentalNoteId }) => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const { dentalNote } = useGetDentalNotesQuery("dentalNotesList", {
     selectFromResult: ({ data }) => ({
@@ -43,76 +41,107 @@ const DentalNoteCard: React.FC<DentalNoteCardProps> = ({
         }}
       >
         <CardBody>
-          <Text>
-            Tooth Number:{" "}
+          <Flex direction={"column"}>
+            <Text color={"gray.500"}>Tooth Number:</Text>
             <Box>
-              {" "}
               {dentalNote.teethNums &&
                 dentalNote.teethNums.map((teethNum) => {
                   return <Tag mr={"2px"}>{teethNum}</Tag>;
                 })}{" "}
             </Box>
-          </Text>
-          <Stack>
-            <Text>Procedures:</Text>
+          </Flex>
+          <Divider />
+          <Flex direction={"column"}>
+            <Text color={"gray.500"}>Procedures:</Text>
             <Stack>
               {dentalNote.procedureNames &&
                 dentalNote.procedureNames.map((procedure) => {
                   return <Tag mr={"2px"}>{procedure}</Tag>;
                 })}
             </Stack>
+          </Flex>
+          <Divider />
+          <Flex justify={"space-between"}>
+            <Text color={"gray.500"}>Date:</Text>
             <Text>
-              Last Update:{" "}
-              {new Date(dentalNote.updatedAt).toLocaleString("en-US", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
+              {" "}
+              {new Date(dentalNote.date * 1000)
+                .toDateString()
+                .split(" ")
+                .slice(1)
+                .join(" ")}
             </Text>
-            <Text>
-              Date:{" "}
-              {new Date(dentalNote.date * 1000).toLocaleString("en-US", {
+          </Flex>
+          {dentalNote.note && (
+            <>
+              <Divider />
+              <Flex direction={"column"}>
+                <Text color={"gray.500"}>Notes:</Text>
+                <Text>{dentalNote.note}</Text>
+              </Flex>
+            </>
+          )}
+          <Divider />
+          <Flex justify={"space-between"}>
+            <Text color={"gray.500"}> Created By</Text>
+            <Text color={"gray.500"}>{dentalNote.createdBy}</Text>
+          </Flex>
+          <Divider />
+          <Flex justify={"space-between"}>
+            <Text color={"gray.500"}>Creation Date:</Text>
+            <Text color={"gray.500"}>
+              {new Date(dentalNote.createdAt).toLocaleString("en-US", {
                 day: "numeric",
                 month: "short",
                 year: "numeric",
               })}
             </Text>
-            <Text>
-              created on:{" "}
-              {new Date(dentalNote.updatedAt).toLocaleString("en-US", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-                hour: "numeric",
-                minute: "numeric",
-                second: "numeric",
-                hour12: true,
-              })}
-            </Text>
-            <Text>Notes: {dentalNote.note}</Text>
-          </Stack>
-          <CardFooter>
-            <Flex justify="space-between" w={"full"}>
-              <IconButton
-                as={Link}
-                // to={`/dash/patients/${id}/dental-notes/{de}/payments`}
-                colorScheme="secondary"
-                aria-label="add payment"
-                icon={<Icon as={MdOutlinePayments} />}
-              />
-              <IconButton
-                onClick={() =>
-                  navigate(
-                    `/dash/patients/${id}/dental-notes/${dentalNote._id}`
-                  )
-                }
-                aria-label="edit note"
-                icon={<Icon as={EditIcon} />}
-              />
-              <DeleteDentalNote dentalNote={dentalNote} />
-            </Flex>
-          </CardFooter>
+          </Flex>
+          {dentalNote.updatedBy && (
+            <>
+              <Divider />
+              <Flex justify={"space-between"}>
+                <Text color={"gray.500"}> Updated By</Text>
+                <Text color={"gray.500"}>{dentalNote.updatedBy}</Text>
+              </Flex>
+              <Divider />
+              <Flex justify={"space-between"}>
+                <Text color={"gray.500"}>Last Updated:</Text>
+                <Text color={"gray.500"}>
+                  {new Date(dentalNote.updatedAt).toLocaleString("en-US", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </Text>
+              </Flex>
+            </>
+          )}
         </CardBody>
+        <Flex borderTop={"1px solid"} borderColor={"gray.100"}>
+          <IconButton
+            as={Flex}
+            w={"full"}
+            variant={"ghost"}
+            onClick={() => {}}
+            colorScheme="secondary"
+            aria-label="add payment"
+            icon={<Icon as={MdOutlinePayments} />}
+          />
+          <Divider orientation="vertical" h={"inherit"} />
+          <IconButton
+            as={Flex}
+            w={"full"}
+            variant={"ghost"}
+            onClick={() =>
+              navigate(`/dash/patients/${id}/dental-notes/${dentalNote._id}`)
+            }
+            aria-label="edit note"
+            icon={<Icon as={EditIcon} />}
+          />
+          <Divider orientation="vertical" h={"inherit"} />
+          <DeleteDentalNote dentalNote={dentalNote} />
+        </Flex>
       </Card>
     );
   }

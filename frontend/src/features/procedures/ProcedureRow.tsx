@@ -1,9 +1,9 @@
+import { EditIcon } from "@chakra-ui/icons";
+import { Icon, IconButton, Td, Tr } from "@chakra-ui/react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Procedure } from "types/Procedure";
 import { useGetProceduresQuery } from "./proceduresApiSlice";
-import { useNavigate } from "react-router-dom";
-import { Tr, Td, IconButton, Icon } from "@chakra-ui/react";
-import { EditIcon } from "@chakra-ui/icons";
 
 type ProcedureRowProps = {
   procedureId: string;

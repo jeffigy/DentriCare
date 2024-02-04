@@ -17,31 +17,29 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
+import { DevTool } from "@hookform/devtools";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { permanentTeeths, primaryTeeths } from "config/teethChart";
 import useAuth from "hooks/useAuth";
 import React, { useEffect } from "react";
+import ReactDatePicker from "react-datepicker";
+import { Controller, Resolver, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { DentalNote } from "types/DentalNote";
-import { useUpdateDentalNoteMutation } from "./dentalNotesApiSlice";
-import { Controller, Resolver, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { DentalNoteFormValues } from "types/DentalNoteFormValues";
-import { dentalNoteValidation } from "validations/dentalNoteValidation";
-import { DevTool } from "@hookform/devtools";
-import { primaryTeeths, permanentTeeths } from "config/teethChart";
-import ReactDatePicker from "react-datepicker";
-import { Procedure } from "types/Procedure";
 import { ErrorType } from "types/ErrorType";
+import { Procedure } from "types/Procedure";
+import { dentalNoteValidation } from "validations/dentalNoteValidation";
+import { useUpdateDentalNoteMutation } from "./dentalNotesApiSlice";
 
 type EditDentalNoteFormProps = {
   dentalNote: DentalNote;
   procedures: Procedure[];
-  patientId: string | undefined;
 };
 
 const EditDentalNoteForm: React.FC<EditDentalNoteFormProps> = ({
   dentalNote,
   procedures,
-  patientId,
 }) => {
   const { email } = useAuth();
   const navigate = useNavigate();
@@ -90,8 +88,8 @@ const EditDentalNoteForm: React.FC<EditDentalNoteFormProps> = ({
   useEffect(() => {
     if (isError) {
       toast({
-        title: "An error occurred.",
-        description: `${(error as ErrorType)?.data?.message}`,
+        title: "Error",
+        description: (error as ErrorType).data.message,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -102,7 +100,7 @@ const EditDentalNoteForm: React.FC<EditDentalNoteFormProps> = ({
   useEffect(() => {
     if (isSuccess) {
       reset();
-      navigate(`/dash/patients/${patientId}/dental-notes`);
+      navigate(-1);
       toast({
         title: "Success",
         description: "Dental Note updated successfully",
@@ -229,55 +227,6 @@ const EditDentalNoteForm: React.FC<EditDentalNoteFormProps> = ({
                 ) : null}
               </FormControl>
             )}
-
-            <FormControl>
-              <FormLabel>Created By</FormLabel>
-              <Input
-                value={dentalNote.createdBy}
-                variant={"unstyle"}
-                disabled
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Created at</FormLabel>
-              <Input
-                value={new Date(dentalNote.createdAt).toLocaleString("en-US", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                  hour: "numeric",
-                  minute: "numeric",
-                  second: "numeric",
-                  hour12: true,
-                })}
-                variant={"unstyle"}
-                disabled
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Updated By</FormLabel>
-              <Input
-                value={dentalNote.updatedBy}
-                variant={"unstyle"}
-                disabled
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Updated at</FormLabel>
-              <Input
-                value={new Date(dentalNote.updatedAt).toLocaleString("en-US", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                  hour: "numeric",
-                  minute: "numeric",
-                  second: "numeric",
-                  hour12: true,
-                })}
-                variant={"unstyle"}
-                disabled
-              />
-            </FormControl>
           </CardBody>
           <CardFooter>
             <Button

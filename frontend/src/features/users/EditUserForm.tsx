@@ -26,12 +26,12 @@ import { ROLES } from "config/roles";
 import React, { useEffect, useState } from "react";
 import { Resolver, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { ErrorType } from "types/ErrorType";
 import { User } from "types/User";
 import { UserFormValues } from "types/UserFormValues";
 import { editUserValidation } from "validations/userValidation";
-import { useUpdateUserMutation } from "./usersApiSlice";
 import DeleteUser from "./DeleteUser";
-import { ErrorType } from "types/ErrorType";
+import { useUpdateUserMutation } from "./usersApiSlice";
 
 type EditUserFormProps = {
   user: User;
@@ -59,7 +59,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user }) => {
     },
     resolver: yupResolver(editUserValidation) as Resolver<UserFormValues>,
   });
-  const { register, control, handleSubmit, formState } = form;
+  const { register, control, handleSubmit, formState, reset } = form;
   const { errors, isSubmitting, dirtyFields, isDirty } = formState;
 
   const onSubmit = async (data: UserFormValues) => {
@@ -84,27 +84,30 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user }) => {
   };
 
   useEffect(() => {
-    if (isError && !toast.isActive("errorToast")) {
+    if (isSuccess) {
       toast({
-        id: "errorToast",
-        title: "Error",
-        description: `${(error as ErrorType)?.data.message}`,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
-    if (isSuccess && !toast.isActive("successToast")) {
-      toast({
-        title: "User Updated",
+        title: "Success",
         description: "User updated successfully",
         status: "success",
         duration: 5000,
         isClosable: true,
       });
-      navigate("/dash/users");
+      reset();
+      navigate(-1);
     }
   }, [isSuccess, isError]);
+
+  useEffect(() => {
+    if (isError) {
+      toast({
+        title: "Error",
+        description: (error as ErrorType).data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [isError]);
 
   return (
     <>

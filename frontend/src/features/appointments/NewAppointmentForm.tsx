@@ -4,6 +4,7 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  Flex,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -85,7 +86,7 @@ const NewAppointmentForm: React.FC<NewAppointmentFormProps> = ({
         title: "An error occurred.",
         description: `${(error as ErrorType)?.data?.message}`,
         status: "error",
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
       });
     }
@@ -99,7 +100,7 @@ const NewAppointmentForm: React.FC<NewAppointmentFormProps> = ({
         title: "Success",
         description: "New appointment added successfully",
         status: "success",
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
       });
     }
@@ -116,7 +117,7 @@ const NewAppointmentForm: React.FC<NewAppointmentFormProps> = ({
             md: "400px",
           }}
         >
-          <CardHeader>
+          <CardHeader as={Flex} justify={"center"}>
             {" "}
             <Heading size={"md"}>New Appointment</Heading>
           </CardHeader>

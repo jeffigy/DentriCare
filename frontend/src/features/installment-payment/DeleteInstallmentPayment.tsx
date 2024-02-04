@@ -2,7 +2,6 @@ import {
   Button,
   Flex,
   Icon,
-  Text,
   IconButton,
   Modal,
   ModalBody,
@@ -11,13 +10,14 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useDeleteInstallmentPaymentMutation } from "./installmentPaymentApiSlice";
-import { ErrorType } from "types/ErrorType";
 import { LuTrash2 } from "react-icons/lu";
+import { ErrorType } from "types/ErrorType";
+import { useDeleteInstallmentPaymentMutation } from "./installmentPaymentApiSlice";
 
 type DeleteInstallmentPaymentProps = {
   installmentPayment: {
@@ -52,7 +52,7 @@ const DeleteInstallmentPayment: React.FC<DeleteInstallmentPaymentProps> = ({
   useEffect(() => {
     if (isSuccess) {
       toast({
-        title: "Success.",
+        title: "Success",
         description: "Installment Payment has been deleted.",
         status: "success",
         duration: 5000,
