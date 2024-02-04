@@ -90,7 +90,7 @@ const NewPatientForm = () => {
   }, [isSuccess, reset, navigate, toast, isError, error]);
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         {" "}
         <Card
           w={{

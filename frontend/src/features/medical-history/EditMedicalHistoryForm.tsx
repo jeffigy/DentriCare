@@ -91,7 +91,7 @@ const EditMedicalHistoryForm: React.FC<EditMedicalHistoryFormProps> = ({
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <Card
           w={{
             base: "300px",
