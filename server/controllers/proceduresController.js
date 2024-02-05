@@ -1,5 +1,5 @@
 const Procedure = require("../models/Procedure");
-
+const DentalNote = require("../models/DentalNote");
 //* get all procedures
 const getAllProcedures = async (req, res) => {
   const procedures = await Procedure.find().lean();
@@ -84,6 +84,18 @@ const deleteProcedure = async (req, res) => {
   const { id } = req.body;
   if (!id) {
     return res.status(400).json({ message: "Procedure ID is required" });
+  }
+
+  const procedureInUse = await DentalNote.findOne({
+    procedures: {
+      $in: [id],
+    },
+  }).exec();
+
+  if (procedureInUse) {
+    return res
+      .status(400)
+      .json({ message: "Procedure is in use and cannot be deleted" });
   }
 
   const procedure = await Procedure.findById(id).exec();
