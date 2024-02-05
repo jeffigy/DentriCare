@@ -1,9 +1,26 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 //* get all users
 const getAllUsers = async (req, res) => {
-  const users = await User.find().select("-password").lean();
+  const token = req.cookies.jwt;
+
+  if (!token) {
+    return res.status(401).json({ message: "No token, authorization denied" });
+  }
+  let decoded;
+  try {
+    decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+  } catch (err) {
+    return res.status(401).json({ message: "Token is not valid" });
+  }
+
+  const email = decoded.email;
+
+  const users = await User.find({ email: { $ne: email } })
+    .select("-password")
+    .lean();
   if (!users?.length) {
     return res.status(400).json({ message: "No users found" });
   }
