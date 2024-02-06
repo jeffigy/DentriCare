@@ -7,8 +7,17 @@ import {
   useGetAppointmentsByPatientIdQuery,
   useGetAppointmentsQuery,
 } from "./appointmentsApiSlice";
+import { useEffect } from "react";
 
-const AppointmentsList = () => {
+type AppointmentsListProps = {
+  filterDate?: Number;
+  setter?: (data: any) => void;
+};
+
+const AppointmentsList: React.FC<AppointmentsListProps> = ({
+  filterDate,
+  setter,
+}) => {
   const { id } = useParams<{ id: string }>();
 
   const {
@@ -29,6 +38,12 @@ const AppointmentsList = () => {
         refetchOnMountOrArgChange: true,
       });
 
+  useEffect(() => {
+    if (setter) {
+      setter(appointments?.entities);
+    }
+  }, [setter, appointments]);
+
   if (isLoading) return <DashSpinner />;
 
   if (isError) {
@@ -36,9 +51,18 @@ const AppointmentsList = () => {
   }
 
   if (isSuccess) {
+    const { ids, entities } = appointments;
+
+    const filteredAppointments = ids.filter((appointmentId) => {
+      const appointment = entities[appointmentId];
+      return appointment?.date === filterDate;
+    });
+
+    const appointmentsToDisplay = filterDate ? filteredAppointments : ids;
+
     return (
       <Stack>
-        {appointments?.ids?.map((appointmentId) => (
+        {appointmentsToDisplay.map((appointmentId) => (
           <AppointmentCard
             key={appointmentId}
             appointmentId={String(appointmentId)}
