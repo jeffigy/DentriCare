@@ -1,4 +1,8 @@
 const Patient = require("../models/Patient");
+const Appointment = require("../models/Appointment");
+const DentalNote = require("../models/DentalNote");
+const MedicalHistory = require("../models/MedicalHistory");
+const Payment = require("../models/Payment");
 
 //* get all patients
 const getAllPatients = async (req, res) => {
@@ -113,6 +117,33 @@ const deletePatient = async (req, res) => {
 
   if (!id) {
     return res.status(400).json({ message: "Patient ID required" });
+  }
+
+  const patientHasAppointments = await Appointment.findOne({
+    patient: id,
+  }).exec();
+
+  const patientHasDentalNotes = await DentalNote.findOne({
+    patient: id,
+  }).exec();
+
+  const patientHasMedicalHistory = await MedicalHistory.findOne({
+    patient: id,
+  }).exec();
+
+  const patientHasPayments = await Payment.findOne({
+    patient: id,
+  }).exec();
+
+  if (
+    patientHasAppointments ||
+    patientHasDentalNotes ||
+    patientHasMedicalHistory ||
+    patientHasPayments
+  ) {
+    return res
+      .status(400)
+      .json({ message: "Patient has related records, cannot be deleted" });
   }
 
   const patient = await Patient.findById(id).exec();
