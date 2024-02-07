@@ -10,7 +10,7 @@ import {
 import { useEffect } from "react";
 
 type AppointmentsListProps = {
-  filterDate?: Number;
+  filterDate?: Date;
   setter?: (data: any) => void;
 };
 
@@ -19,6 +19,7 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({
   setter,
 }) => {
   const { id } = useParams<{ id: string }>();
+  const selectedDate = filterDate ? filterDate.getTime() / 1000 : undefined;
 
   const {
     data: appointments,
@@ -55,10 +56,18 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({
 
     const filteredAppointments = ids.filter((appointmentId) => {
       const appointment = entities[appointmentId];
-      return appointment?.date === filterDate;
+      return appointment?.date === selectedDate;
     });
 
-    const appointmentsToDisplay = filterDate ? filteredAppointments : ids;
+    const appointmentsToDisplay = selectedDate ? filteredAppointments : ids;
+
+    if (appointmentsToDisplay.length === 0) {
+      return (
+        <Flex justify={"center"} w={{ base: "300px", md: "400px" }}>
+          No appointments found
+        </Flex>
+      );
+    }
 
     return (
       <Stack>
