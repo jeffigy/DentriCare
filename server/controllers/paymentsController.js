@@ -1,5 +1,6 @@
 const Payment = require("../models/Payment");
 const DentalNote = require("../models/DentalNote");
+const InstallmentPayment = require("../models/InstallmentPayment");
 
 //* get all payments
 const getAllPayments = async (req, res) => {
@@ -9,22 +10,6 @@ const getAllPayments = async (req, res) => {
   }
 
   res.json(payments);
-
-  //   const paymentsWithNotes = await Promise.all(
-  //     payments.map(async (payment) => {
-  //       const notes = await Promise.all(
-  //         payment.notesAndProcedures.map(async (note) => {
-  //           const noteObj = await DentalNote.findById(note).exec();
-  //           return noteObj;
-  //         })
-  //       );
-
-  //       return {
-  //         ...payment,
-  //         notes,
-  //       };
-  //     })
-  //   );
 };
 
 const getAllPaymentByPatientId = async (req, res) => {
@@ -36,7 +21,33 @@ const getAllPaymentByPatientId = async (req, res) => {
     return res.status(400).json({ message: "No payments found" });
   }
 
-  res.json(payments);
+  const isPaymentInstallment = await Promise.all(
+    payments.map(async (payment) => {
+      if (payment.type === "Installment") {
+        const installmentBalance = await InstallmentPayment.find({
+          payment: payment._id,
+        }).exec();
+
+        const totalPayment = installmentBalance.reduce((acc, curr) => {
+          return acc + curr.amount;
+        }, 0);
+
+        const balance = payment.total - totalPayment;
+
+        if (balance === 0) {
+          payment.status = "Paid";
+        }
+
+        return {
+          ...payment,
+          balance,
+        };
+      }
+
+      return payment;
+    })
+  );
+  res.json(isPaymentInstallment);
 };
 
 //* create new payment

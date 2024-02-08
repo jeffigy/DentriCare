@@ -1,4 +1,4 @@
-import { Box, Card, Flex } from "@chakra-ui/react";
+import { Card, Flex } from "@chakra-ui/react";
 import FloatingButton from "components/FloatingButton";
 import AppointmentsList from "features/appointments/AppointmentsList";
 import useTitle from "hooks/useTitle";
@@ -41,13 +41,8 @@ const AppointmentsPage = () => {
         base: "column",
         xl: "row",
       }}
-      justify={{
-        base: "center",
-      }}
-      align={{
-        base: "center",
-        xl: "flex-start",
-      }}
+      align={{ base: "center", xl: "flex-start" }}
+      justify={{ base: "center" }}
     >
       {" "}
       <Card
@@ -67,12 +62,10 @@ const AppointmentsPage = () => {
           tileClassName={tileClassName}
         />
       </Card>
-      <Box h={"calc(100vh - 200px)"}>
-        <AppointmentsList
-          filterDate={value as Date | undefined}
-          setter={setAppointments as (data: Appointment[]) => void}
-        />
-      </Box>
+      <AppointmentsList
+        filterDate={value as Date | undefined}
+        setter={setAppointments as (data: Appointment[]) => void}
+      />
       <FloatingButton
         icon={MdPlaylistAdd}
         ariaLabel={"new appointment"}

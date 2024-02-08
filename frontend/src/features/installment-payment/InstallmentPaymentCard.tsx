@@ -11,7 +11,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { InstallmentPayment } from "types/InstallmentPayment";
 import DeleteInstallmentPayment from "./DeleteInstallmentPayment";
-import { useGetInstallmentPaymentsQuery } from "./installmentPaymentApiSlice";
+import { useGetInstallmentPaymentsByPaymentIdQuery } from "./installmentPaymentApiSlice";
 
 type InstallmentPaymentCardProps = {
   installmentPaymentId: string;
@@ -22,8 +22,8 @@ const InstallmentPaymentCard: React.FC<InstallmentPaymentCardProps> = ({
 }) => {
   const { id, paymentId } = useParams<{ id: string; paymentId: string }>();
   const navigate = useNavigate();
-  const { installmentPayment } = useGetInstallmentPaymentsQuery(
-    "installmentPaymentsList",
+  const { installmentPayment } = useGetInstallmentPaymentsByPaymentIdQuery(
+    paymentId,
     {
       selectFromResult: ({ data }) => ({
         installmentPayment: data?.entities[
@@ -40,7 +40,7 @@ const InstallmentPaymentCard: React.FC<InstallmentPaymentCardProps> = ({
           base: "300px",
           md: "400px",
         }}
-        mb={"20px"}
+        mb={"10px"}
       >
         <CardBody>
           <Flex justify={"space-between"}>

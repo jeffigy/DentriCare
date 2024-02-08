@@ -1,14 +1,11 @@
 import { Flex, Stack, Text } from "@chakra-ui/react";
-import React from "react";
 import { useParams } from "react-router-dom";
 import { useGetInstallmentPaymentsByPaymentIdQuery } from "./installmentPaymentApiSlice";
 import DashSpinner from "components/Dashboard/DashSpinner";
 import { ErrorType } from "types/ErrorType";
 import InstallmentPaymentCard from "./InstallmentPaymentCard";
 
-type InstallmentPaymentsListProps = {};
-
-const InstallmentPaymentsList: React.FC<InstallmentPaymentsListProps> = () => {
+const InstallmentPaymentsList = () => {
   const { paymentId } = useParams<{ paymentId: string }>();
   const {
     data: installmentPayment,
@@ -17,7 +14,7 @@ const InstallmentPaymentsList: React.FC<InstallmentPaymentsListProps> = () => {
     isLoading,
     isSuccess,
   } = useGetInstallmentPaymentsByPaymentIdQuery(paymentId, {
-    pollingInterval: 6000,
+    pollingInterval: 1000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });

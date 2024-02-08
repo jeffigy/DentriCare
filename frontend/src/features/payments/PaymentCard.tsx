@@ -1,7 +1,4 @@
-import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useGetPaymentsQuery } from "./paymentApiSlice";
-import { Payment } from "types/Payment";
+import { ViewIcon } from "@chakra-ui/icons";
 import {
   Card,
   CardBody,
@@ -12,8 +9,11 @@ import {
   Tag,
   Text,
 } from "@chakra-ui/react";
-import { ViewIcon } from "@chakra-ui/icons";
+import React from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Payment } from "types/Payment";
 import DeletePayment from "./DeletePayment";
+import { useGetPaymentsByPatientIdQuery } from "./paymentApiSlice";
 
 type PaymentCardProps = {
   paymentId: string;
@@ -22,7 +22,7 @@ type PaymentCardProps = {
 const PaymentCard: React.FC<PaymentCardProps> = ({ paymentId }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { payment } = useGetPaymentsQuery("paymentsList", {
+  const { payment } = useGetPaymentsByPatientIdQuery(id, {
     selectFromResult: ({ data }) => ({
       payment: data?.entities[paymentId] as Payment,
     }),
@@ -58,6 +58,27 @@ const PaymentCard: React.FC<PaymentCardProps> = ({ paymentId }) => {
             <Text color={"gray.500"}> Total Amount:</Text>
             <Text>₱{new Intl.NumberFormat("en-US").format(payment.total)}</Text>
           </Flex>
+          {payment.type === "Installment" && payment.balance != 0 && (
+            <>
+              <Divider />
+              <Flex justify={"space-between"}>
+                <Text color={"gray.500"}> Balance:</Text>
+                <Text color="red">
+                  ₱{new Intl.NumberFormat("en-US").format(payment.balance)}
+                </Text>
+              </Flex>
+            </>
+          )}
+          {payment.type === "Installment" && payment.balance === 0 && (
+            <>
+              <Divider />
+              <Flex justify={"space-between"}>
+                <Text color={"gray.500"}> Status:</Text>
+                <Text>{payment.status}</Text>
+              </Flex>
+            </>
+          )}
+
           <Divider />
           <Flex justify={"space-between"}>
             <Text color={"gray.500"}>Last Updated:</Text>

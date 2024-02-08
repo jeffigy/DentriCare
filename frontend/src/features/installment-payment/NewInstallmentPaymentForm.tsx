@@ -11,6 +11,7 @@ import {
   Heading,
   Input,
   Stack,
+  Text,
   useToast,
 } from "@chakra-ui/react";
 import { DevTool } from "@hookform/devtools";
@@ -24,14 +25,25 @@ import { ErrorType } from "types/ErrorType";
 import { InstallmentPaymentFormValues } from "types/InstallmentPayment";
 import { installmentPaymentValidation } from "validations/installmentPaymentValidation";
 import { useAddNewInstallmentPaymentMutation } from "./installmentPaymentApiSlice";
+import { Payment } from "types/Payment";
+import { useGetPaymentsByPatientIdQuery } from "features/payments/paymentApiSlice";
+import DashSpinner from "components/Dashboard/DashSpinner";
 
 const NewInstallmentPaymentForm = () => {
-  const { paymentId } = useParams<{ id: string; paymentId: string }>();
+  const { id, paymentId } = useParams<{ id: string; paymentId: string }>();
   const { email } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
   const [addNewInstallmentPayment, { isSuccess, isError, error }] =
     useAddNewInstallmentPaymentMutation();
+  const { payment } = useGetPaymentsByPatientIdQuery(id, {
+    selectFromResult: ({ data }) => ({
+      payment: data?.entities[paymentId as string] as Payment,
+    }),
+    pollingInterval: 3000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+  });
 
   const form = useForm<InstallmentPaymentFormValues>({
     defaultValues: {
@@ -44,9 +56,11 @@ const NewInstallmentPaymentForm = () => {
     ) as Resolver<InstallmentPaymentFormValues>,
   });
 
-  const { register, control, handleSubmit, formState, reset } = form;
+  const { register, control, handleSubmit, formState, reset, watch } = form;
 
   const { errors, isSubmitting, dirtyFields } = formState;
+
+  const amount = watch("amount", 0);
 
   const onSubmit = async (data: InstallmentPaymentFormValues) => {
     const { date, amount, remarks } = data;
@@ -89,6 +103,8 @@ const NewInstallmentPaymentForm = () => {
       });
     }
   }, [isSuccess]);
+
+  if (!payment) return <DashSpinner />;
 
   return (
     <>
@@ -139,15 +155,28 @@ const NewInstallmentPaymentForm = () => {
                 </FormHelperText>
               )}
             </FormControl>
+            <Text color={"red"}>
+              Balance: ₱
+              {new Intl.NumberFormat("en-US").format(payment.balance - amount)}
+            </Text>
             <FormControl isRequired>
               <FormLabel>Amount</FormLabel>
-              <Input type="number" {...register("amount")} />
+              <Input
+                type="number"
+                {...register("amount", {
+                  validate: (value) =>
+                    value <= payment.balance ||
+                    "Amount cannot be greater than balance",
+                })}
+                max={Number(payment.balance)}
+              />
               {errors.amount && (
                 <FormHelperText color={"red"}>
                   {errors.amount.message}
                 </FormHelperText>
               )}
             </FormControl>
+
             <FormControl>
               <FormLabel>Remarks</FormLabel>
               <Input type="text" {...register("remarks")} />

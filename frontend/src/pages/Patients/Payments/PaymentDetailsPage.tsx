@@ -14,7 +14,7 @@ import {
 import DashSpinner from "components/Dashboard/DashSpinner";
 import InstallmentPaymentsList from "features/installment-payment/InstallmentPaymentsList";
 import DeletePayment from "features/payments/DeletePayment";
-import { useGetPaymentsQuery } from "features/payments/paymentApiSlice";
+import { useGetPaymentsByPatientIdQuery } from "features/payments/paymentApiSlice";
 import useTitle from "hooks/useTitle";
 import { useNavigate, useParams } from "react-router-dom";
 import { Payment } from "types/Payment";
@@ -23,10 +23,13 @@ const PaymentDetailsPage = () => {
   useTitle("Payment Details");
   const navigate = useNavigate();
   const { id, paymentId } = useParams<{ id: string; paymentId: string }>();
-  const { payment } = useGetPaymentsQuery("paymentsList", {
+  const { payment } = useGetPaymentsByPatientIdQuery(id, {
     selectFromResult: ({ data }) => ({
       payment: data?.entities[paymentId as string] as Payment,
     }),
+    pollingInterval: 3000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
   });
 
   if (!payment) return <DashSpinner />;
@@ -64,22 +67,45 @@ const PaymentDetailsPage = () => {
             <Text color={"gray.500"}> Total Amount:</Text>
             <Text>₱{new Intl.NumberFormat("en-US").format(payment.total)}</Text>
           </Flex>
-          <Divider />
+
+          {payment.type === "Installment" && payment.balance != 0 && (
+            <>
+              <Divider />
+              <Flex justify={"space-between"}>
+                <Text color={"gray.500"}> Balance:</Text>
+                <Text color="red">
+                  ₱{new Intl.NumberFormat("en-US").format(payment.balance)}
+                </Text>
+              </Flex>
+            </>
+          )}
+          {payment.type === "Installment" && payment.balance === 0 && (
+            <>
+              <Divider />
+              <Flex justify={"space-between"}>
+                <Text color={"gray.500"}> Status:</Text>
+                <Text>{payment.status}</Text>
+              </Flex>
+            </>
+          )}
 
           {payment.remarks && (
             <>
+              <Divider />
               <Flex direction={"column"}>
                 <Text color={"gray.500"}>Remarks:</Text>
                 <Text>{payment.remarks}</Text>
               </Flex>
-              <Divider />
             </>
           )}
           {payment.planName && (
-            <Flex justify={"space-between"}>
-              <Text color={"gray.500"}>Plan Name:</Text>
-              <Text>{payment.planName}</Text>
-            </Flex>
+            <>
+              <Divider />
+              <Flex justify={"space-between"}>
+                <Text color={"gray.500"}>Plan Name:</Text>
+                <Text>{payment.planName}</Text>
+              </Flex>
+            </>
           )}
           <Divider />
           <Flex justify={"space-between"}>

@@ -12,5 +12,7 @@ export type Payment = {
   updatedBy: string;
   createdAt: string;
   updatedAt: string;
+  balance: number;
+  status: string;
   __v: number;
 };
