@@ -4,12 +4,12 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  Flex,
   FormControl,
   FormHelperText,
   FormLabel,
   Heading,
   Input,
-  Select,
   Stack,
   Textarea,
   useToast,
@@ -27,6 +27,7 @@ import { ErrorType } from "types/ErrorType";
 import { Patient } from "types/Patient";
 import { appointmentValidation } from "validations/appointmentValidation";
 import { useUpdateAppointmentMutation } from "./appointmentsApiSlice";
+import Select from "react-select";
 
 type EditAppointmentFormProps = {
   appointment: Appointment;
@@ -48,7 +49,16 @@ const EditAppointmentForm: React.FC<EditAppointmentFormProps> = ({
 
   const form = useForm<AppointmentFormValues>({
     defaultValues: {
-      patient: appointment.patient,
+      patient: appointment.patient
+        ? {
+            value: appointment.patient,
+            label: `${
+              patients.find((p) => p.id === appointment.patient)?.fname
+            } ${patients.find((p) => p.id === appointment.patient)?.mname} ${
+              patients.find((p) => p.id === appointment.patient)?.lname
+            }`,
+          }
+        : undefined,
       date: appointment.date,
       startTime: appointment.startTime,
       endTime: appointment.endTime,
@@ -67,7 +77,7 @@ const EditAppointmentForm: React.FC<EditAppointmentFormProps> = ({
     try {
       await updateAppointment({
         id: appointment.id,
-        patient,
+        patient: patient.value,
         date,
         startTime,
         endTime,
@@ -114,9 +124,9 @@ const EditAppointmentForm: React.FC<EditAppointmentFormProps> = ({
             md: "400px",
           }}
         >
-          <CardHeader>
+          <CardHeader as={Flex} justify={"center"}>
             {" "}
-            <Heading size={"md"}>New Appointment</Heading>
+            <Heading size={"md"}>Edit Appointment</Heading>
           </CardHeader>
 
           <CardBody as={Stack} spacing={"10px"}>
@@ -153,13 +163,24 @@ const EditAppointmentForm: React.FC<EditAppointmentFormProps> = ({
             </FormControl>
             <FormControl isDisabled={patientId ? true : false}>
               <FormLabel>Patient</FormLabel>
-              <Select placeholder="Select Patient" {...register("patient")}>
-                {patients.map((patient) => (
-                  <option key={patient.id} value={patient.id}>
-                    {patient.fname} {patient.mname} {patient.lname}
-                  </option>
-                ))}
-              </Select>
+              <Controller
+                name="patient"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    options={
+                      patients.map((patient) => ({
+                        value: patient.id,
+                        label: `${patient.fname} ${patient.mname} ${patient.lname}`,
+                      })) as any
+                    }
+                    isSearchable
+                    isClearable
+                    placeholder="Select Patient"
+                    {...field}
+                  />
+                )}
+              />
               {errors.patient && (
                 <FormHelperText color={"red"}>
                   {errors.patient.message}

@@ -1,5 +1,5 @@
 export type AppointmentFormValues = {
-  patient: string;
+  patient: { value: string; label: string };
   date: number;
   startTime: number;
   endTime: number;

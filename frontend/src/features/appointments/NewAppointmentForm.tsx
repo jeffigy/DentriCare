@@ -10,7 +10,6 @@ import {
   FormLabel,
   Heading,
   Input,
-  Select,
   Stack,
   Textarea,
   useToast,
@@ -25,7 +24,7 @@ import { useAddNewAppointmentMutation } from "./appointmentsApiSlice";
 import { AppointmentFormValues } from "types/AppointmentFormValues";
 import { DevTool } from "@hookform/devtools";
 import DashSpinner from "components/Dashboard/DashSpinner";
-
+import Select from "react-select";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { appointmentValidation } from "validations/appointmentValidation";
 import { ErrorType } from "types/ErrorType";
@@ -49,7 +48,7 @@ const NewAppointmentForm: React.FC<NewAppointmentFormProps> = ({
   const form = useForm<AppointmentFormValues>({
     defaultValues: {
       date: undefined,
-      patient: patientId ? patientId : "",
+      patient: undefined,
       startTime: undefined,
       endTime: undefined,
       remarks: "",
@@ -69,7 +68,7 @@ const NewAppointmentForm: React.FC<NewAppointmentFormProps> = ({
     try {
       await addNewAppointment({
         date,
-        patient,
+        patient: patient.value,
         startTime,
         endTime,
         remarks,
@@ -124,6 +123,7 @@ const NewAppointmentForm: React.FC<NewAppointmentFormProps> = ({
 
           <CardBody as={Stack} spacing={"10px"}>
             {" "}
+            F
             <FormControl>
               <FormLabel>Date</FormLabel>
               <Controller
@@ -156,13 +156,24 @@ const NewAppointmentForm: React.FC<NewAppointmentFormProps> = ({
             </FormControl>
             <FormControl isDisabled={patientId ? true : false}>
               <FormLabel>Patient</FormLabel>
-              <Select placeholder="Select Patient" {...register("patient")}>
-                {patients.map((patient) => (
-                  <option key={patient.id} value={patient.id}>
-                    {patient.fname} {patient.mname} {patient.lname}
-                  </option>
-                ))}
-              </Select>
+              <Controller
+                name="patient"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    options={
+                      patients.map((patient) => ({
+                        value: patient.id,
+                        label: `${patient.fname} ${patient.mname} ${patient.lname}`,
+                      })) as any
+                    }
+                    isSearchable
+                    isClearable
+                    placeholder="Select Patient"
+                    {...field}
+                  />
+                )}
+              />
               {errors.patient && (
                 <FormHelperText color={"red"}>
                   {errors.patient.message}
