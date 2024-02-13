@@ -40,6 +40,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpen }) => {
     "/dash/treatments",
     "/dash/appointments",
     "/dash/finances",
+    "/dash/procedures",
   ];
 
   useEffect(() => {

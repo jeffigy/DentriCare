@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useGetPaymentsByPatientIdQuery } from "./paymentApiSlice";
 import DashSpinner from "components/Dashboard/DashSpinner";
-import { Flex, Stack } from "@chakra-ui/react";
+import { Flex, Stack, Text } from "@chakra-ui/react";
 import { ErrorType } from "types/ErrorType";
 import PaymentCard from "./PaymentCard";
 
@@ -27,8 +27,45 @@ const PaymentsList = () => {
     );
 
   if (isSuccess) {
+    const totalRevenue = Object.keys(payments.entities).reduce(
+      (sum, paymentId) => {
+        const payment = payments.entities[paymentId];
+        if (payment?.balance) {
+          return sum + (payment.totalAmount ?? 0);
+        } else {
+          return sum + (payment?.total ?? 0);
+        }
+      },
+      0
+    );
+
+    const totalBalance = Object.keys(payments.entities).reduce(
+      (sum, paymentId) => {
+        const payment = payments.entities[paymentId];
+        if (payment?.balance) {
+          return sum + (payment.balance ?? 0);
+        } else {
+          return sum;
+        }
+      },
+      0
+    );
+
     return (
       <Stack>
+        <Flex w={"full "} justify={"space-between"}>
+          {" "}
+          <Text>Total Revenue</Text>
+          <Text> ₱{new Intl.NumberFormat("en-US").format(totalRevenue)}</Text>
+        </Flex>
+        <Flex w={"full "} justify={"space-between"}>
+          {" "}
+          <Text>Total Balance</Text>
+          <Text color={"red"}>
+            {" "}
+            ₱{new Intl.NumberFormat("en-US").format(totalBalance)}
+          </Text>
+        </Flex>
         {payments.ids.map((paymentId) => (
           <PaymentCard
             key={paymentId as string}

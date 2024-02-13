@@ -13,6 +13,8 @@ export type Payment = {
   createdAt: string;
   updatedAt: string;
   balance: number;
+  totalAmount: number;
+  patientName: string;
   status: string;
   __v: number;
 };

@@ -1,13 +1,14 @@
 import { EditIcon } from "@chakra-ui/icons";
 import {
   Avatar,
+  Box,
   Card,
   CardBody,
   Divider,
   Flex,
   Icon,
   IconButton,
-  Stack,
+  SimpleGrid,
   Text,
 } from "@chakra-ui/react";
 import DashSpinner from "components/Dashboard/DashSpinner";
@@ -168,16 +169,25 @@ const PatientDetailsPage = () => {
             </Flex>
           </Flex>
         </Flex>
-        <Stack flexGrow={1}>
-          {menu.map((item, index) => (
-            <NavCard
-              key={index}
-              title={item.title}
-              icon={item.icon}
-              to={item.to}
-            />
-          ))}
-        </Stack>
+        <Box flexGrow={1}>
+          <SimpleGrid
+            spacing={5}
+            columns={{
+              base: 1,
+              lg: 2,
+              xl: 3,
+            }}
+          >
+            {menu.map((item, index) => (
+              <NavCard
+                key={index}
+                title={item.title}
+                icon={item.icon}
+                to={item.to}
+              />
+            ))}
+          </SimpleGrid>
+        </Box>
       </Flex>
     );
   }

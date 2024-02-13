@@ -45,7 +45,12 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({
     }
   }, [setter, appointments]);
 
-  if (isLoading) return <DashSpinner />;
+  if (isLoading)
+    return (
+      <Flex w={{ base: "300px", md: "400px" }}>
+        <DashSpinner />
+      </Flex>
+    );
 
   if (isError) {
     return <Flex justify={"center"}>{(error as ErrorType).data.message}</Flex>;

@@ -175,6 +175,7 @@ const PaymentDetailsPage = () => {
             <Button
               borderRadius={"md"}
               leftIcon={<AddIcon />}
+              isDisabled={payment.balance === 0}
               onClick={() =>
                 navigate(
                   `/dash/patients/${id}/payments/${payment.id}/installment-payment/new`

@@ -191,7 +191,11 @@ const NewInstallmentPaymentForm = () => {
             <Button
               w={"full"}
               type="submit"
-              isDisabled={!dirtyFields.date || !dirtyFields.amount}
+              isDisabled={
+                !dirtyFields.date ||
+                !dirtyFields.amount ||
+                payment.balance === 0
+              }
               isLoading={isSubmitting}
             >
               Submit

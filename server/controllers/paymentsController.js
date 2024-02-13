@@ -1,7 +1,6 @@
 const Payment = require("../models/Payment");
-const DentalNote = require("../models/DentalNote");
 const InstallmentPayment = require("../models/InstallmentPayment");
-
+const Patient = require("../models/Patient");
 //* get all payments
 const getAllPayments = async (req, res) => {
   const payments = await Payment.find().lean();
@@ -9,7 +8,41 @@ const getAllPayments = async (req, res) => {
     return res.status(400).json({ message: "no payments found" });
   }
 
-  res.json(payments);
+  const paymentWithPatient = await Promise.all(
+    payments.map(async (payment) => {
+      const patient = await Patient.findById(payment.patient).exec();
+
+      if (payment.type === "Installment") {
+        const installmentBalance = await InstallmentPayment.find({
+          payment: payment._id,
+        }).exec();
+
+        const totalPayment = installmentBalance.reduce((acc, curr) => {
+          return acc + curr.amount;
+        }, 0);
+
+        const balance = payment.total - totalPayment;
+
+        if (balance === 0) {
+          payment.status = "Paid";
+        }
+
+        return {
+          ...payment,
+          totalPayment,
+          balance,
+          patientName:
+            patient.fname + " " + patient.mname + " " + patient.lname,
+        };
+      }
+      return {
+        ...payment,
+        patientName: patient.fname + " " + patient.mname + " " + patient.lname,
+      };
+    })
+  );
+
+  res.json(paymentWithPatient);
 };
 
 const getAllPaymentByPatientId = async (req, res) => {
@@ -40,6 +73,7 @@ const getAllPaymentByPatientId = async (req, res) => {
 
         return {
           ...payment,
+          totalPayment,
           balance,
         };
       }
