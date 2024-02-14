@@ -88,7 +88,7 @@ const Login = () => {
             <FormControl>
               <FormLabel>Email</FormLabel>
               <Input
-                autoComplete="false"
+                autoComplete="off"
                 id="email"
                 type="email"
                 {...register("email")}
@@ -104,7 +104,7 @@ const Login = () => {
               <FormLabel>Password</FormLabel>
               <InputGroup>
                 <Input
-                  autoComplete="false"
+                  autoComplete="off"
                   id="password"
                   type={showPwd ? "text" : "password"}
                   {...register("password")}

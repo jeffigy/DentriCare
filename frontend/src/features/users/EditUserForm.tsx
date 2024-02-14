@@ -20,7 +20,6 @@ import {
   Switch,
   useToast,
 } from "@chakra-ui/react";
-import { DevTool } from "@hookform/devtools";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ROLES } from "config/roles";
 import React, { useEffect, useState } from "react";
@@ -59,7 +58,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user }) => {
     },
     resolver: yupResolver(editUserValidation) as Resolver<UserFormValues>,
   });
-  const { register, control, handleSubmit, formState, reset } = form;
+  const { register, handleSubmit, formState, reset } = form;
   const { errors, isSubmitting, dirtyFields, isDirty } = formState;
 
   const onSubmit = async (data: UserFormValues) => {
@@ -110,162 +109,159 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user }) => {
   }, [isError]);
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-        <Card
-          w={{
-            base: "300px",
-            md: "400px",
-          }}
-        >
-          <CardHeader as={Flex} justify={"center"}>
-            <Heading size={"md"}>Edit User</Heading>
-          </CardHeader>
-          <CardBody as={Stack} spacing={"10px"}>
-            <FormControl>
-              <FormLabel htmlFor="fname">First Name</FormLabel>
-              <Input
-                autoComplete={"false"}
-                id="fname"
-                isInvalid={!!errors.fname}
-                type="text"
-                {...register("fname")}
-              />
-              {errors.fname && (
-                <FormHelperText color={"red"}>
-                  {errors.fname.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="lname">Last Name</FormLabel>
-              <Input
-                autoComplete={"false"}
-                id="lname"
-                isInvalid={!!errors.lname}
-                type="text"
-                {...register("lname")}
-              />
-              {errors.lname && (
-                <FormHelperText color={"red"}>
-                  {errors.lname.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
-              <Input
-                autoComplete="false"
-                id="email"
-                isInvalid={!!errors.email}
-                {...register("email")}
-              />
-              {errors.email && (
-                <FormHelperText color={"red"}>
-                  {errors.email.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <InputGroup>
-                <Input
-                  autoComplete="false"
-                  id="password"
-                  isInvalid={!!errors.password}
-                  type={viewPassword ? "text" : "password"}
-                  {...register("password")}
-                />
-                <InputRightElement>
-                  <IconButton
-                    aria-label="view-pwd"
-                    icon={viewPassword ? <ViewOffIcon /> : <ViewIcon />}
-                    variant={"ghost"}
-                    onClick={handleClick}
-                  />
-                </InputRightElement>
-              </InputGroup>
-              {errors.password && (
-                <FormHelperText color={"red"}>
-                  {errors.password.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="confirm-password">Confirm Password</FormLabel>
-              <InputGroup>
-                <Input
-                  type={viewConfirmPassword ? "text" : "password"}
-                  id="confirm-password"
-                  isInvalid={!!errors.confirmPassword}
-                  autoComplete="false"
-                  {...register("confirmPassword")}
-                />
-                <InputRightElement>
-                  <IconButton
-                    aria-label="view-pwd"
-                    icon={viewConfirmPassword ? <ViewOffIcon /> : <ViewIcon />}
-                    variant={"ghost"}
-                    onClick={handleClickConfirmPassword}
-                  />
-                </InputRightElement>
-              </InputGroup>
-              {errors.confirmPassword && (
-                <FormHelperText color={"red"}>
-                  {errors.confirmPassword.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-
-            <FormControl id="roles">
-              <FormLabel>Roles</FormLabel>
-              <CheckboxGroup defaultValue={user.roles}>
-                <Stack spacing={0}>
-                  {Object.values(ROLES).map((role) => (
-                    <Checkbox
-                      key={role}
-                      id={role}
-                      value={role}
-                      {...register("roles")}
-                    >
-                      {role}
-                    </Checkbox>
-                  ))}
-                </Stack>
-              </CheckboxGroup>
-              {errors.roles && (
-                <FormHelperText color={"red"}>
-                  {errors.roles.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="active">Active</FormLabel>
-              <Switch id="active" {...register("active")} />
-            </FormControl>
-          </CardBody>
-
-          <CardFooter as={Stack}>
-            <Button
-              w={"full"}
-              isLoading={isSubmitting}
-              isDisabled={!isDirty || isSubmitting}
-              type="submit"
-            >
-              Save Changes
-            </Button>
-            <DeleteUser
-              user={{
-                id: user.id,
-                fname: user.fname,
-                lname: user.lname,
-              }}
+    <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+      <Card
+        w={{
+          base: "300px",
+          md: "400px",
+        }}
+      >
+        <CardHeader as={Flex} justify={"center"}>
+          <Heading size={"md"}>Edit User</Heading>
+        </CardHeader>
+        <CardBody as={Stack} spacing={"10px"}>
+          <FormControl>
+            <FormLabel htmlFor="fname">First Name</FormLabel>
+            <Input
+              autoComplete="off"
+              id="fname"
+              isInvalid={!!errors.fname}
+              type="text"
+              {...register("fname")}
             />
-          </CardFooter>
-        </Card>
-      </form>
-      <DevTool control={control} />
-    </>
+            {errors.fname && (
+              <FormHelperText color={"red"}>
+                {errors.fname.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="lname">Last Name</FormLabel>
+            <Input
+              autoComplete="off"
+              id="lname"
+              isInvalid={!!errors.lname}
+              type="text"
+              {...register("lname")}
+            />
+            {errors.lname && (
+              <FormHelperText color={"red"}>
+                {errors.lname.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="email">Email</FormLabel>
+            <Input
+              autoComplete="off"
+              id="email"
+              isInvalid={!!errors.email}
+              {...register("email")}
+            />
+            {errors.email && (
+              <FormHelperText color={"red"}>
+                {errors.email.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="password">Password</FormLabel>
+            <InputGroup>
+              <Input
+                autoComplete="off"
+                id="password"
+                isInvalid={!!errors.password}
+                type={viewPassword ? "text" : "password"}
+                {...register("password")}
+              />
+              <InputRightElement>
+                <IconButton
+                  aria-label="view-pwd"
+                  icon={viewPassword ? <ViewOffIcon /> : <ViewIcon />}
+                  variant={"ghost"}
+                  onClick={handleClick}
+                />
+              </InputRightElement>
+            </InputGroup>
+            {errors.password && (
+              <FormHelperText color={"red"}>
+                {errors.password.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="confirm-password">Confirm Password</FormLabel>
+            <InputGroup>
+              <Input
+                type={viewConfirmPassword ? "text" : "password"}
+                id="confirm-password"
+                isInvalid={!!errors.confirmPassword}
+                autoComplete="off"
+                {...register("confirmPassword")}
+              />
+              <InputRightElement>
+                <IconButton
+                  aria-label="view-pwd"
+                  icon={viewConfirmPassword ? <ViewOffIcon /> : <ViewIcon />}
+                  variant={"ghost"}
+                  onClick={handleClickConfirmPassword}
+                />
+              </InputRightElement>
+            </InputGroup>
+            {errors.confirmPassword && (
+              <FormHelperText color={"red"}>
+                {errors.confirmPassword.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+
+          <FormControl id="roles">
+            <FormLabel>Roles</FormLabel>
+            <CheckboxGroup defaultValue={user.roles}>
+              <Stack spacing={0}>
+                {Object.values(ROLES).map((role) => (
+                  <Checkbox
+                    key={role}
+                    id={role}
+                    value={role}
+                    {...register("roles")}
+                  >
+                    {role}
+                  </Checkbox>
+                ))}
+              </Stack>
+            </CheckboxGroup>
+            {errors.roles && (
+              <FormHelperText color={"red"}>
+                {errors.roles.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="active">Active</FormLabel>
+            <Switch id="active" {...register("active")} />
+          </FormControl>
+        </CardBody>
+
+        <CardFooter as={Stack}>
+          <Button
+            w={"full"}
+            isLoading={isSubmitting}
+            isDisabled={!isDirty || isSubmitting}
+            type="submit"
+          >
+            Save Changes
+          </Button>
+          <DeleteUser
+            user={{
+              id: user.id,
+              fname: user.fname,
+              lname: user.lname,
+            }}
+          />
+        </CardFooter>
+      </Card>
+    </form>
   );
 };
 export default EditUserForm;

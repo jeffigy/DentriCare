@@ -13,8 +13,6 @@ import {
   Stack,
   useToast,
 } from "@chakra-ui/react";
-
-import { DevTool } from "@hookform/devtools";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useAuth from "hooks/useAuth";
 import React, { useEffect } from "react";
@@ -97,90 +95,82 @@ const EditInstallmentPaymentForm: React.FC<EditInstallmentPaymentFormProps> = ({
     }
   }, [isSuccess]);
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-        <Card
-          w={{
-            base: "300px",
-            md: "400px",
-          }}
-        >
-          <CardHeader as={Flex} justify={"center"}>
-            <Heading size={"md"}>Edit Installment Payment </Heading>
-          </CardHeader>
-          <CardBody as={Stack} spacing={"10px"}>
-            <FormControl isRequired>
-              <FormLabel>Date</FormLabel>
-              <Controller
-                name="date"
-                control={control}
-                render={({ field }) => (
-                  <div className="customDatePickerWidth">
-                    <DatePicker
-                      maxDate={new Date()}
-                      showMonthDropdown
-                      showYearDropdown
-                      customInput={
-                        <Input
-                          isInvalid={!!errors.date}
-                          autoComplete="false"
-                          name="hidden"
-                        />
-                      }
-                      selected={
-                        field.value
-                          ? new Date(Number(field.value) * 1000)
-                          : null
-                      }
-                      onChange={(date) =>
-                        field.onChange(date ? date.getTime() / 1000 : 0)
-                      }
-                    />
-                  </div>
-                )}
-              />
-              {errors.date && (
-                <FormHelperText color={"red"}>
-                  {errors.date.message}
-                </FormHelperText>
+    <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+      <Card
+        w={{
+          base: "300px",
+          md: "400px",
+        }}
+      >
+        <CardHeader as={Flex} justify={"center"}>
+          <Heading size={"md"}>Edit Installment Payment </Heading>
+        </CardHeader>
+        <CardBody as={Stack} spacing={"10px"}>
+          <FormControl isRequired>
+            <FormLabel>Date</FormLabel>
+            <Controller
+              name="date"
+              control={control}
+              render={({ field }) => (
+                <div className="customDatePickerWidth">
+                  <DatePicker
+                    maxDate={new Date()}
+                    showMonthDropdown
+                    showYearDropdown
+                    customInput={
+                      <Input
+                        isInvalid={!!errors.date}
+                        autoComplete="false"
+                        name="hidden"
+                      />
+                    }
+                    selected={
+                      field.value ? new Date(Number(field.value) * 1000) : null
+                    }
+                    onChange={(date) =>
+                      field.onChange(date ? date.getTime() / 1000 : 0)
+                    }
+                  />
+                </div>
               )}
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Amount</FormLabel>
-              <Input type="number" {...register("amount")} />
-              {errors.amount && (
-                <FormHelperText color={"red"}>
-                  {errors.amount.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>Remarks</FormLabel>
-              <Input type="text" {...register("remarks")} />
-              {errors.remarks && (
-                <FormHelperText color={"red"}>
-                  {errors.remarks.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-          </CardBody>
-          <CardFooter>
-            <Button
-              w={"full"}
-              type="submit"
-              isDisabled={
-                // disable if no changes on any fields
-                !isDirty
-              }
-              isLoading={isSubmitting}
-            >
-              Submit
-            </Button>
-          </CardFooter>
-        </Card>
-      </form>
-      <DevTool control={control} />
-    </>
+            />
+            {errors.date && (
+              <FormHelperText color={"red"}>
+                {errors.date.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel>Amount</FormLabel>
+            <Input type="number" {...register("amount")} />
+            {errors.amount && (
+              <FormHelperText color={"red"}>
+                {errors.amount.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl>
+            <FormLabel>Remarks</FormLabel>
+            <Input type="text" {...register("remarks")} />
+            {errors.remarks && (
+              <FormHelperText color={"red"}>
+                {errors.remarks.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+        </CardBody>
+        <CardFooter>
+          <Button
+            w={"full"}
+            type="submit"
+            isDisabled={!isDirty}
+            isLoading={isSubmitting}
+          >
+            Submit
+          </Button>
+        </CardFooter>
+      </Card>
+    </form>
   );
 };
 export default EditInstallmentPaymentForm;

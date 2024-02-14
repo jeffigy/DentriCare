@@ -33,7 +33,7 @@ type EditProcedureFormProps = {
 };
 
 const EditProcedureForm: React.FC<EditProcedureFormProps> = ({ procedure }) => {
-  const { email } = useAuth();
+  const { email, status } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -141,55 +141,71 @@ const EditProcedureForm: React.FC<EditProcedureFormProps> = ({ procedure }) => {
             )}
           </FormControl>
 
-          <FormControl>
-            <FormLabel>Created By</FormLabel>
-            <Input value={procedure.createdBy} variant={"unstyle"} disabled />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Created at</FormLabel>
-            <Input
-              value={new Date(procedure.createdAt).toLocaleString("en-US", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-                hour: "numeric",
-                minute: "numeric",
-                second: "numeric",
-                hour12: true,
-              })}
-              variant={"unstyle"}
-              disabled
-            />
-          </FormControl>
-          {procedure.updatedBy && (
-            <>
-              {" "}
-              <FormControl>
-                <FormLabel>Updated By</FormLabel>
-                <Input
-                  value={procedure.updatedBy}
-                  variant={"unstyle"}
-                  disabled
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Updated at</FormLabel>
-                <Input
-                  value={new Date(procedure.updatedAt).toLocaleString("en-US", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                    hour: "numeric",
-                    minute: "numeric",
-                    second: "numeric",
-                    hour12: true,
-                  })}
-                  variant={"unstyle"}
-                  disabled
-                />
-              </FormControl>
-            </>
-          )}
+          {status === "SuperAdmin" ||
+            (status === "Admin" && (
+              <>
+                <FormControl>
+                  <FormLabel>Created By</FormLabel>
+                  <Input
+                    value={procedure.createdBy}
+                    variant={"unstyle"}
+                    disabled
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Created at</FormLabel>
+                  <Input
+                    value={new Date(procedure.createdAt).toLocaleString(
+                      "en-US",
+                      {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "numeric",
+                        second: "numeric",
+                        hour12: true,
+                      }
+                    )}
+                    variant={"unstyle"}
+                    disabled
+                  />
+                </FormControl>
+              </>
+            ))}
+          {status === "Admin" ||
+            (status === "SuperAdmin" && procedure.updatedBy && (
+              <>
+                {" "}
+                <FormControl>
+                  <FormLabel>Updated By</FormLabel>
+                  <Input
+                    value={procedure.updatedBy}
+                    variant={"unstyle"}
+                    disabled
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Updated at</FormLabel>
+                  <Input
+                    value={new Date(procedure.updatedAt).toLocaleString(
+                      "en-US",
+                      {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "numeric",
+                        second: "numeric",
+                        hour12: true,
+                      }
+                    )}
+                    variant={"unstyle"}
+                    disabled
+                  />
+                </FormControl>
+              </>
+            ))}
         </CardBody>
         <CardFooter as={Stack}>
           <Button
@@ -200,7 +216,8 @@ const EditProcedureForm: React.FC<EditProcedureFormProps> = ({ procedure }) => {
           >
             Submit
           </Button>
-          <DeleteProcedure procedure={procedure} />
+          {status === "SuperAdmin" ||
+            (status === "Admin" && <DeleteProcedure procedure={procedure} />)}
         </CardFooter>
       </Card>
     </form>

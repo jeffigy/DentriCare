@@ -13,6 +13,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { MedicalHistory } from "types/MedicalHistory";
 import DeleteMedicalHistory from "./DeleteMedicalHistory";
 import { useGetMedicalHistoriesQuery } from "./medicalHistoryApiSlice";
+import useAuth from "hooks/useAuth";
 
 type MedicalHistoryCardProps = {
   medicalHistoryId: string;
@@ -21,6 +22,7 @@ type MedicalHistoryCardProps = {
 const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = ({
   medicalHistoryId,
 }) => {
+  const { status } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -53,42 +55,55 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = ({
               </Flex>
             </>
           )}
-          <Divider />
-          <Flex justify={"space-between"}>
-            <Text color={"gray.500"}> Created By:</Text>
-            <Text color={"gray.500"}>{medicalHistory.createdBy}</Text>
-          </Flex>
-          <Divider />
-          <Flex justify={"space-between"}>
-            <Text color={"gray.500"}>Creation Date:</Text>
-            <Text color={"gray.500"}>
-              {new Date(medicalHistory.createdAt).toLocaleString("en-US", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              })}
-            </Text>
-          </Flex>
-          {medicalHistory.updatedBy && (
-            <>
-              <Divider />
-              <Flex justify={"space-between"}>
-                <Text color={"gray.500"}> Updated By</Text>
-                <Text color={"gray.500"}>{medicalHistory.updatedBy}</Text>
-              </Flex>
-              <Divider />
-              <Flex justify={"space-between"}>
-                <Text color={"gray.500"}>Last Updated:</Text>
-                <Text color={"gray.500"}>
-                  {new Date(medicalHistory.updatedAt).toLocaleString("en-US", {
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                  })}
-                </Text>
-              </Flex>
-            </>
-          )}
+          {status === "Admin" ||
+            (status === "SuperAdmin" && (
+              <>
+                {" "}
+                <Divider />
+                <Flex justify={"space-between"}>
+                  <Text color={"gray.500"}> Created By:</Text>
+                  <Text color={"gray.500"}>{medicalHistory.createdBy}</Text>
+                </Flex>
+                <Divider />
+                <Flex justify={"space-between"}>
+                  <Text color={"gray.500"}>Creation Date:</Text>
+                  <Text color={"gray.500"}>
+                    {new Date(medicalHistory.createdAt).toLocaleString(
+                      "en-US",
+                      {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      }
+                    )}
+                  </Text>
+                </Flex>
+              </>
+            ))}
+          {status === "Admin" ||
+            (status === "SuperAdmin" && medicalHistory.updatedBy && (
+              <>
+                <Divider />
+                <Flex justify={"space-between"}>
+                  <Text color={"gray.500"}> Updated By</Text>
+                  <Text color={"gray.500"}>{medicalHistory.updatedBy}</Text>
+                </Flex>
+                <Divider />
+                <Flex justify={"space-between"}>
+                  <Text color={"gray.500"}>Last Updated:</Text>
+                  <Text color={"gray.500"}>
+                    {new Date(medicalHistory.updatedAt).toLocaleString(
+                      "en-US",
+                      {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      }
+                    )}
+                  </Text>
+                </Flex>
+              </>
+            ))}
         </CardBody>{" "}
         <Flex borderTop={"1px solid"} borderColor={"gray.100"}>
           <IconButton
@@ -103,8 +118,13 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = ({
             aria-label="edit medicalHistory"
             icon={<Icon as={EditIcon} />}
           />
-          <Divider orientation="vertical" h={"inherit"} />
-          <DeleteMedicalHistory medicalHistoryId={medicalHistory.id} />
+          {status === "Admin " ||
+            (status === "SuperAdmin" && (
+              <>
+                <Divider orientation="vertical" h={"inherit"} />
+                <DeleteMedicalHistory medicalHistoryId={medicalHistory.id} />
+              </>
+            ))}
         </Flex>
       </Card>
     );

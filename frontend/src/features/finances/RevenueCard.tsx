@@ -13,6 +13,7 @@ import { useGetPaymentsQuery } from "features/payments/paymentApiSlice";
 import { useGetInstallmentPaymentsQuery } from "features/installment-payment/installmentPaymentApiSlice";
 import DashSpinner from "components/Dashboard/DashSpinner";
 import { ErrorType } from "types/Error";
+
 const RevenueCard = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());

@@ -17,12 +17,14 @@ import { MdOutlinePayments } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { DentalNote } from "types/DentalNote";
 import DeleteDentalNote from "./DeleteDentalNote";
+import useAuth from "hooks/useAuth";
 
 type DentalNoteCardProps = {
   dentalNoteId: string;
 };
 
 const DentalNoteCard: React.FC<DentalNoteCardProps> = ({ dentalNoteId }) => {
+  const { status } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
   const { dentalNote } = useGetDentalNotesQuery("dentalNotesList", {
@@ -45,7 +47,11 @@ const DentalNoteCard: React.FC<DentalNoteCardProps> = ({ dentalNoteId }) => {
             <Box>
               {dentalNote.teethNums &&
                 dentalNote.teethNums.map((teethNum) => {
-                  return <Tag mr={"2px"}>{teethNum}</Tag>;
+                  return (
+                    <Tag mr={"2px"} key={teethNum}>
+                      {teethNum}
+                    </Tag>
+                  );
                 })}{" "}
             </Box>
           </Flex>
@@ -55,7 +61,11 @@ const DentalNoteCard: React.FC<DentalNoteCardProps> = ({ dentalNoteId }) => {
             <Stack>
               {dentalNote.procedureNames &&
                 dentalNote.procedureNames.map((procedure) => {
-                  return <Tag mr={"2px"}>{procedure}</Tag>;
+                  return (
+                    <Tag mr={"2px"} key={procedure}>
+                      {procedure}
+                    </Tag>
+                  );
                 })}
             </Stack>
           </Flex>
@@ -80,42 +90,48 @@ const DentalNoteCard: React.FC<DentalNoteCardProps> = ({ dentalNoteId }) => {
               </Flex>
             </>
           )}
-          <Divider />
-          <Flex justify={"space-between"}>
-            <Text color={"gray.500"}> Created By</Text>
-            <Text color={"gray.500"}>{dentalNote.createdBy}</Text>
-          </Flex>
-          <Divider />
-          <Flex justify={"space-between"}>
-            <Text color={"gray.500"}>Creation Date:</Text>
-            <Text color={"gray.500"}>
-              {new Date(dentalNote.createdAt).toLocaleString("en-US", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              })}
-            </Text>
-          </Flex>
-          {dentalNote.updatedBy && (
-            <>
-              <Divider />
-              <Flex justify={"space-between"}>
-                <Text color={"gray.500"}> Updated By</Text>
-                <Text color={"gray.500"}>{dentalNote.updatedBy}</Text>
-              </Flex>
-              <Divider />
-              <Flex justify={"space-between"}>
-                <Text color={"gray.500"}>Last Updated:</Text>
-                <Text color={"gray.500"}>
-                  {new Date(dentalNote.updatedAt).toLocaleString("en-US", {
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                  })}
-                </Text>
-              </Flex>
-            </>
-          )}
+          {status === "Admin" ||
+            (status === "SuperAdmin" && (
+              <>
+                <Divider />
+                <Flex justify={"space-between"}>
+                  <Text color={"gray.500"}> Created By</Text>
+                  <Text color={"gray.500"}>{dentalNote.createdBy}</Text>
+                </Flex>
+                <Divider />
+                <Flex justify={"space-between"}>
+                  <Text color={"gray.500"}>Creation Date:</Text>
+                  <Text color={"gray.500"}>
+                    {new Date(dentalNote.createdAt).toLocaleString("en-US", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </Text>
+                </Flex>
+              </>
+            ))}
+          {status === "Admin" ||
+            (status === "SuperAdmin" && dentalNote.updatedBy && (
+              <>
+                <Divider />
+                <Flex justify={"space-between"}>
+                  <Text color={"gray.500"}> Updated By</Text>
+                  <Text color={"gray.500"}>{dentalNote.updatedBy}</Text>
+                </Flex>
+                <Divider />
+                <Flex justify={"space-between"}>
+                  <Text color={"gray.500"}>Last Updated:</Text>
+                  <Text color={"gray.500"}>
+                    {new Date(dentalNote.updatedAt).toLocaleString("en-US", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </Text>
+                </Flex>
+              </>
+            ))}
         </CardBody>
         <Flex borderTop={"1px solid"} borderColor={"gray.100"}>
           <IconButton
@@ -138,8 +154,14 @@ const DentalNoteCard: React.FC<DentalNoteCardProps> = ({ dentalNoteId }) => {
             aria-label="edit note"
             icon={<Icon as={EditIcon} />}
           />
-          <Divider orientation="vertical" h={"inherit"} />
-          <DeleteDentalNote dentalNote={dentalNote} />
+          {status === "Admin" ||
+            (status === "SuperAdmin" && (
+              <>
+                {" "}
+                <Divider orientation="vertical" h={"inherit"} />
+                <DeleteDentalNote dentalNote={dentalNote} />
+              </>
+            ))}
         </Flex>
       </Card>
     );

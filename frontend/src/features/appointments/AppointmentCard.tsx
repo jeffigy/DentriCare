@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { Appointment } from "types/Appointment";
 import DeleteAppointment from "./DeleteAppointment";
 import { useGetAppointmentsQuery } from "./appointmentsApiSlice";
+import useAuth from "hooks/useAuth";
 
 type AppointmentCardProps = {
   appointmentId: string;
@@ -23,6 +24,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
   appointmentId,
   patientId,
 }) => {
+  const { status } = useAuth();
   const navigate = useNavigate();
   const { appointment } = useGetAppointmentsQuery("appointmentsList", {
     selectFromResult: ({ data }) => ({
@@ -89,42 +91,49 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
               </Flex>
             </>
           )}
-          <Divider />
-          <Flex justify={"space-between"}>
-            <Text color={"gray.500"}> Created By</Text>
-            <Text color={"gray.500"}>{appointment.createdBy}</Text>
-          </Flex>
-          <Divider />
-          <Flex justify={"space-between"}>
-            <Text color={"gray.500"}>Creation Date:</Text>
-            <Text color={"gray.500"}>
-              {new Date(appointment.createdAt).toLocaleString("en-US", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              })}
-            </Text>
-          </Flex>
-          {appointment.updatedBy && (
-            <>
-              <Divider />
-              <Flex justify={"space-between"}>
-                <Text color={"gray.500"}> Updated By</Text>
-                <Text color={"gray.500"}>{appointment.updatedBy}</Text>
-              </Flex>
-              <Divider />
-              <Flex justify={"space-between"}>
-                <Text color={"gray.500"}>Last Updated:</Text>
-                <Text color={"gray.500"}>
-                  {new Date(appointment.updatedAt).toLocaleString("en-US", {
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                  })}
-                </Text>
-              </Flex>
-            </>
-          )}
+          {status === "Admin" ||
+            (status === "SuperAdmin" && (
+              <>
+                <Divider />
+                <Flex justify={"space-between"}>
+                  <Text color={"gray.500"}> Created By</Text>
+                  <Text color={"gray.500"}>{appointment.createdBy}</Text>
+                </Flex>
+                <Divider />
+
+                <Flex justify={"space-between"}>
+                  <Text color={"gray.500"}>Creation Date:</Text>
+                  <Text color={"gray.500"}>
+                    {new Date(appointment.createdAt).toLocaleString("en-US", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </Text>
+                </Flex>
+              </>
+            ))}
+          {status === "Admin" ||
+            (status === "SuperAdmin" && appointment.updatedBy && (
+              <>
+                <Divider />
+                <Flex justify={"space-between"}>
+                  <Text color={"gray.500"}> Updated By</Text>
+                  <Text color={"gray.500"}>{appointment.updatedBy}</Text>
+                </Flex>
+                <Divider />
+                <Flex justify={"space-between"}>
+                  <Text color={"gray.500"}>Last Updated:</Text>
+                  <Text color={"gray.500"}>
+                    {new Date(appointment.updatedAt).toLocaleString("en-US", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </Text>
+                </Flex>
+              </>
+            ))}
         </CardBody>
         <Flex borderTop={"1px solid"} borderColor={"gray.100"}>
           <IconButton
@@ -141,8 +150,13 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
             aria-label="edit appointment"
             icon={<Icon as={EditIcon} />}
           />
-          <Divider orientation="vertical" h={"inherit"} />
-          <DeleteAppointment appointment={appointment} />
+          {status === "Admin" ||
+            (status === "SuperAdmin" && (
+              <>
+                <Divider orientation="vertical" h={"inherit"} />
+                <DeleteAppointment appointment={appointment} />
+              </>
+            ))}
         </Flex>
       </Card>
     );

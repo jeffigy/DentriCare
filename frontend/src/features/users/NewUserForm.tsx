@@ -102,7 +102,7 @@ const NewUserForm = () => {
             <FormControl>
               <FormLabel htmlFor="fname">First Name</FormLabel>
               <Input
-                autoComplete={"false"}
+                autoComplete="off"
                 id="fname"
                 isInvalid={!!errors.fname}
                 type="text"
@@ -117,7 +117,7 @@ const NewUserForm = () => {
             <FormControl>
               <FormLabel htmlFor="lname">Last Name</FormLabel>
               <Input
-                autoComplete={"false"}
+                autoComplete="off"
                 id="lname"
                 isInvalid={!!errors.lname}
                 type="text"
@@ -132,7 +132,7 @@ const NewUserForm = () => {
             <FormControl>
               <FormLabel htmlFor="email">Email</FormLabel>
               <Input
-                autoComplete="false"
+                autoComplete="off"
                 id="email"
                 isInvalid={!!errors.email}
                 {...register("email")}
@@ -147,7 +147,7 @@ const NewUserForm = () => {
               <FormLabel htmlFor="password">Password</FormLabel>
               <InputGroup>
                 <Input
-                  autoComplete="false"
+                  autoComplete="off"
                   id="password"
                   isInvalid={!!errors.password}
                   type={viewPassword ? "text" : "password"}
@@ -172,10 +172,10 @@ const NewUserForm = () => {
               <FormLabel htmlFor="confirm-password">Confirm Password</FormLabel>
               <InputGroup>
                 <Input
+                  autoComplete="off"
                   type={viewConfirmPassword ? "text" : "password"}
                   id="confirm-password"
                   isInvalid={!!errors.confirmPassword}
-                  autoComplete="false"
                   {...register("confirmPassword")}
                 />
                 <InputRightElement>

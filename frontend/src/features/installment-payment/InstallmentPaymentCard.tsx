@@ -12,6 +12,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { InstallmentPayment } from "types/InstallmentPayment";
 import DeleteInstallmentPayment from "./DeleteInstallmentPayment";
 import { useGetInstallmentPaymentsByPaymentIdQuery } from "./installmentPaymentApiSlice";
+import useAuth from "hooks/useAuth";
 
 type InstallmentPaymentCardProps = {
   installmentPaymentId: string;
@@ -20,6 +21,7 @@ type InstallmentPaymentCardProps = {
 const InstallmentPaymentCard: React.FC<InstallmentPaymentCardProps> = ({
   installmentPaymentId,
 }) => {
+  const { status } = useAuth();
   const { id, paymentId } = useParams<{ id: string; paymentId: string }>();
   const navigate = useNavigate();
   const { installmentPayment } = useGetInstallmentPaymentsByPaymentIdQuery(
@@ -73,45 +75,55 @@ const InstallmentPaymentCard: React.FC<InstallmentPaymentCardProps> = ({
               </Flex>
             </>
           )}
-          <Divider />
-          <Flex justify={"space-between"}>
-            <Text color={"gray.500"}> Created By</Text>
-            <Text color={"gray.500"}>{installmentPayment.createdBy}</Text>
-          </Flex>
-          <Divider />
-          <Flex justify={"space-between"}>
-            <Text color={"gray.500"}>Creation Date:</Text>
-            <Text color={"gray.500"}>
-              {new Date(installmentPayment.createdAt).toLocaleString("en-US", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              })}
-            </Text>
-          </Flex>
-          {installmentPayment.updatedBy && (
-            <>
-              <Divider />
-              <Flex justify={"space-between"}>
-                <Text color={"gray.500"}> Updated By</Text>
-                <Text color={"gray.500"}>{installmentPayment.updatedBy}</Text>
-              </Flex>
-              <Divider />
-              <Flex justify={"space-between"}>
-                <Text color={"gray.500"}>Last Updated:</Text>
-                <Text color={"gray.500"}>
-                  {new Date(installmentPayment.updatedAt).toLocaleString(
-                    "en-US",
-                    {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    }
-                  )}
-                </Text>
-              </Flex>
-            </>
-          )}
+          {status === "Admin" ||
+            (status === "SuperAdmin" && (
+              <>
+                {" "}
+                <Divider />
+                <Flex justify={"space-between"}>
+                  <Text color={"gray.500"}> Created By</Text>
+                  <Text color={"gray.500"}>{installmentPayment.createdBy}</Text>
+                </Flex>
+                <Divider />
+                <Flex justify={"space-between"}>
+                  <Text color={"gray.500"}>Creation Date:</Text>
+                  <Text color={"gray.500"}>
+                    {new Date(installmentPayment.createdAt).toLocaleString(
+                      "en-US",
+                      {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      }
+                    )}
+                  </Text>
+                </Flex>
+              </>
+            ))}
+          {status === "Admin" ||
+            (status === "SuperAdmin" && installmentPayment.updatedBy && (
+              <>
+                <Divider />
+                <Flex justify={"space-between"}>
+                  <Text color={"gray.500"}> Updated By</Text>
+                  <Text color={"gray.500"}>{installmentPayment.updatedBy}</Text>
+                </Flex>
+                <Divider />
+                <Flex justify={"space-between"}>
+                  <Text color={"gray.500"}>Last Updated:</Text>
+                  <Text color={"gray.500"}>
+                    {new Date(installmentPayment.updatedAt).toLocaleString(
+                      "en-US",
+                      {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      }
+                    )}
+                  </Text>
+                </Flex>
+              </>
+            ))}
         </CardBody>
 
         <Flex borderTop={"1px solid"} borderColor={"gray.100"}>
@@ -127,8 +139,16 @@ const InstallmentPaymentCard: React.FC<InstallmentPaymentCardProps> = ({
             icon={<Icon as={EditIcon} />}
             variant={"ghost"}
           />
-          <Divider orientation="vertical" h={"inherit"} />
-          <DeleteInstallmentPayment installmentPayment={installmentPayment} />
+          {status === "Admin" ||
+            (status === "SuperAdmin" && (
+              <>
+                {" "}
+                <Divider orientation="vertical" h={"inherit"} />
+                <DeleteInstallmentPayment
+                  installmentPayment={installmentPayment}
+                />
+              </>
+            ))}
         </Flex>
       </Card>
     );

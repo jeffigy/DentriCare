@@ -15,7 +15,6 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { DevTool } from "@hookform/devtools";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useAuth from "hooks/useAuth";
 import React, { useEffect } from "react";
@@ -99,142 +98,137 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
   }, [isError]);
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-        {" "}
-        <Card
-          w={{
-            base: "300px",
-            md: "400px",
-          }}
-        >
-          <CardHeader as={Flex} justify={"center"}>
-            <Heading size={"md"}>Edit Patient</Heading>
-          </CardHeader>
-          <CardBody as={Stack} spacing={"10px"}>
-            <FormControl>
-              <FormLabel>First Name</FormLabel>
+    <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+      {" "}
+      <Card
+        w={{
+          base: "300px",
+          md: "400px",
+        }}
+      >
+        <CardHeader as={Flex} justify={"center"}>
+          <Heading size={"md"}>Edit Patient</Heading>
+        </CardHeader>
+        <CardBody as={Stack} spacing={"10px"}>
+          <FormControl>
+            <FormLabel>First Name</FormLabel>
+            <Input
+              autoComplete="off"
+              id="fname"
+              type="text"
+              {...register("fname")}
+              isInvalid={!!errors.fname}
+            />
+            {errors.fname && (
+              <FormHelperText color={"red"}>
+                {errors.fname.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl>
+            <FormLabel>Middle Name</FormLabel>
+            <Input
+              autoComplete="off"
+              id="fname"
+              type="text"
+              {...register("mname")}
+              isInvalid={!!errors.mname}
+            />
+            {errors.mname && (
+              <FormHelperText color={"red"}>
+                {errors.mname.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl>
+            <FormLabel>Last Name</FormLabel>
+            <Input
+              autoComplete="off"
+              id="lname"
+              type="text"
+              {...register("lname")}
+              isInvalid={!!errors.lname}
+            />
+            {errors.lname && (
+              <FormHelperText color={"red"}>
+                {errors.lname.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl>
+            <FormLabel>Birthday</FormLabel>
+            <Controller
+              name="bday"
+              control={control}
+              render={({ field }) => (
+                <div className="customDatePickerWidth">
+                  <DatePicker
+                    maxDate={new Date()}
+                    showMonthDropdown
+                    showYearDropdown
+                    customInput={<Input isInvalid={!!errors.bday} />}
+                    selected={
+                      field.value ? new Date(Number(field.value) * 1000) : null
+                    }
+                    onChange={(date) =>
+                      field.onChange(date ? date.getTime() / 1000 : 0)
+                    }
+                  />
+                </div>
+              )}
+            />
+            {errors.bday && (
+              <FormHelperText color={"red"}>
+                {errors.bday.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl>
+            <FormLabel>Phone Number</FormLabel>
+            <InputGroup>
               <Input
-                autoComplete={"false"}
-                id="fname"
+                id="phone"
                 type="text"
-                {...register("fname")}
-                isInvalid={!!errors.fname}
+                {...register("phone")}
+                isInvalid={!!errors.phone}
+                autoComplete="off"
               />
-              {errors.fname && (
-                <FormHelperText color={"red"}>
-                  {errors.fname.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>Middle Name</FormLabel>
-              <Input
-                autoComplete={"false"}
-                id="fname"
-                type="text"
-                {...register("mname")}
-                isInvalid={!!errors.mname}
+            </InputGroup>
+            {errors.phone && (
+              <FormHelperText color={"red"}>
+                {errors.phone.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl>
+            <FormLabel>Address</FormLabel>
+            <InputGroup>
+              <Textarea
+                autoComplete="off"
+                id="address"
+                {...register("address")}
+                isInvalid={!!errors.address}
               />
-              {errors.mname && (
-                <FormHelperText color={"red"}>
-                  {errors.mname.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>Last Name</FormLabel>
-              <Input
-                autoComplete={"false"}
-                id="lname"
-                type="text"
-                {...register("lname")}
-                isInvalid={!!errors.lname}
-              />
-              {errors.lname && (
-                <FormHelperText color={"red"}>
-                  {errors.lname.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>Birthday</FormLabel>
-              <Controller
-                name="bday"
-                control={control}
-                render={({ field }) => (
-                  <div className="customDatePickerWidth">
-                    <DatePicker
-                      maxDate={new Date()}
-                      showMonthDropdown
-                      showYearDropdown
-                      customInput={<Input isInvalid={!!errors.bday} />}
-                      selected={
-                        field.value
-                          ? new Date(Number(field.value) * 1000)
-                          : null
-                      }
-                      onChange={(date) =>
-                        field.onChange(date ? date.getTime() / 1000 : 0)
-                      }
-                    />
-                  </div>
-                )}
-              />
-              {errors.bday && (
-                <FormHelperText color={"red"}>
-                  {errors.bday.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>Phone Number</FormLabel>
-              <InputGroup>
-                <Input
-                  id="phone"
-                  type="text"
-                  {...register("phone")}
-                  isInvalid={!!errors.phone}
-                  autoComplete={"false"}
-                />
-              </InputGroup>
-              {errors.phone && (
-                <FormHelperText color={"red"}>
-                  {errors.phone.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>Address</FormLabel>
-              <InputGroup>
-                <Textarea
-                  autoComplete={"false"}
-                  id="address"
-                  {...register("address")}
-                  isInvalid={!!errors.address}
-                />
-              </InputGroup>
-              {errors.address && (
-                <FormHelperText color={"red"}>
-                  {errors.address.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-          </CardBody>
-          <CardFooter>
-            <Button
-              w={"full"}
-              type="submit"
-              isLoading={isSubmitting}
-              isDisabled={!isDirty || isSubmitting}
-            >
-              Save
-            </Button>
-          </CardFooter>
-        </Card>
-      </form>
-      <DevTool control={control} />
-    </>
+            </InputGroup>
+            {errors.address && (
+              <FormHelperText color={"red"}>
+                {errors.address.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+        </CardBody>
+        <CardFooter>
+          <Button
+            w={"full"}
+            type="submit"
+            isLoading={isSubmitting}
+            isDisabled={!isDirty || isSubmitting}
+          >
+            Save
+          </Button>
+        </CardFooter>
+      </Card>
+    </form>
   );
 };
 export default EditPatientForm;

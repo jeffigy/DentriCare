@@ -1,9 +1,10 @@
-import { Flex, Spinner } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import EditUserForm from "features/users/EditUserForm";
 import { useGetUsersQuery } from "features/users/usersApiSlice";
 import { useParams } from "react-router-dom";
 import { User } from "types/User";
 import useTitle from "hooks/useTitle";
+import DashSpinner from "components/Dashboard/DashSpinner";
 
 const EditUserPage = () => {
   useTitle("Edit User");
@@ -18,13 +19,7 @@ const EditUserPage = () => {
 
   return (
     <Flex w={"full"} justify={"center"} h={"full"}>
-      {user ? (
-        <EditUserForm user={user as User} />
-      ) : (
-        <Flex align={"center"}>
-          <Spinner />
-        </Flex>
-      )}
+      {user ? <EditUserForm user={user as User} /> : <DashSpinner />}
     </Flex>
   );
 };

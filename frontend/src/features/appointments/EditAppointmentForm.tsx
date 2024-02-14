@@ -14,7 +14,6 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { DevTool } from "@hookform/devtools";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useAuth from "hooks/useAuth";
 import React, { useEffect } from "react";
@@ -116,158 +115,150 @@ const EditAppointmentForm: React.FC<EditAppointmentFormProps> = ({
   }, [isSuccess]);
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-        <Card
-          w={{
-            base: "300px",
-            md: "400px",
-          }}
-        >
-          <CardHeader as={Flex} justify={"center"}>
-            {" "}
-            <Heading size={"md"}>Edit Appointment</Heading>
-          </CardHeader>
+    <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+      <Card
+        w={{
+          base: "300px",
+          md: "400px",
+        }}
+      >
+        <CardHeader as={Flex} justify={"center"}>
+          {" "}
+          <Heading size={"md"}>Edit Appointment</Heading>
+        </CardHeader>
 
-          <CardBody as={Stack} spacing={"10px"}>
-            {" "}
-            <FormControl>
-              <FormLabel>Date</FormLabel>
-              <Controller
-                name="date"
-                control={control}
-                render={({ field }) => (
-                  <div className="customDatePickerWidth">
-                    <DatePicker
-                      minDate={new Date()}
-                      showMonthDropdown
-                      showYearDropdown
-                      customInput={<Input isInvalid={!!errors.date} />}
-                      selected={
-                        field.value
-                          ? new Date(Number(field.value) * 1000)
-                          : null
-                      }
-                      onChange={(date) =>
-                        field.onChange(date ? date.getTime() / 1000 : 0)
-                      }
-                    />
-                  </div>
-                )}
-              />
-              {errors.date && (
-                <FormHelperText color={"red"}>
-                  {errors.date.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl isDisabled={patientId ? true : false}>
-              <FormLabel>Patient</FormLabel>
-              <Controller
-                name="patient"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    options={
-                      patients.map((patient) => ({
-                        value: patient.id,
-                        label: `${patient.fname} ${patient.mname} ${patient.lname}`,
-                      })) as any
+        <CardBody as={Stack} spacing={"10px"}>
+          {" "}
+          <FormControl>
+            <FormLabel>Date</FormLabel>
+            <Controller
+              name="date"
+              control={control}
+              render={({ field }) => (
+                <div className="customDatePickerWidth">
+                  <DatePicker
+                    minDate={new Date()}
+                    showMonthDropdown
+                    showYearDropdown
+                    customInput={<Input isInvalid={!!errors.date} />}
+                    selected={
+                      field.value ? new Date(Number(field.value) * 1000) : null
                     }
-                    isSearchable
-                    isClearable
-                    placeholder="Select Patient"
-                    {...field}
+                    onChange={(date) =>
+                      field.onChange(date ? date.getTime() / 1000 : 0)
+                    }
                   />
-                )}
-              />
-              {errors.patient && (
-                <FormHelperText color={"red"}>
-                  {errors.patient.message}
-                </FormHelperText>
+                </div>
               )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>Start Time</FormLabel>
-              <Controller
-                name="startTime"
-                control={control}
-                render={({ field }) => (
-                  <div className="customDatePickerWidth">
-                    <DatePicker
-                      selected={
-                        field.value
-                          ? new Date(Number(field.value) * 1000)
-                          : null
-                      }
-                      showTimeSelect
-                      showTimeSelectOnly
-                      timeCaption="Time"
-                      dateFormat="h:mm aa"
-                      customInput={<Input isInvalid={!!errors.startTime} />}
-                      onChange={(date) =>
-                        field.onChange(date ? date.getTime() / 1000 : 0)
-                      }
-                    />
-                  </div>
-                )}
-              />
-              {errors.startTime && (
-                <FormHelperText color={"red"}>
-                  {errors.startTime.message}
-                </FormHelperText>
+            />
+            {errors.date && (
+              <FormHelperText color={"red"}>
+                {errors.date.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl>
+            <FormLabel>Patient</FormLabel>
+            <Controller
+              name="patient"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  options={
+                    patients.map((patient) => ({
+                      value: patient.id,
+                      label: `${patient.fname} ${patient.mname} ${patient.lname}`,
+                    })) as any
+                  }
+                  isSearchable
+                  isClearable
+                  placeholder="Select Patient"
+                  {...field}
+                  isDisabled={patientId ? true : false}
+                />
               )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>End Time</FormLabel>
-              <Controller
-                name="endTime"
-                control={control}
-                render={({ field }) => (
-                  <div className="customDatePickerWidth">
-                    <DatePicker
-                      selected={
-                        field.value
-                          ? new Date(Number(field.value) * 1000)
-                          : null
-                      }
-                      showTimeSelect
-                      showTimeSelectOnly
-                      timeCaption="Time"
-                      dateFormat="h:mm aa"
-                      customInput={<Input isInvalid={!!errors.endTime} />}
-                      onChange={(date) =>
-                        field.onChange(date ? date.getTime() / 1000 : 0)
-                      }
-                    />
-                  </div>
-                )}
-              />
-              {errors.endTime && (
-                <FormHelperText color={"red"}>
-                  {errors.endTime.message}
-                </FormHelperText>
+            />
+            {errors.patient && (
+              <FormHelperText color={"red"}>
+                {errors.patient.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl>
+            <FormLabel>Start Time</FormLabel>
+            <Controller
+              name="startTime"
+              control={control}
+              render={({ field }) => (
+                <div className="customDatePickerWidth">
+                  <DatePicker
+                    selected={
+                      field.value ? new Date(Number(field.value) * 1000) : null
+                    }
+                    showTimeSelect
+                    showTimeSelectOnly
+                    timeCaption="Time"
+                    dateFormat="h:mm aa"
+                    customInput={<Input isInvalid={!!errors.startTime} />}
+                    onChange={(date) =>
+                      field.onChange(date ? date.getTime() / 1000 : 0)
+                    }
+                  />
+                </div>
               )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>Remarks</FormLabel>
-              <Textarea {...register("remarks")} />
-            </FormControl>
-          </CardBody>
-          <CardFooter>
-            <Button
-              w={"full"}
-              type="submit"
-              isDisabled={!isDirty || Object.keys(dirtyFields).length === 0}
-              isLoading={isSubmitting}
-            >
-              Submit
-            </Button>
-          </CardFooter>
-        </Card>
-      </form>
-      <DevTool control={control} />
-    </>
+            />
+            {errors.startTime && (
+              <FormHelperText color={"red"}>
+                {errors.startTime.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl>
+            <FormLabel>End Time</FormLabel>
+            <Controller
+              name="endTime"
+              control={control}
+              render={({ field }) => (
+                <div className="customDatePickerWidth">
+                  <DatePicker
+                    selected={
+                      field.value ? new Date(Number(field.value) * 1000) : null
+                    }
+                    showTimeSelect
+                    showTimeSelectOnly
+                    timeCaption="Time"
+                    dateFormat="h:mm aa"
+                    customInput={<Input isInvalid={!!errors.endTime} />}
+                    onChange={(date) =>
+                      field.onChange(date ? date.getTime() / 1000 : 0)
+                    }
+                  />
+                </div>
+              )}
+            />
+            {errors.endTime && (
+              <FormHelperText color={"red"}>
+                {errors.endTime.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl>
+            <FormLabel>Remarks</FormLabel>
+            <Textarea {...register("remarks")} />
+          </FormControl>
+        </CardBody>
+        <CardFooter>
+          <Button
+            w={"full"}
+            type="submit"
+            isDisabled={!isDirty || Object.keys(dirtyFields).length === 0}
+            isLoading={isSubmitting}
+          >
+            Submit
+          </Button>
+        </CardFooter>
+      </Card>
+    </form>
   );
 };
 export default EditAppointmentForm;

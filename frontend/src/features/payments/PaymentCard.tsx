@@ -14,12 +14,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Payment } from "types/Payment";
 import DeletePayment from "./DeletePayment";
 import { useGetPaymentsByPatientIdQuery } from "./paymentApiSlice";
+import useAuth from "hooks/useAuth";
 
 type PaymentCardProps = {
   paymentId: string;
 };
 
 const PaymentCard: React.FC<PaymentCardProps> = ({ paymentId }) => {
+  const { status } = useAuth();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { payment } = useGetPaymentsByPatientIdQuery(id, {
@@ -80,16 +82,7 @@ const PaymentCard: React.FC<PaymentCardProps> = ({ paymentId }) => {
           )}
 
           <Divider />
-          <Flex justify={"space-between"}>
-            <Text color={"gray.500"}>Last Updated:</Text>
-            <Text>
-              {new Date(payment.updatedAt).toLocaleString("en-US", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              })}
-            </Text>
-          </Flex>
+
           {payment.remarks && (
             <>
               <Divider />
@@ -102,7 +95,7 @@ const PaymentCard: React.FC<PaymentCardProps> = ({ paymentId }) => {
           {payment.planName && (
             <>
               <Divider />
-              <Flex justify={"space-between"}>
+              <Flex direction={"column"}>
                 <Text color={"gray.500"}>Plan Name:</Text>
                 <Text>{payment.planName}</Text>
               </Flex>
@@ -120,8 +113,14 @@ const PaymentCard: React.FC<PaymentCardProps> = ({ paymentId }) => {
               navigate(`/dash/patients/${id}/payments/${payment.id}`)
             }
           />
-          <Divider orientation="vertical" h={"inherit"} />
-          <DeletePayment payment={payment} />
+          {status === "Admin" ||
+            (status === "SuperAdmin" && (
+              <>
+                {" "}
+                <Divider orientation="vertical" h={"inherit"} />
+                <DeletePayment payment={payment} />
+              </>
+            ))}
         </Flex>
       </Card>
     );

@@ -15,7 +15,6 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { DevTool } from "@hookform/devtools";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useAuth from "hooks/useAuth";
 import React, { useEffect } from "react";
@@ -106,113 +105,108 @@ const EditPaymentForm: React.FC<EditPaymentFormProps> = ({
   }, [isSuccess]);
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-        <Card
-          w={{
-            base: "300px",
-            md: "400px",
-          }}
-        >
-          <CardHeader as={Flex} justify={"center"}>
-            <Heading size={"md"}>Edit Payment</Heading>
-          </CardHeader>
-          <CardBody as={Stack} spacing={"10px"}>
-            <FormControl isRequired>
-              <FormLabel>Patient</FormLabel>
-              <Select
-                isDisabled
-                placeholder="Select patient"
-                {...register("patient")}
-              >
-                {patients &&
-                  patients.map((patient) => (
-                    <option key={patient.id} value={patient.id}>
-                      {patient.fname} {patient.mname} {patient.lname}
-                    </option>
-                  ))}
-              </Select>
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Date</FormLabel>
-              <Controller
-                name="date"
-                control={control}
-                render={({ field }) => (
-                  <div className="customDatePickerWidth">
-                    <DatePicker
-                      maxDate={new Date()}
-                      showMonthDropdown
-                      showYearDropdown
-                      customInput={<Input isInvalid={!!errors.date} />}
-                      selected={
-                        field.value
-                          ? new Date(Number(field.value) * 1000)
-                          : null
-                      }
-                      onChange={(date) =>
-                        field.onChange(date ? date.getTime() / 1000 : 0)
-                      }
-                    />
-                  </div>
-                )}
-              />
-              {errors.date && (
-                <FormHelperText color={"red"}>
-                  {errors.date.message}
-                </FormHelperText>
+    <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+      <Card
+        w={{
+          base: "300px",
+          md: "400px",
+        }}
+      >
+        <CardHeader as={Flex} justify={"center"}>
+          <Heading size={"md"}>Edit Payment</Heading>
+        </CardHeader>
+        <CardBody as={Stack} spacing={"10px"}>
+          <FormControl isRequired>
+            <FormLabel>Patient</FormLabel>
+            <Select
+              isDisabled
+              placeholder="Select patient"
+              {...register("patient")}
+            >
+              {patients &&
+                patients.map((patient) => (
+                  <option key={patient.id} value={patient.id}>
+                    {patient.fname} {patient.mname} {patient.lname}
+                  </option>
+                ))}
+            </Select>
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel>Date</FormLabel>
+            <Controller
+              name="date"
+              control={control}
+              render={({ field }) => (
+                <div className="customDatePickerWidth">
+                  <DatePicker
+                    maxDate={new Date()}
+                    showMonthDropdown
+                    showYearDropdown
+                    customInput={<Input isInvalid={!!errors.date} />}
+                    selected={
+                      field.value ? new Date(Number(field.value) * 1000) : null
+                    }
+                    onChange={(date) =>
+                      field.onChange(date ? date.getTime() / 1000 : 0)
+                    }
+                  />
+                </div>
               )}
-            </FormControl>
+            />
+            {errors.date && (
+              <FormHelperText color={"red"}>
+                {errors.date.message}
+              </FormHelperText>
+            )}
+          </FormControl>
 
-            <FormControl isRequired>
-              <FormLabel>Total</FormLabel>
-              <Input type="number" {...register("total")} />
-              {errors.total && (
+          <FormControl isRequired>
+            <FormLabel>Total</FormLabel>
+            <Input type="number" {...register("total")} />
+            {errors.total && (
+              <FormHelperText color={"red"}>
+                {errors.total.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+          {watch("type") === "Full Payment" && (
+            <FormControl>
+              <FormLabel>Remarks</FormLabel>
+              <Textarea {...register("remarks")}></Textarea>
+              {errors.remarks && (
                 <FormHelperText color={"red"}>
-                  {errors.total.message}
+                  {errors.remarks.message}
                 </FormHelperText>
               )}
             </FormControl>
-            {watch("type") === "Full Payment" && (
+          )}
+          {watch("type") === "Installment" && (
+            <>
               <FormControl>
-                <FormLabel>Remarks</FormLabel>
-                <Textarea {...register("remarks")}></Textarea>
-                {errors.remarks && (
+                <FormLabel>Plan</FormLabel>
+
+                <Textarea {...register("planName")}> </Textarea>
+                {errors.planName && (
                   <FormHelperText color={"red"}>
-                    {errors.remarks.message}
+                    {errors.planName.message}
                   </FormHelperText>
                 )}
               </FormControl>
-            )}
-            {watch("type") === "Installment" && (
-              <>
-                <FormControl>
-                  <FormLabel>Plan</FormLabel>
-
-                  <Textarea {...register("planName")}> </Textarea>
-                  {errors.planName && (
-                    <FormHelperText color={"red"}>
-                      {errors.planName.message}
-                    </FormHelperText>
-                  )}
-                </FormControl>
-              </>
-            )}
-          </CardBody>
-          <CardFooter>
-            <Button
-              w={"full"}
-              type="submit"
-              isLoading={isSubmitting}
-              isDisabled={!isDirty}
-            >
-              Submit
-            </Button>
-          </CardFooter>
-        </Card>
-      </form>
-      <DevTool control={control} />
-    </>
+            </>
+          )}
+        </CardBody>
+        <CardFooter>
+          <Button
+            w={"full"}
+            type="submit"
+            isLoading={isSubmitting}
+            isDisabled={!isDirty}
+          >
+            Submit
+          </Button>
+        </CardFooter>
+      </Card>
+    </form>
   );
 };
 export default EditPaymentForm;

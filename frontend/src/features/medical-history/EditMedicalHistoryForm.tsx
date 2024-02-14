@@ -12,7 +12,6 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { DevTool } from "@hookform/devtools";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useAuth from "hooks/useAuth";
 import React, { useEffect } from "react";
@@ -46,7 +45,7 @@ const EditMedicalHistoryForm: React.FC<EditMedicalHistoryFormProps> = ({
     ) as Resolver<MedicalHistoryFormValues>,
   });
 
-  const { register, control, handleSubmit, formState, reset } = form;
+  const { register, handleSubmit, formState, reset } = form;
 
   const { errors, isSubmitting, isDirty } = formState;
 
@@ -90,42 +89,39 @@ const EditMedicalHistoryForm: React.FC<EditMedicalHistoryFormProps> = ({
   }, [isError]);
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-        <Card
-          w={{
-            base: "300px",
-            md: "400px",
-          }}
-        >
-          <CardHeader as={Flex} justify={"center"}>
-            <Heading size={"md"}>Update Medical History</Heading>
-          </CardHeader>
-          <CardBody>
-            <FormControl>
-              <FormLabel>Message</FormLabel>
-              <Textarea {...register("message")} />
-              {errors.message && (
-                <FormHelperText color={"red"}>
-                  {errors.message.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-          </CardBody>
-          <CardFooter>
-            <Button
-              w="full"
-              type="submit"
-              isLoading={isSubmitting}
-              isDisabled={!isDirty}
-            >
-              Submit
-            </Button>
-          </CardFooter>
-        </Card>
-      </form>
-      <DevTool control={control} />
-    </>
+    <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+      <Card
+        w={{
+          base: "300px",
+          md: "400px",
+        }}
+      >
+        <CardHeader as={Flex} justify={"center"}>
+          <Heading size={"md"}>Update Medical History</Heading>
+        </CardHeader>
+        <CardBody>
+          <FormControl>
+            <FormLabel>Message</FormLabel>
+            <Textarea {...register("message")} />
+            {errors.message && (
+              <FormHelperText color={"red"}>
+                {errors.message.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+        </CardBody>
+        <CardFooter>
+          <Button
+            w="full"
+            type="submit"
+            isLoading={isSubmitting}
+            isDisabled={!isDirty}
+          >
+            Submit
+          </Button>
+        </CardFooter>
+      </Card>
+    </form>
   );
 };
 export default EditMedicalHistoryForm;
