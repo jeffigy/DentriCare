@@ -16,7 +16,7 @@ import { ArrowBackIcon } from "@chakra-ui/icons";
 import { FiMenu } from "react-icons/fi";
 import { useSendLogoutMutation } from "features/auth/authApiSlice";
 import useAuth from "hooks/useAuth";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import { useEffect } from "react";
 import { LuLogOut } from "react-icons/lu";
 import Logo from "assets/logo.svg";

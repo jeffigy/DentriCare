@@ -26,7 +26,7 @@ import { useNavigate } from "react-router-dom";
 import { PatientFormValues } from "types/Patient";
 import { newPatientValidation } from "validations/patientValidation";
 import { useAddNewPatientMutation } from "./patientsApiSlice";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 
 const NewPatientForm = () => {
   const toast = useToast();
@@ -67,15 +67,6 @@ const NewPatientForm = () => {
   };
 
   useEffect(() => {
-    if (isError) {
-      toast({
-        title: "Error",
-        description: (error as ErrorType).data.message,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
     if (isSuccess) {
       reset();
       navigate(-1);
@@ -87,7 +78,19 @@ const NewPatientForm = () => {
         isClosable: true,
       });
     }
-  }, [isSuccess, reset, navigate, toast, isError, error]);
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      toast({
+        title: "An error occurred.",
+        description: `${(error as ErrorType)?.data?.message}`,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [isError]);
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">

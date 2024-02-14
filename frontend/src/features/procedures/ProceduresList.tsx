@@ -9,7 +9,7 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import { useMemo, useState } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { Procedure } from "types/Procedure";

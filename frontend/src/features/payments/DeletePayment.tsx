@@ -18,7 +18,7 @@ import React, { useEffect, useState } from "react";
 import { useDeletePaymentMutation } from "./paymentApiSlice";
 import { LuTrash2 } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 
 type DeletePaymentProps = {
   payment: {

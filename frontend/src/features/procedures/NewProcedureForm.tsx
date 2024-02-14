@@ -20,8 +20,8 @@ import useAuth from "hooks/useAuth";
 import { useEffect } from "react";
 import { Resolver, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { ErrorType } from "types/ErrorType";
-import { ProcedureFormValues } from "types/ProcedureFormValues";
+import { ErrorType } from "types/Error";
+import { ProcedureFormValues } from "types/Procedure";
 import { newProcedureValidation } from "validations/procedureValidation";
 import { useAddNewProcedureMutation } from "./proceduresApiSlice";
 

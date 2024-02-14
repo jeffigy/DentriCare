@@ -10,7 +10,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import DashSpinner from "components/Dashboard/DashSpinner";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import UserRow from "./UserRow";
 import { useGetUsersQuery } from "./usersApiSlice";
 

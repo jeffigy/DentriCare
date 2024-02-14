@@ -2,7 +2,7 @@ import { Flex, Stack } from "@chakra-ui/react";
 import DashSpinner from "components/Dashboard/DashSpinner";
 import DentalNoteCard from "features/dental-notes/DentalNoteCard";
 import { useParams } from "react-router-dom";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import { useGetDentalNotesByPatientIdQuery } from "./dentalNotesApiSlice";
 
 const DentalNotesList = () => {

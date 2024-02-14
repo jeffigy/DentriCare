@@ -34,12 +34,12 @@ import { Controller, Resolver, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { DentalNote } from "types/DentalNote";
 import { Patient } from "types/Patient";
-import { PaymentFormValues } from "types/PaymentFormValues";
+import { PaymentFormValues } from "types/Payment";
 import { paymentValidation } from "validations/paymentValidation";
 import DatePicker from "react-datepicker";
 import { paymentTypes } from "config/PaymentTypes";
 import { useAddNewPaymentMutation } from "./paymentApiSlice";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 type NewPaymentFormProps = {
   patients: Patient[];
   dentalNotes: DentalNote[];
@@ -60,8 +60,6 @@ const NewPaymentForm: React.FC<NewPaymentFormProps> = ({
 
   const allChecked = checkedItems.every(Boolean);
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
-
-  //TODO: find a way to maintain select patient field to maintain state on reload
 
   const form = useForm<PaymentFormValues>({
     defaultValues: {

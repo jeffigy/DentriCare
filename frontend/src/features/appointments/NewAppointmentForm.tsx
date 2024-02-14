@@ -21,13 +21,13 @@ import { Controller, Resolver, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Patient } from "types/Patient";
 import { useAddNewAppointmentMutation } from "./appointmentsApiSlice";
-import { AppointmentFormValues } from "types/AppointmentFormValues";
+import { AppointmentFormValues } from "types/Appointment";
 import { DevTool } from "@hookform/devtools";
 import DashSpinner from "components/Dashboard/DashSpinner";
 import Select from "react-select";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { appointmentValidation } from "validations/appointmentValidation";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 
 type NewAppointmentFormProps = {
   patients: Patient[];

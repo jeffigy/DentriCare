@@ -4,7 +4,6 @@ import { useRefreshMutation } from "./authApiSlice";
 import usePersist from "hooks/usePersist";
 import { useAppSelector } from "app/hooks";
 import { selectCurrentToken } from "./authSlice";
-import { Spinner } from "@chakra-ui/react";
 import DashSpinner from "components/Dashboard/DashSpinner";
 type ErrorType = {
   status: number;

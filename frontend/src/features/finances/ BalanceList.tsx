@@ -13,7 +13,7 @@ import { useGetPaymentsQuery } from "features/payments/paymentApiSlice";
 import { useState } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import { Payment } from "types/Payment";
 
 const BalanceList = () => {

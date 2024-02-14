@@ -16,7 +16,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { LuTrash2 } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import { useDeletePatientMutation } from "./patientsApiSlice";
 
 type DeletePatientProps = {

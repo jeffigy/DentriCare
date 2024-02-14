@@ -23,7 +23,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Controller, Resolver, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import { Patient, PatientFormValues } from "types/Patient";
 import { newPatientValidation } from "validations/patientValidation";
 import { useUpdatePatientMutation } from "./patientsApiSlice";

@@ -24,8 +24,8 @@ import { ROLES } from "config/roles";
 import React, { useEffect, useState } from "react";
 import { Resolver, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { ErrorType } from "types/ErrorType";
-import { UserFormValues } from "types/UserFormValues";
+import { ErrorType } from "types/Error";
+import { UserFormValues } from "types/User";
 import { newUserValidation } from "validations/userValidation";
 import { useAddNewUserMutation } from "./usersApiSlice";
 

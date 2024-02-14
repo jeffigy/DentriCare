@@ -26,9 +26,9 @@ import { ROLES } from "config/roles";
 import React, { useEffect, useState } from "react";
 import { Resolver, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import { User } from "types/User";
-import { UserFormValues } from "types/UserFormValues";
+import { UserFormValues } from "types/User";
 import { editUserValidation } from "validations/userValidation";
 import DeleteUser from "./DeleteUser";
 import { useUpdateUserMutation } from "./usersApiSlice";
@@ -95,7 +95,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user }) => {
       reset();
       navigate(-1);
     }
-  }, [isSuccess, isError]);
+  }, [isSuccess]);
 
   useEffect(() => {
     if (isError) {

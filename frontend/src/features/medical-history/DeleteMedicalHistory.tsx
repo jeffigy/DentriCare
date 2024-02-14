@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { LuTrash2 } from "react-icons/lu";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import { useDeleteMedicalHistoryMutation } from "./medicalHistoryApiSlice";
 
 type DeleteMedicalHistoryProps = {

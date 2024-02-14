@@ -1,7 +1,7 @@
 import { Flex, Stack } from "@chakra-ui/react";
 import DashSpinner from "components/Dashboard/DashSpinner";
 import { useParams } from "react-router-dom";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import AppointmentCard from "./AppointmentCard";
 import {
   useGetAppointmentsByPatientIdQuery,

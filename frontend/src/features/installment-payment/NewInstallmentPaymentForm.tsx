@@ -21,7 +21,7 @@ import { useEffect } from "react";
 import DatePicker from "react-datepicker";
 import { Controller, Resolver, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import { InstallmentPaymentFormValues } from "types/InstallmentPayment";
 import { installmentPaymentValidation } from "validations/installmentPaymentValidation";
 import { useAddNewInstallmentPaymentMutation } from "./installmentPaymentApiSlice";

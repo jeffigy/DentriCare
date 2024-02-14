@@ -12,7 +12,7 @@ import DashSpinner from "components/Dashboard/DashSpinner";
 import { useMemo, useState } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import { Patient } from "types/Patient";
 import { useGetPatientsQuery } from "./patientsApiSlice";
 

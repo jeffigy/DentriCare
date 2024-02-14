@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useGetPaymentsByPatientIdQuery } from "./paymentApiSlice";
 import DashSpinner from "components/Dashboard/DashSpinner";
 import { Flex, Stack, Text } from "@chakra-ui/react";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import PaymentCard from "./PaymentCard";
 
 const PaymentsList = () => {

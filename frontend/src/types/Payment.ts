@@ -18,3 +18,13 @@ export type Payment = {
   status: string;
   __v: number;
 };
+
+export type PaymentFormValues = {
+  patient: string;
+  type: string;
+  date: number;
+  notesAndProcedures: string[];
+  total: number;
+  remarks: string;
+  planName: string;
+};

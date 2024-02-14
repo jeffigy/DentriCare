@@ -26,8 +26,8 @@ import ReactDatePicker from "react-datepicker";
 import { Controller, Resolver, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { DentalNote } from "types/DentalNote";
-import { DentalNoteFormValues } from "types/DentalNoteFormValues";
-import { ErrorType } from "types/ErrorType";
+import { DentalNoteFormValues } from "types/DentalNote";
+import { ErrorType } from "types/Error";
 import { Procedure } from "types/Procedure";
 import { dentalNoteValidation } from "validations/dentalNoteValidation";
 import { useUpdateDentalNoteMutation } from "./dentalNotesApiSlice";
@@ -126,7 +126,7 @@ const EditDentalNoteForm: React.FC<EditDentalNoteFormProps> = ({
           }}
         >
           <CardHeader as={Flex} justify={"center"}>
-            <Heading size={"md"}>New Dental Note</Heading>
+            <Heading size={"md"}>Edit Dental Note</Heading>
           </CardHeader>
           <CardBody as={Stack} spacing={"10px"}>
             <FormControl>

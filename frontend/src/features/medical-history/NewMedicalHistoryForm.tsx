@@ -18,7 +18,7 @@ import useAuth from "hooks/useAuth";
 import { useEffect } from "react";
 import { Resolver, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import { MedicalHistoryFormValues } from "types/MedicalHistory";
 import { medicalHistoryValidation } from "validations/medicalHistoryValidation";
 import { useAddNewMedicalHistoryMutation } from "./medicalHistoryApiSlice";

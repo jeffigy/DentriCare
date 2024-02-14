@@ -2,7 +2,7 @@ import { Flex, Stack } from "@chakra-ui/react";
 import DashSpinner from "components/Dashboard/DashSpinner";
 import useTitle from "hooks/useTitle";
 import { useParams } from "react-router-dom";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import MedicalHistoryCard from "./MedicalHistoryCard";
 import { useGetMedicalHistoriesByPatientIdQuery } from "./medicalHistoryApiSlice";
 

@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import { useDeleteUserMutation } from "./usersApiSlice";
 
 type DeleteUserProps = {

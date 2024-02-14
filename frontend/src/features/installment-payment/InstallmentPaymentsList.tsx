@@ -2,7 +2,7 @@ import { Flex, Stack, Text } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useGetInstallmentPaymentsByPaymentIdQuery } from "./installmentPaymentApiSlice";
 import DashSpinner from "components/Dashboard/DashSpinner";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import InstallmentPaymentCard from "./InstallmentPaymentCard";
 
 const InstallmentPaymentsList = () => {

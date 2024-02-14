@@ -23,11 +23,11 @@ import { Controller, Resolver, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { DentalNote } from "types/DentalNote";
 import { Patient } from "types/Patient";
-import { PaymentFormValues } from "types/PaymentFormValues";
+import { PaymentFormValues } from "types/Payment";
 import { paymentValidation } from "validations/paymentValidation";
 import DatePicker from "react-datepicker";
 import { useUpdatePaymentMutation } from "./paymentApiSlice";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import { Payment } from "types/Payment";
 
 type EditPaymentFormProps = {
@@ -39,7 +39,6 @@ type EditPaymentFormProps = {
 const EditPaymentForm: React.FC<EditPaymentFormProps> = ({
   payment,
   patients,
-  dentalNotes,
 }) => {
   const { email } = useAuth();
   const navigate = useNavigate();

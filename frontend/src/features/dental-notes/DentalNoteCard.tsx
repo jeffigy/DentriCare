@@ -3,7 +3,6 @@ import {
   Box,
   Card,
   CardBody,
-  CardFooter,
   Divider,
   Flex,
   Icon,
@@ -15,7 +14,7 @@ import {
 import { useGetDentalNotesQuery } from "features/dental-notes/dentalNotesApiSlice";
 import React from "react";
 import { MdOutlinePayments } from "react-icons/md";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { DentalNote } from "types/DentalNote";
 import DeleteDentalNote from "./DeleteDentalNote";
 

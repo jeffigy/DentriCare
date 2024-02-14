@@ -11,3 +11,8 @@ export type Procedure = {
   procedure: string;
   __v?: number;
 };
+
+export type ProcedureFormValues = {
+  name: string;
+  amount: number;
+};

@@ -61,5 +61,5 @@ export const apiSlice = createApi({
     "InstallmentPayment",
     "MedicalHistory",
   ],
-  endpoints: (builder) => ({}),
+  endpoints: (_builder) => ({}),
 });

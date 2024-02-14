@@ -1,7 +1,6 @@
 import {
   Stat,
   Box,
-  useColorModeValue,
   Flex,
   StatLabel,
   StatNumber,

@@ -20,11 +20,11 @@ import { useNavigate } from "react-router-dom";
 import { Procedure } from "types/Procedure";
 import { useUpdateProcedureMutation } from "./proceduresApiSlice";
 import { useForm, Resolver } from "react-hook-form";
-import { ProcedureFormValues } from "types/ProcedureFormValues";
+import { ProcedureFormValues } from "types/Procedure";
 import { editProcedureValidation } from "validations/procedureValidation";
 
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ErrorType } from "types/ErrorType";
+import { ErrorType } from "types/Error";
 import useAuth from "hooks/useAuth";
 import DeleteProcedure from "./DeleteProcedure";
 
