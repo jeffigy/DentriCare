@@ -130,7 +130,7 @@ const RevenueCard = () => {
       <Card
         w={{
           base: "full",
-          md: "400px",
+          sm: "500px",
         }}
         mb={"20px"}
       >

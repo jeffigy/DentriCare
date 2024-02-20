@@ -120,7 +120,7 @@ const EditDentalNoteForm: React.FC<EditDentalNoteFormProps> = ({
       <Card
         w={{
           base: "300px",
-          md: "400px",
+          sm: "400px",
         }}
       >
         <CardHeader as={Flex} justify={"center"}>

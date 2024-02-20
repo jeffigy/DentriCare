@@ -40,7 +40,7 @@ const PaymentDetails = () => {
       <Card
         w={{
           base: "300px",
-          md: "400px",
+          sm: "400px",
         }}
         mb={"20px"}
       >
@@ -175,7 +175,7 @@ const PaymentDetails = () => {
         <>
           {" "}
           <Flex
-            w={{ base: "300px", md: "400px" }}
+            w={{ base: "300px",    sm: "400px",}}
             justify={"space-between"}
             align={"center"}
             mb={"20px"}

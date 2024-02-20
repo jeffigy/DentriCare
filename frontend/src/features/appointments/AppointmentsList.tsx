@@ -47,7 +47,7 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({
 
   if (isLoading)
     return (
-      <Flex w={{ base: "300px", md: "400px" }}>
+      <Flex w={{ base: "300px", sm: "400px" }}>
         <DashSpinner />
       </Flex>
     );
@@ -68,7 +68,7 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({
 
     if (appointmentsToDisplay.length === 0) {
       return (
-        <Flex justify={"center"} w={{ base: "300px", md: "400px" }}>
+        <Flex justify={"center"} w={{ base: "300px", sm: "400px" }}>
           No appointments found
         </Flex>
       );

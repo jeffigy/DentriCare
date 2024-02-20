@@ -9,7 +9,7 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),
-  devTools: false,
+  devTools: true,
 });
 setupListeners(store.dispatch);
 export type RootState = ReturnType<typeof store.getState>;

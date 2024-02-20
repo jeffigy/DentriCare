@@ -37,7 +37,7 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = ({
       <Card
         w={{
           base: "300px",
-          md: "400px",
+          sm: "400px",
         }}
       >
         <CardBody>

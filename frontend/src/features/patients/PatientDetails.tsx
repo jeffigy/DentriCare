@@ -1,6 +1,5 @@
 import { EditIcon } from "@chakra-ui/icons";
 import {
-  Avatar,
   Box,
   Card,
   CardBody,
@@ -19,7 +18,7 @@ import { useGetPatientsQuery } from "features/patients/patientsApiSlice";
 import useAuth from "hooks/useAuth";
 import { FiCalendar } from "react-icons/fi";
 import { LuHistory } from "react-icons/lu";
-import { MdOutlineInsertPhoto, MdOutlinePayments } from "react-icons/md";
+import { MdOutlinePayments } from "react-icons/md";
 import { PiNotepadBold } from "react-icons/pi";
 import { useNavigate, useParams } from "react-router-dom";
 import { Patient } from "types/Patient";
@@ -49,11 +48,6 @@ const PatientDetails = () => {
       title: "Payments",
       icon: MdOutlinePayments,
       to: `/dash/patients/${id}/payments`,
-    },
-    {
-      title: "Photos",
-      icon: MdOutlineInsertPhoto,
-      to: `/dash/patients/${id}/photos`,
     },
   ];
 
@@ -108,7 +102,6 @@ const PatientDetails = () => {
         >
           <Card mb={"10px"}>
             <CardBody as={Flex} direction={"column"} align={"center"} w="full">
-              <Avatar boxSize={"150px"} mb={"10px"} />
               <Text
                 fontSize={"24px"}
                 fontWeight={"bold"}

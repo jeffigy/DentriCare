@@ -3,7 +3,6 @@ const Appointment = require("../models/Appointment");
 const DentalNote = require("../models/DentalNote");
 const MedicalHistory = require("../models/MedicalHistory");
 const Payment = require("../models/Payment");
-const cloudinary = require("../config/cloudinary");
 
 //* get all patients
 const getAllPatients = async (req, res) => {
@@ -64,19 +63,9 @@ const createNewPatient = async (req, res) => {
 
 //* update patient
 const updatePatient = async (req, res) => {
-  const { id, fname, mname, lname, bday, address, phone, updatedBy, avatar } =
-    req.body;
+  const { id, fname, mname, lname, bday, address, phone, updatedBy } = req.body;
 
-  if (
-    !id ||
-    !fname ||
-    !mname ||
-    !lname ||
-    // typeof bday !== "number" ||
-    !bday ||
-    !address ||
-    !phone
-  ) {
+  if (!id || !fname || !mname || !lname || !bday || !address || !phone) {
     return res.status(400).json({ message: "all fields are required" });
   }
 
@@ -98,14 +87,6 @@ const updatePatient = async (req, res) => {
     return res.status(409).json({ message: "Duplicate patient complete name" });
   }
 
-  if (req.file.path) {
-    await cloudinary.uploader.destroy(patient.cloudinary_id);
-  }
-
-  const uploadImage = await cloudinary.uploader.upload(req.file.path, {
-    folder: "dentricare/" + id + "/avatar",
-  });
-
   patient.fname = fname;
   patient.mname = mname;
   patient.lname = lname;
@@ -113,8 +94,6 @@ const updatePatient = async (req, res) => {
   patient.phone = phone;
   patient.address = address;
   patient.updatedBy = updatedBy;
-  patient.avatar = uploadImage.secure_url;
-  patient.cloudinary_id = uploadImage.public_id;
 
   const updatedPatient = await patient.save();
   res.json(

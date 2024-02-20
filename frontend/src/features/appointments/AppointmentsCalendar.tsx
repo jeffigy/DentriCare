@@ -54,7 +54,7 @@ const AppointmentsCalendar = () => {
           mb={"4"}
           boxSize={{
             base: "300px",
-            md: "400px",
+            sm: "400px",
           }}
           alignItems={"center"}
           justifyContent={"center"}
@@ -67,6 +67,10 @@ const AppointmentsCalendar = () => {
           />
         </Card>
         <Flex
+          w={{
+            base: "300x",
+            sm: "400px",
+          }}
           mt={{
             base: "0",
             lg: "420px",

@@ -115,7 +115,12 @@ const BalanceList = () => {
       </InputGroup>
     );
     return (
-      <Card w={"500px"}>
+      <Card
+        w={{
+          base: "full",
+          sm: "500px",
+        }}
+      >
         <CardBody>
           <DataTable
             title="Patients with balances"

@@ -26,7 +26,6 @@ import { ErrorType } from "types/Error";
 import { Patient, PatientFormValues } from "types/Patient";
 import { newPatientValidation } from "validations/patientValidation";
 import { useUpdatePatientMutation } from "./patientsApiSlice";
-
 type EditPatientFormProps = {
   patient: Patient;
 };
@@ -103,7 +102,7 @@ const EditPatientForm: React.FC<EditPatientFormProps> = ({ patient }) => {
       <Card
         w={{
           base: "300px",
-          md: "400px",
+          sm: "400px",
         }}
       >
         <CardHeader as={Flex} justify={"center"}>

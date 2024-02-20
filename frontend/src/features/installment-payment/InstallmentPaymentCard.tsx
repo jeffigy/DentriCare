@@ -40,7 +40,7 @@ const InstallmentPaymentCard: React.FC<InstallmentPaymentCardProps> = ({
       <Card
         w={{
           base: "300px",
-          md: "400px",
+          sm: "400px",
         }}
         mb={"10px"}
       >

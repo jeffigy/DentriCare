@@ -98,7 +98,7 @@ const EditProcedureForm: React.FC<EditProcedureFormProps> = ({ procedure }) => {
       <Card
         w={{
           base: "300px",
-          md: "400px",
+          sm: "400px",
         }}
       >
         <CardHeader as={Flex} justify={"center"}>
@@ -141,8 +141,8 @@ const EditProcedureForm: React.FC<EditProcedureFormProps> = ({ procedure }) => {
             )}
           </FormControl>
 
-          {status === "SuperAdmin" ||
-            (status === "Admin" && (
+          {status === "Admin" ||
+            (status === "SuperAdmin" && (
               <>
                 <FormControl>
                   <FormLabel>Created By</FormLabel>
@@ -216,8 +216,10 @@ const EditProcedureForm: React.FC<EditProcedureFormProps> = ({ procedure }) => {
           >
             Submit
           </Button>
-          {status === "SuperAdmin" ||
-            (status === "Admin" && <DeleteProcedure procedure={procedure} />)}
+          {status === "Admin" ||
+            (status === "SuperAdmin" && (
+              <DeleteProcedure procedure={procedure} />
+            ))}
         </CardFooter>
       </Card>
     </form>

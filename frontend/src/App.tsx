@@ -28,7 +28,6 @@ import NewInstallmentPaymentPage from "pages/Patients/Payments/InstallmentPaymen
 import NewPaymentPage from "pages/Patients/Payments/NewPaymentPage";
 import PaymentDetailsPage from "pages/Patients/Payments/PaymentDetailsPage";
 import PaymentsPage from "pages/Patients/Payments/PaymentsPage";
-import PhotosPage from "pages/Patients/Photos/PhotosPage";
 import EditProcedurePage from "pages/Procedures/EditProcedurePage";
 import NewProcedurePage from "pages/Procedures/NewProcedurePage";
 import ProceduresPage from "pages/Procedures/ProceduresPage";
@@ -112,10 +111,6 @@ const App = () => {
                           />
                         </Route>
                       </Route>
-                    </Route>
-                    {/* photos route */}
-                    <Route path="photos">
-                      <Route index element={<PhotosPage />} />
                     </Route>
                   </Route>
                 </Route>
