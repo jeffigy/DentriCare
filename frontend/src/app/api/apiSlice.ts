@@ -8,7 +8,7 @@ import { RootState } from "app/store";
 import { setCredentials } from "features/auth/authSlice";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:3000",
+  baseUrl: "https://dentricare-api.onrender.com",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
@@ -32,16 +32,13 @@ const baseQueryWithReauth = async (
     const refreshResult = await baseQuery("/auth/refresh", api, extraOptions);
 
     if (refreshResult?.data) {
-      console.log("refreshresult: ", refreshResult.data);
-
-      const accessToken = refreshResult.data as string;
-      api.dispatch(setCredentials({ accessToken }));
+      api.dispatch(setCredentials({ ...refreshResult.data }));
 
       result = await baseQuery(args, api, extraOptions);
     } else {
       if (refreshResult?.error?.status === 403) {
         (refreshResult.error.data as { message: string }).message =
-          "Your login has expired. ";
+          "Your login has expired.";
       }
       return refreshResult;
     }

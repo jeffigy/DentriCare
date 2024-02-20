@@ -62,8 +62,6 @@ const BalanceList = () => {
     },
   ];
 
-  if (isLoading) return <DashSpinner />;
-
   if (isError)
     return (
       <Flex justify={"center"}>{(error as ErrorType)?.data?.message}</Flex>

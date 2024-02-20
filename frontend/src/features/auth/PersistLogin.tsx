@@ -5,10 +5,7 @@ import usePersist from "hooks/usePersist";
 import { useAppSelector } from "app/hooks";
 import { selectCurrentToken } from "./authSlice";
 import DashSpinner from "components/Dashboard/DashSpinner";
-type ErrorType = {
-  status: number;
-  data: { message: string };
-};
+import { ErrorType } from "types/Error";
 
 const PersistLogin = () => {
   const [persist] = usePersist();
@@ -22,14 +19,11 @@ const PersistLogin = () => {
 
   useEffect(() => {
     if (effectRan.current === true || process.env.NODE_ENV !== "development") {
-      // React 18 Strict Mode
-
       const verifyRefreshToken = async () => {
         console.log("verifying refresh token");
         try {
-          //const response =
           await refresh({});
-          //const { accessToken } = response.data
+
           setTrueSuccess(true);
         } catch (err) {
           console.error(err);
@@ -42,8 +36,6 @@ const PersistLogin = () => {
     return () => {
       effectRan.current = true;
     };
-
-    // eslint-disable-next-line
   }, []);
 
   let content;

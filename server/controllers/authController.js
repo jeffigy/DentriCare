@@ -6,9 +6,7 @@ const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res
-      .status(400)
-      .json({ message: "Please provide email and password" });
+    return res.status(400).json({ message: "All fields are required" });
   }
 
   const foundUser = await User.findOne({ email }).exec();
@@ -29,7 +27,7 @@ const login = async (req, res, next) => {
       },
     },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "15m" }
+    { expiresIn: "1hr" }
   );
 
   const refreshToken = jwt.sign(
@@ -70,7 +68,7 @@ const refresh = (req, res) => {
           },
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "15m" }
+        { expiresIn: "1hr" }
       );
       res.json({ accessToken });
     }
