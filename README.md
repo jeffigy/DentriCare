@@ -51,7 +51,7 @@ DentriCare is a simple dental management web application designed to simplify th
 ###
 
 2. Configure Client
-3. 2.1. From the root folder change directory to client and install the dependencies.
+   2.1. From the root folder change directory to client and install the dependencies.
    ```
    cd client
    yarn install
@@ -61,7 +61,7 @@ DentriCare is a simple dental management web application designed to simplify th
    const baseQuery = fetchBaseQuery({
    baseUrl: "http://localhost:3000",
    ```
-4. Configure Server
+3. Configure Server
    3.1. From the root folder change directory to server and install the dependencies.
    ```
    cd server
@@ -78,7 +78,7 @@ DentriCare is a simple dental management web application designed to simplify th
    ```
    const allowedOrigins = ["http://localhost:5173"];
    ```
-5. You're all set now run the client and the server each on separate terminals
+4. You're all set, now run the client and the server each on separate terminals
    ```
    cd client
    yarn dev
