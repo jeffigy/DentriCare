@@ -51,6 +51,7 @@ DentriCare is a simple dental management web application designed to simplify th
 ###
 
 2. Configure Client
+   
    2.1. From the root folder change directory to client and install the dependencies.
    ```
    cd client
@@ -62,6 +63,7 @@ DentriCare is a simple dental management web application designed to simplify th
    baseUrl: "http://localhost:3000",
    ```
 3. Configure Server
+   
    3.1. From the root folder change directory to server and install the dependencies.
    ```
    cd server
