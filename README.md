@@ -5,7 +5,7 @@
 
 ### 
 
-DentriCare is a simple dental management web application designed to simplify the task of dental practices. With DentriCare, dental clinics can efficiently manage patient record, appointments, payments, and dental notes and many more.
+DentriCare is a simple dental management web application designed to simplify the task of dental practices. With DentriCare, dental clinics can efficiently manage patient record, appointments, payments, and dental notes and many more. You can visit the website by clicking the following link [DentriCare Demo](https://dentricare.onrender.com).
 
 ## Features
 
